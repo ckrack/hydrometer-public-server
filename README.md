@@ -1,6 +1,6 @@
 # iSpindle Public Server
 
-This is an attempt to create a public server for the [iSpindel project|(https://github.com/universam1/iSpindel).
+This is an attempt to create a public server for the [iSpindel project](https://github.com/universam1/iSpindel).
 The server should allow any iSpindel user to keep a log of the spindle's data and visualize it via charts.
 
 ## Approach
