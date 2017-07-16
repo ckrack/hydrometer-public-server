@@ -7,8 +7,12 @@ if (file_exists(__DIR__.'/.env')) {
 }
 
 // define for use in swagger annotations
-define('API_HOST', getenv('API_HOST'));
-define('API_PROTOCOL', getenv('API_PROTOCOL'));
+if (!defined('API_HOST')) {
+    define('API_HOST', getenv('API_HOST'));
+}
+if (!defined('API_PROTOCOL')) {
+    define('API_PROTOCOL', getenv('API_PROTOCOL'));
+}
 
 date_default_timezone_set("Europe/Berlin");
 
