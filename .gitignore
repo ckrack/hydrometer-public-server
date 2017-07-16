@@ -1,0 +1,24 @@
+# composer
+/vendor/
+
+# log files
+/logs/*
+!/logs/README.md
+npm-debug.log*
+
+# config
+.env
+
+# ---> Node
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules
+
+# Sass cache
+.sass-cache/
+
+# public css/js
+public/css/*
+!public/css/vendor/*
+public/js/*
+!public/js/vendor*
