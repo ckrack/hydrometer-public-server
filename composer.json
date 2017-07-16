@@ -1,6 +1,6 @@
 {
-    "name": "ckrack/ispindel-ui",
-    "description": "A backend with corresponding UI for the ispindle project",
+    "name": "ckrack/ispindel-public-server",
+    "description": "A backend with corresponding UI for the ispindel project",
     "type": "project",
     "license": "MIT",
     "keywords": [
@@ -19,7 +19,12 @@
             "email": "info@clemenskrack.com",
             "homepage": "https://www.clemenskrack.com",
             "role": "Developer"
-        }
+        },
+        {
+            "name": "Stefan Schreiber",
+            "email": "stephan@sschreiber.de",
+            "role": "Developer"
+        },
     ],
     "require": {
         "slim/slim": "^3.7",

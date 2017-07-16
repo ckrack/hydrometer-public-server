@@ -1,7 +1,7 @@
 {
-  "name": "ispindel-ui",
+  "name": "ispindel-public-server",
   "version": "0.1.0",
-  "description": "A backend with corresponding UI for the ispindle project",
+  "description": "A backend with corresponding UI for the ispindel project",
   "main": "gulpfile.js",
   "dependencies": {
     "browser-sync": "^2.18",
