@@ -18,8 +18,28 @@ Datapoints can be grouped together to a fermentation, allowing the users to arch
 Users are identified by email, have a username, an api-token and a timezone.
 Token are used for registering, logging in and cookies.
 
+An image outlining the ERM can be found in `docs/ERM.png`.
+
 ## API
 
 There is an API to write and read data from the spindles.
 For writing, a valid api-token is required and the post contains the spindle-id.
 For reading, a user either has to be logged in (for ui-updates) or use their api-token for remote applications.
+
+## Installation
+
+Download the project files.
+
+[Install Composer](https://getcomposer.org/doc/00-intro.md), PHPs package manager, if not available.
+
+[Install NPM](https://www.npmjs.com/get-npm), Nodes package manager, if not available.
+
+Run `npm install`
+
+Run `composer install`
+
+Copy `example.env` to `.env`and modify at least the database settings.
+
+To get started, you can import `example/ispindel_sample_data.sql`
+
+Run `gulp` to start the built-in PHP server and open a browser window.
