@@ -1,6 +1,6 @@
 <?php
-// Routes
 
+// Routes
 $app->get('[/]', 'App\Controller\Index:display');
 
 //####### API
@@ -19,10 +19,41 @@ $app->get('/api/calibrations/{calibration:[0-9]+}', 'App\Controller\Api\Calibrat
 $app->get('/api/calibrations', 'App\Controller\Api\Calibrations:get');
 $app->post('/api/calibrations', 'App\Controller\Api\Calibrations:post');
 
+//####### auth
+$app->group('/auth', function () {
+    $this->get('/register/{ids}/{token}', 'App\Controller\Auth\Register:token')->setName('auth-register-token');
+    $this->get('/register', 'App\Controller\Auth\Register:form');
+    $this->post('/register', 'App\Controller\Auth\Register:post');
+
+    $this->any('/login/{ids}/{token}', 'App\Controller\Auth\Login:token')->setName('auth-login-token');
+    $this->get('/login', 'App\Controller\Auth\Login:form');
+    $this->post('/login', 'App\Controller\Auth\Login:post');
+});
+
+// these require a logged in user
+$app->group('', function () {
+    $this->get('/auth/register/success', 'App\Controller\Auth\Register:success');
+    $this->any('/auth/success', 'App\Controller\Auth\Login:success');
+    $this->any('/auth/logout', 'App\Controller\Auth\Login:logout');
+})
+// require a 'user' in $request that matches an App\Entity\User object
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
+// look for userId in session
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'));
 
 //####### UI
-$app->get('/status/{spindle:[0-9]+}', 'App\Controller\Status:display')->setName('status');
-$app->get('/plato4/{spindle:[0-9]+}', 'App\Controller\Status:plato4')->setName('plato4');
-$app->get('/plato/{spindle:[0-9]+}', 'App\Controller\Status:plato')->setName('plato');
-$app->get('/angle/{spindle:[0-9]+}', 'App\Controller\Status:angle')->setName('angle');
-$app->get('/battery/{spindle:[0-9]+}', 'App\Controller\Status:battery')->setName('battery');
+$app->group('/ui', function () {
+    $this->get('[/]', 'App\Controller\Index:display');
+    $this->get('/status/{spindle:[0-9]+}', 'App\Controller\Status:display')->setName('status');
+    $this->get('/plato4/{spindle:[0-9]+}', 'App\Controller\Status:plato4')->setName('plato4');
+    $this->get('/plato/{spindle:[0-9]+}', 'App\Controller\Status:plato')->setName('plato');
+    $this->get('/angle/{spindle:[0-9]+}', 'App\Controller\Status:angle')->setName('angle');
+    $this->get('/battery/{spindle:[0-9]+}', 'App\Controller\Status:battery')->setName('battery');
+})
+// require a 'user' in $request that matches an App\Entity\User object
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
+// look for a cookie token
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\Cookie'))
+// look for userId in session
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'))
+;
