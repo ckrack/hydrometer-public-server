@@ -19,11 +19,11 @@ use Jenssegers\Date\Date;
             </p>
         <?php endif; ?>
 
-            <a class="card-link" href="/status/<?=$optimus->encode($spindle['id'])?>"><?=_('Status')?></a>
-            <a class="card-link" href="/plato4/<?=$optimus->encode($spindle['id'])?>"><?=_('Plato (old)')?></a>
-            <a class="card-link" href="/plato/<?=$optimus->encode($spindle['id'])?>"><?=_('Plato')?></a>
-            <a class="card-link" href="/angle/<?=$optimus->encode($spindle['id'])?>"><?=_('Angle')?></a>
-            <a class="card-link" href="/battery/<?=$optimus->encode($spindle['id'])?>"><?=_('Battery')?></a>
+            <a class="card-link" href="/ui/status/<?=$optimus->encode($spindle['id'])?>"><?=_('Status')?></a>
+            <a class="card-link" href="/ui/plato4/<?=$optimus->encode($spindle['id'])?>"><?=_('Plato (old)')?></a>
+            <a class="card-link" href="/ui/plato/<?=$optimus->encode($spindle['id'])?>"><?=_('Plato')?></a>
+            <a class="card-link" href="/ui/angle/<?=$optimus->encode($spindle['id'])?>"><?=_('Angle')?></a>
+            <a class="card-link" href="/ui/battery/<?=$optimus->encode($spindle['id'])?>"><?=_('Battery')?></a>
         </div>
     </div>
 <?php endforeach; ?>
