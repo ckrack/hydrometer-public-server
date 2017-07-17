@@ -145,3 +145,17 @@ $container->add('App\Module\Lang\Gettext', function () use ($container) {
         $settings['languages']['path']
     );
 });
+
+// Bootform
+$container->add('AdamWathan\BootForms\BootForm', function () use ($container) {
+    $formBuilder = new AdamWathan\Form\FormBuilder;
+
+    $formBuilder->setOldInputProvider(new App\Modules\Forms\OldInputProvider);
+    $formBuilder->setErrorStore(new App\Modules\Forms\ErrorStore);
+
+    $basicBootFormsBuilder = new AdamWathan\BootForms\BasicFormBuilder($formBuilder);
+    $horizontalBootFormsBuilder = new AdamWathan\BootForms\HorizontalFormBuilder($formBuilder);
+
+    $bootForm = new AdamWathan\BootForms\BootForm($basicBootFormsBuilder, $horizontalBootFormsBuilder);
+    return $bootForm;
+});
