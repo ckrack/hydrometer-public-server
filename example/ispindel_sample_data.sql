@@ -4,10 +4,6 @@
 #
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
-#
-# Host: 127.0.0.1 (MySQL 5.7.18)
-# Datenbank: brewing_ispindel
-# Erstellt am: 2017-07-16 13:06:18 +0000
 # ************************************************************
 
 
@@ -5349,11 +5345,6 @@ VALUES
 UNLOCK TABLES;
 
 
-# Export von Tabelle fermentations
-# ------------------------------------------------------------
-
-
-
 # Export von Tabelle spindles
 # ------------------------------------------------------------
 
@@ -5370,44 +5361,6 @@ VALUES
 /*!40000 ALTER TABLE `spindles` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
-# Export von Tabelle token
-# ------------------------------------------------------------
-
-LOCK TABLES `token` WRITE;
-/*!40000 ALTER TABLE `token` DISABLE KEYS */;
-
-INSERT INTO `token` (`id`, `user_id`, `type`, `value`, `created`, `changed`, `updated`, `was_used`)
-VALUES
-	(1,11,'register','64135b1fb35cb1524dbe77e477f8540e','2017-07-16 01:02:08','2017-07-16 01:06:19','2017-07-16 01:06:19',1),
-	(2,11,'login','4ca2d149291b65d1be7748d804c24dc15c53dbf2fa5ae937b98a385caa70b1a22c40190c335c0d8bbb8115d7ee197069fbd8071841fc5f6937c3a075c31acfdf','2017-07-16 01:12:51',NULL,'2017-07-16 01:12:51',NULL),
-	(3,11,'login','06b6e196546a32bdcc43109795f647c2e47b109fb7129e5a','2017-07-16 01:13:07',NULL,'2017-07-16 01:13:07',NULL),
-	(4,11,'login','ba65bd9d7ac88dffcad02b8c66b53c0acc40e6f17e74e773','2017-07-16 01:14:01','2017-07-16 01:15:41','2017-07-16 01:15:41',1),
-	(5,11,'login','bd8f71560472e5754b48c759209951ab77b4e10f9deabd76','2017-07-16 01:41:08','2017-07-16 01:41:13','2017-07-16 01:41:13',1),
-	(6,11,'login','f96748b7e23a2d95df31e4e57c9490b63c24dd1b17b1320f','2017-07-16 01:47:25','2017-07-16 01:47:31','2017-07-16 01:47:31',1),
-	(7,11,'login','5054a0433a9f71f58851ab174037433f3ec6f6c3fdad8dc9','2017-07-16 01:49:04','2017-07-16 01:49:09','2017-07-16 01:49:09',1),
-	(8,11,'login','70f9166f8f7c1f531f5f63a92e2718d547ebb7597c546c3d','2017-07-16 02:04:02',NULL,'2017-07-16 02:04:02',NULL),
-	(9,11,'login','3a8b7d19730c4bd7e265505f0a29e1107a716651c8abb580','2017-07-16 02:12:53',NULL,'2017-07-16 02:12:53',NULL),
-	(10,11,'login','e1e0994b9fcc0c96ab9f3f3d3bd23be499e3ae6366fcc6c0','2017-07-16 02:15:33',NULL,'2017-07-16 02:15:33',NULL),
-	(11,11,'login','dfa91a895b6395cc8c4890ff7c243558a6133e67c25fa75f','2017-07-16 02:17:03','2017-07-16 02:17:26','2017-07-16 02:17:26',1),
-	(12,11,'login','692228da9f1e3de3c2a9df11580432c84bbc23f207ee3e64','2017-07-16 02:35:35','2017-07-16 02:35:56','2017-07-16 02:35:56',1);
-
-/*!40000 ALTER TABLE `token` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-# Export von Tabelle users
-# ------------------------------------------------------------
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-
-INSERT INTO `users` (`id`, `email`, `username`, `apiToken`, `timeZone`, `created`, `changed`, `updated`, `deleted`)
-VALUES
-	(11,'ckrack@gmail.com','clmnsk',NULL,'Europe/Berlin','2017-07-16 01:02:08',NULL,'2017-07-16 01:02:08',NULL);
-
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 
