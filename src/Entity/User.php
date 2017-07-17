@@ -9,8 +9,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity(repositoryClass="App\Resource\UserResource")
  * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
- * @ORM\Table(name="users", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
- */
+ * @ORM\Table(
+ *     name="users",
+ *     options={
+ *         "collate"="utf8mb4_unicode_ci",
+ *         "charset"="utf8mb4"
+ *     },
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="email",
+ *             columns={"email"}
+ *         )
+ *     }
+ * ) */
 class User extends Entity\Entity
 {
     public function __construct()
