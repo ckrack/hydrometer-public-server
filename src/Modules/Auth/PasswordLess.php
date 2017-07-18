@@ -2,6 +2,8 @@
 namespace App\Modules\Auth;
 
 use Psr\Log\LoggerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestInterface;
 use Projek\Slim\Plates;
 use Doctrine\ORM\EntityManager;
 use Hashids\Hashids;
@@ -9,6 +11,7 @@ use App\Entity\User;
 use App\Entity\Token;
 use Slim\Router;
 use PHPMailer;
+use Dflydev\FigCookies;
 
 class PasswordLess
 {
@@ -162,11 +165,14 @@ class PasswordLess
 
     /**
      * save cookies for a persisting login
-     * @param  User   $user [description]
-     * @return [type]       [description]
+     * @param  ResponseInterface $response [description]
+     * @param  User              $user     [description]
+     * @return ResponseInterface                      [description]
      */
-    public function saveCookies(User $user)
+    public function saveCookies(ResponseInterface $response, User $user)
     {
+        $user = $this->em->find(get_class($user), $user->getId());
+
         $token = new Token;
         $token
             ->setType('cookie')
@@ -176,20 +182,42 @@ class PasswordLess
         $this->em->persist($token);
         $this->em->flush();
 
-        // save cookies for a user
+        // generate expiration time (1 month)
         $expires = new \DateTime('now');
         $expires = $expires->add(new \DateInterval('P1M'));
-        $cookie1 = setcookie(
-            'passwordless_hash',
-            $this->hash->encode([$token->getId(), $user->getId()]),
-            $expires->format('U')
+
+        $response = FigCookies\FigResponseCookies::set(
+            $response,
+            FigCookies\SetCookie::create('passwordless_hash')
+                ->withValue($this->hash->encode([$token->getId(), $user->getId()]))
+                ->withExpires($expires)
         );
-        $cookie2 = setcookie(
-            'passwordless_token',
-            $token->getValue(),
-            $expires->format('U')
+
+        $response = FigCookies\FigResponseCookies::set(
+            $response,
+            FigCookies\SetCookie::create('passwordless_token')
+                ->withValue($token->getValue())
+                ->withExpires($expires)
         );
-        $this->logger->debug('Auth::passwordless: Saving cookies', [$cookie1, $cookie2, $expires, $token, $expires->format('U')]);
+
+        $this->logger->debug('Auth::passwordless: Saving cookies', [$token->getId(), $token->getValue()]);
+
+        return $response;
+    }
+
+    /**
+     * detect cookies being set already
+     * @param  RequestInterface $request [description]
+     * @return [type]                    [description]
+     */
+    protected function detectCookies(RequestInterface $request)
+    {
+        $cookies = Cookies::fromRequest($request);
+        if ($cookies->has('passwordless_token') && $cookies->has('passwordless_hash')) {
+            $this->logger->debug('Auth::passwordless: Cookies detected');
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -197,14 +225,22 @@ class PasswordLess
      * @param  User $user [description]
      * @return [type]          [description]
      */
-    public function logout(User $user)
+    public function logout(ResponseInterface $response, User $user)
     {
-        $expires = new \DateTime('yesterday');
-        setcookie('passwordless_token', '', $expires->format('U'));
-        setcookie('passwordless_hash', '', $expires->format('U'));
+        $response = FigCookies\FigResponseCookies::set(
+            $response,
+            FigCookies\SetCookie::create('passwordless_hash')
+                ->withValue('')
+                ->expire()
+        );
 
-        unset($_COOKIE['passwordless_token']);
-        unset($_COOKIE['passwordless_hash']);
+        $response = FigCookies\FigResponseCookies::set(
+            $response,
+            FigCookies\SetCookie::create('passwordless_token')
+                ->withValue('')
+                ->expire()
+        );
+
         unset($_SESSION['userId']);
 
         $tokens = $this->em->getRepository('App\Entity\Token')->findBy(['user' => $user, 'type' => ['cookie', 'login', 'register']]);
@@ -213,5 +249,7 @@ class PasswordLess
             $this->em->remove($token);
         }
         $this->em->flush();
+
+        return $response;
     }
 }

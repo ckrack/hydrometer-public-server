@@ -112,11 +112,6 @@ class Login
                 // save the userId in session
                 $_SESSION['userId'] = $userId;
 
-                // set cookies if wanted
-                if (isset($_SESSION['passwordless_cookie']) && $_SESSION['passwordless_cookie'] == 1) {
-                    $this->passwordLess->saveCookies($user);
-                }
-
                 return $response->withRedirect('/auth/success');
             }
         } catch (\Exception $e) {
@@ -134,8 +129,14 @@ class Login
      */
     public function success($request, $response, $args)
     {
-        $user = $this->em->find('App\Entity\User', $_SESSION['userId']);
+        $this->view->setResponse($response);
+        $user = $request->getAttribute('user');
+
         if ($user instanceof \App\Entity\User) {
+            // set cookies if wanted
+            if (isset($_SESSION['passwordless_cookie']) && $_SESSION['passwordless_cookie'] == 1) {
+                $response = $this->passwordLess->saveCookies($response, $user);
+            }
             return $this->view->render('auth/login/success.php', ['user' => $user]);
         }
         return $this->view->render('auth/login/error.php');
@@ -150,11 +151,19 @@ class Login
      */
     public function logout($request, $response, $args)
     {
-        $user = $this->em->find('App\Entity\User', $_SESSION['userId']);
+        $user = $request->getAttribute('user');
+
         if ($user instanceof \App\Entity\User) {
-            $this->passwordLess->logout($user);
+            $response = $this->passwordLess->logout($response, $user);
             return $response->withRedirect('/');
         }
         return $this->view->render('auth/login/error.php');
+    }
+
+    protected function setErrors($errors)
+    {
+        foreach ($errors as $key => $value) {
+            $_SESSION['errors'][$key] = implode($value, '. ');
+        }
     }
 }
