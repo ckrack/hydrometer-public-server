@@ -38,39 +38,6 @@ class Data
         return $latestData;
     }
 
-    public function plato4(Spindle $spindle)
-    {
-        $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['spindle' => $spindle]);
-
-        $const1 = 0;
-        $const2 = 0;
-        $const3 = 0;
-
-        if ($calibration instanceof Calibration) {
-            $const1 = $calibration->getConst1();
-            $const2 = $calibration->getConst2();
-            $const3 = $calibration->getConst3();
-        }
-
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
-
-        $data = [];
-        foreach ($latestData as $value) {
-            $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
-            $data['dens'][] = $dens;
-            foreach ($value as $unit => $v) {
-                $data[$unit][] = $v;
-            }
-        }
-
-        // render template
-        return [
-            'name' => $spindle->getName(),
-            'data' => $data,
-            'isCalib' => is_a($calibration, '\App\Entity\Calibration')
-        ];
-    }
-
     public function platoCombined(Spindle $spindle)
     {
         list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($spindle);
@@ -130,24 +97,6 @@ class Data
             ];
         }
         return $values;
-    }
-
-    public function plato(Spindle $spindle)
-    {
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
-
-        $data = [];
-        foreach ($latestData as $value) {
-            foreach ($value as $unit => $v) {
-                $data[$unit][] = $v;
-            }
-        }
-
-        // render template
-        return [
-            'name' => $spindle->getName(),
-            'data' => $data
-        ];
     }
 
     public function angle(Spindle $spindle)

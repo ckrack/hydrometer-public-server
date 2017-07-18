@@ -45,7 +45,6 @@ $app->group('', function () {
 $app->group('/ui', function () {
     $this->get('[/]', 'App\Controller\UI\Index:display');
     $this->get('/status/{spindle:[0-9]+}', 'App\Controller\UI\Status:display')->setName('status');
-    $this->get('/plato4/{spindle:[0-9]+}', 'App\Controller\UI\Status:plato4')->setName('plato4');
     $this->get('/plato/{spindle:[0-9]+}', 'App\Controller\UI\Status:plato')->setName('plato');
     $this->get('/angle/{spindle:[0-9]+}', 'App\Controller\UI\Status:angle')->setName('angle');
     $this->get('/battery/{spindle:[0-9]+}', 'App\Controller\UI\Status:battery')->setName('battery');
