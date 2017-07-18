@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Resource\FermentationResource")
  * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(name="fermentations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */

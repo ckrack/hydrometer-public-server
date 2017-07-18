@@ -21,7 +21,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  *             columns={"email"}
  *         )
  *     }
- * ) */
+ * )
+ */
 class User extends Entity\Entity
 {
     public function __construct()
@@ -29,6 +30,7 @@ class User extends Entity\Entity
         parent::__construct();
         $this->fermentations = new ArrayCollection();
         $this->spindles = new ArrayCollection();
+        $this->token = new ArrayCollection();
     }
 
     /**
@@ -64,6 +66,11 @@ class User extends Entity\Entity
      * @ORM\OneToMany(targetEntity="Fermentation", mappedBy="user")
      */
     protected $fermentations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Token", mappedBy="user")
+     */
+    protected $token;
 
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
