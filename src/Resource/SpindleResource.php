@@ -104,7 +104,7 @@ class SpindleResource extends EntityRepository
      * @param  Spindle $spindle [description]
      * @return [type]           [description]
      */
-    public function findAllWithLastActivity()
+    public function findAllWithLastActivity(User $user)
     {
         try {
             $em = $this->getEntityManager();
@@ -114,14 +114,39 @@ class SpindleResource extends EntityRepository
                 ->from('App\Entity\Spindle', 's')
                 ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.spindle = s')
                 ->orderBy('activity', 'DESC')
+                ->andWhere('s.user = :user')
+                ->setParameter('user', $user->getId())
                 ->groupBy('s')
                 ->getQuery();
 
             return $q->getArrayResult();
         } catch (\Exception $e) {
-            echo $e->getMessage();
             return null;
         }
+    }
+
+    /**
+     * Get list of spindles including their last activity
+     * @param  Spindle $spindle [description]
+     * @return [type]           [description]
+     */
+    public function findAllByUser(User $user)
+    {
+        try {
+            return $this->findBy(['user' => $user]);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function formByUser(User $user)
+    {
+        $spindles = $this->findAllByUser($user);
+        $options = [];
+        foreach ($spindles as $spindle) {
+            $options[$spindle->getId()] = $spindle->getName();
+        }
+        return $options;
     }
 
     /**
@@ -145,7 +170,7 @@ class SpindleResource extends EntityRepository
             // limit to user
             if ($user instanceof App\Entity\User) {
                 $q->andWhere('s.user = :user')
-                  ->setParameter('user', $user);
+                  ->setParameter('user', $user->getId());
             }
 
             return $q->getSingleResult();
@@ -154,6 +179,17 @@ class SpindleResource extends EntityRepository
         }
     }
 
+    public function findOneByUser($spindle, $user)
+    {
+        try {
+            return $this->findOneBy([
+                'user' => $user,
+                'id' => $spindle
+            ]);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 
     /**
      * @param int|null $iso
