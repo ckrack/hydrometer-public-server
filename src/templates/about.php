@@ -3,7 +3,7 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display-3">
-        iSpindel Public Server
+        About
     </h1>
     <p class="lead">
         You own an <a href="">iSpindel</a> electronic hydrometer?<br>

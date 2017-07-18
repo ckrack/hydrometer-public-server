@@ -1,8 +1,10 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\UI;
 
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
+use Doctrine\ORM\EntityManager;
+use Jenssegers\Optimus\Optimus;
 
 class Index
 {
@@ -12,9 +14,13 @@ class Index
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
+        EntityManager $em,
+        Optimus $optimus,
         Plates $view,
         LoggerInterface $logger
     ) {
+        $this->em = $em;
+        $this->optimus = $optimus;
         $this->view = $view;
         $this->logger = $logger;
     }
@@ -28,14 +34,17 @@ class Index
      */
     public function display($request, $response, $args)
     {
-        if (empty($args)) {
-            $args['site'] = 'index';
-        }
+        $user = $request->getAttribute('user');
+
+        $spindles = $this->em->getRepository('App\Entity\Spindle')->findAllWithLastActivity($user);
+
         // render template
         return $this->view->render(
-            $args['site'].'.php',
+            '/ui/index.php',
             [
-                'user' => $request->getAttribute('user')
+                'spindles' => $spindles,
+                'optimus' => $this->optimus,
+                'user' => $user
             ]
         );
     }

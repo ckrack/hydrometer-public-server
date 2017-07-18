@@ -31,9 +31,6 @@ class Data
 
     public function status(Spindle $spindle = null)
     {
-        if ($spindle === null) {
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getLastActive();
-        }
 
         $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
 
@@ -41,12 +38,8 @@ class Data
         return $latestData;
     }
 
-    public function plato4($spindle)
+    public function plato4(Spindle $spindle)
     {
-        if ($spindle === null) {
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getLastActive();
-        }
-
         $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['spindle' => $spindle]);
 
         $const1 = 0;
@@ -60,9 +53,6 @@ class Data
         }
 
         $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
-
-        // add first row
-        $keys = array_keys(array_pop($latestData));
 
         $data = [];
         foreach ($latestData as $value) {
@@ -81,15 +71,70 @@ class Data
         ];
     }
 
-    public function plato($spindle)
+    public function platoCombined(Spindle $spindle)
     {
-        if ($spindle === null) {
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getLastActive();
-        }
+        list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($spindle);
+
         $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
 
-        // add first row
-        $keys = array_keys(array_pop($latestData));
+        // flag to indicate whether there are gravity values.
+        // this indicates that the new firmware is used (>= 4.0)
+        $useGravity = false;
+
+        $data = [];
+
+        foreach ($latestData as $value) {
+            $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
+            $data['dens'][] = $dens;
+            foreach ($value as $unit => $v) {
+                $data[$unit][] = $v;
+
+                if ($unit === 'gravity' && $v) {
+                    $useGravity = true;
+                }
+            }
+        }
+
+        // use the flag to overwrite old data
+        if (false === $useGravity) {
+            $data['gravity'] = $data['dens'];
+        }
+        unset($data['dens']);
+
+        // render template
+        return [
+            'name' => $spindle->getName(),
+            'data' => $data,
+            'isCalib' => $isCalibrated
+        ];
+    }
+
+    /**
+     * Get an array of calibration values
+     * Use the returned array with list($const1, $const2, $const3)
+     * @param  Spindle $spindle [description]
+     * @return [type]           [description]
+     */
+    protected function getCalibrationValues(Spindle $spindle)
+    {
+        $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['spindle' => $spindle]);
+
+        $values = [0, 0, 0, false];
+
+        if ($calibration instanceof Calibration) {
+            $values = [
+                $calibration->getConst1(),
+                $calibration->getConst2(),
+                $calibration->getConst3(),
+                true
+            ];
+        }
+        return $values;
+    }
+
+    public function plato(Spindle $spindle)
+    {
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
 
         $data = [];
         foreach ($latestData as $value) {
@@ -105,16 +150,10 @@ class Data
         ];
     }
 
-    public function angle($spindle)
+    public function angle(Spindle $spindle)
     {
-        if ($spindle === null) {
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getLastActive();
-        }
 
         $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
-
-        // add first row
-        $keys = array_keys(array_pop($latestData));
 
         $data = [];
         foreach ($latestData as $value) {

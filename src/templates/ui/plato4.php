@@ -1,10 +1,13 @@
-<?php $this->layout('layouts/index.php') ?>
+<?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
 
-<h1 class="mt-4 mb-3"><?=_('Angle')?></h1>
+<h1 class="mt-4 mb-3">
+    <?=_('Extract')?>
+</h1>
+<hr class="mb-3">
 
 <div class="card">
     <div class="card-header">
-    <?=$name?>
+        <?=$this->e($name)?>
     </div>
     <div class="card-block">
         <div id="chart"></div>
@@ -25,9 +28,9 @@ endforeach;?>
           ],
             axes: {
               temperature: 'y',
-              angle: 'y2'
+              dens: 'y2'
             },
-            hide: ['gravity', 'trubidity']
+            hide: ['gravity', 'angle', 'trubidity', 'battery']
         },
         axis: {
             x: {
@@ -44,14 +47,14 @@ endforeach;?>
             },
             y: {
                 label: {
-                    text: '<?=_('Temperature (°C)')?>',
+                    text: 'Temperature (°C)',
                     position: 'outer-middle',
                     fit: true
                 }
             },
             y2: {
                 label: {
-                    text: '<?=_('Angle (°)')?>',
+                    text: 'Extrakt (°P)',
                     position: 'outer-middle',
                     fit: true
                 },
@@ -67,4 +70,5 @@ endforeach;?>
             enabled: true
         }
     });
+    chart.unload(['gravity', 'angle', 'trubidity', 'battery']);
 </script>
