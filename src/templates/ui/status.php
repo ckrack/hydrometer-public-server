@@ -1,8 +1,10 @@
-<?php $this->layout('layouts/index.php') ?>
+<?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
 
 <h1 class="mt-4 mb-3">
     <?=_('Status')?>
 </h1>
+<hr class="mb-3">
+
 <div class="card">
     <div class="card-header">
         <?=$this->e($name)?>

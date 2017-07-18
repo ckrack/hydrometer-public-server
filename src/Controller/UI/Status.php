@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\UI;
 
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
@@ -19,13 +19,13 @@ class Status
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        Stats\Data $statusModule,
+        Stats\Data $statsModule,
         EntityManager $em,
         Optimus $optimus,
         Plates $view,
         LoggerInterface $logger
     ) {
-        $this->statusModule = $statusModule;
+        $this->statsModule = $statsModule;
         $this->em = $em;
         $this->optimus = $optimus;
         $this->view = $view;
@@ -43,15 +43,23 @@ class Status
     {
         try {
             $spindle = null;
+            $user = $request->getAttribute('user');
             if (isset($args['spindle'])) {
                 $args['spindle'] = $this->optimus->decode($args['spindle']);
-                // @TODO add user restriction
-                $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
+
+                $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
             }
 
-            $latestData = $this->statusModule->status($spindle);
+            $latestData = $this->statsModule->status($spindle);
+
             // render template
-            return $this->view->render('status.php', $latestData);
+            return $this->view->render(
+                '/ui/status.php',
+                array_merge(
+                    $latestData,
+                    ['user' => $user]
+                )
+            );
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -64,38 +72,24 @@ class Status
      * @param  [type] $args     [description]
      * @return [type]           [description]
      */
-    public function plato4($request, $response, $args)
-    {
-        $spindle = null;
-        if (isset($args['spindle'])) {
-            $args['spindle'] = $this->optimus->decode($args['spindle']);
-            // @TODO add user restriction
-            $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
-        }
-        $plato4Data = $this->statusModule->plato4($spindle);
-        // render template
-        return $this->view->render('plato4.php', $plato4Data);
-    }
-
-    /**
-     *
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
-     */
     public function plato($request, $response, $args)
     {
         $spindle = null;
+        $user = $request->getAttribute('user');
         if (isset($args['spindle'])) {
             $args['spindle'] = $this->optimus->decode($args['spindle']);
-            // @TODO add user restriction
-            $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
+            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
         }
-        $platoData = $this->statusModule->plato($spindle);
+        $platoData = $this->statsModule->platoCombined($spindle);
 
         // render template
-        return $this->view->render('plato.php', $platoData);
+        return $this->view->render(
+            '/ui/plato.php',
+            array_merge(
+                $platoData,
+                ['user' => $user]
+            )
+        );
     }
 
     /**
@@ -108,16 +102,21 @@ class Status
     public function angle($request, $response, $args)
     {
         $spindle = null;
+        $user = $request->getAttribute('user');
         if (isset($args['spindle'])) {
             $args['spindle'] = $this->optimus->decode($args['spindle']);
-            // @TODO add user restriction
-            $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
+            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
         }
-        $angleData = $this->statusModule->angle($spindle);
+        $angleData = $this->statsModule->angle($spindle);
 
         // render template
-        //return $this->view->render('charts.php', $angleData);
-        return $this->view->render('angle.php', $angleData);
+        return $this->view->render(
+            '/ui/angle.php',
+            array_merge(
+                $angleData,
+                ['user' => $user]
+            )
+        );
     }
 
     /**
@@ -130,13 +129,19 @@ class Status
     public function battery($request, $response, $args)
     {
         $spindle = null;
+        $user = $request->getAttribute('user');
         if (isset($args['spindle'])) {
             $args['spindle'] = $this->optimus->decode($args['spindle']);
-            // @TODO add user restriction
-            $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
+            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
         }
-        $latestData = $this->statusModule->status();
+        $latestData = $this->statsModule->status($spindle);
         // render template
-        return $this->view->render('battery.php', $latestData);
+        return $this->view->render(
+            '/ui/battery.php',
+            array_merge(
+                $latestData,
+                ['user' => $user]
+            )
+        );
     }
 }
