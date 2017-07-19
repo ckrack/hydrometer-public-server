@@ -67,6 +67,7 @@ class Data
             $data['gravity'] = $data['dens'];
         }
         unset($data['dens']);
+        unset($data['groupTime']);
 
         // render template
         return [

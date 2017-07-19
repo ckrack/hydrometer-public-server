@@ -132,6 +132,7 @@ $container->add('Doctrine\ORM\EntityManager', function () use ($container) {
                 'SUBSTRING_INDEX'   => 'DoctrineExtensions\Query\Mysql\SubstringIndex',
                 'DATE_FORMAT'       => 'DoctrineExtensions\Query\Mysql\DateFormat',
                 'UNIX_TIMESTAMP'    => 'DoctrineExtensions\Query\Mysql\UnixTimestamp',
+                'ROUND'             => 'DoctrineExtensions\Query\Mysql\Round',
                 'NOW'               => 'DoctrineExtensions\Query\Mysql\Now'
             ));
     return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config, $evm);

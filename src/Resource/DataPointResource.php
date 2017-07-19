@@ -22,10 +22,16 @@ class DataPointResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, AVG(d.temperature) temperature, AVG(d.angle) angle, AVG(d.gravity) gravity, AVG(d.trubidity) trubidity, AVG(d.battery) battery")
+            $qb->select("DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time,
+                         AVG(d.temperature) temperature,
+                         AVG(d.angle) angle,
+                         AVG(d.gravity) gravity,
+                         AVG(d.trubidity) trubidity,
+                         AVG(d.battery) battery,
+                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime")
                 ->from('App\Entity\DataPoint', 'd')
                 ->orderBy('d.created', 'ASC')
-                ->groupBy('time');
+                ->groupBy('groupTime');
 
 
             if ($spindle) {
@@ -38,6 +44,7 @@ class DataPointResource extends EntityRepository
             $q = $qb->getQuery();
             return $q->getArrayResult();
         } catch (\Exception $e) {
+            echo $e->getMessage();
             return null;
         }
     }
@@ -75,6 +82,12 @@ class DataPointResource extends EntityRepository
         }
     }
 
+    /**
+     * Add all un-assigned datapoints that match a fermentations timerange and
+     * the defined spindle to a (new) fermentation.
+     * @param Fermentation $fermentation [description]
+     * @param Spindle      $spindle      [description]
+     */
     public function addToFermentation(Fermentation $fermentation, Spindle $spindle)
     {
         $em = $this->getEntityManager();
@@ -86,7 +99,7 @@ class DataPointResource extends EntityRepository
            ->setParameter('spindle', $spindle)
            ->andWhere('d.created >= :begin')
            ->setParameter('begin', $fermentation->getBegin())
-           ->set('d.fermentation',':fermentation')
+           ->set('d.fermentation', ':fermentation')
            ->setParameter('fermentation', $fermentation);
 
         $q = $qb->getQuery();
