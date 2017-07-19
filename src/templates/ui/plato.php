@@ -25,49 +25,56 @@ array_unshift($value, $key);
 echo json_encode($value).',';
 endforeach;?>
           ],
-            axes: {
-              temperature: 'y',
-              gravity: 'y2'
-            },
-            hide: ['angle', 'battery', 'trubidity']
+          axes: {
+            temperature: 'y',
+            gravity: 'y2'
         },
-        axis: {
-            x: {
-                label: {
-                    text: 'Date',
-                    position: 'inner-center'
-                },
-                type : 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d %H:%M',
-                    count: 100,
-                    fit: true
-                }
+        colors: {
+            temperature: '#d9534f',
+            trubidity: '#f0ad4e',
+            gravity: '#0275d8',
+            battery: '#5bc0de',
+            angle: '#5cb85c'
+        },
+        hide: ['angle', 'battery', 'trubidity']
+    },
+    axis: {
+        x: {
+            label: {
+                text: 'Date',
+                position: 'inner-center'
             },
-            y: {
-                label: {
-                    text: '<?=_('Temperature (°C)')?>',
-                    position: 'outer-middle',
-                    fit: true
-                }
-            },
-            y2: {
-                label: {
-                    text: '<?=_('Extract (°)')?>',
-                    position: 'outer-middle',
-                    fit: false
-                },
-                show: true
+            type : 'timeseries',
+            tick: {
+                format: '%Y-%m-%d %H:%M',
+                count: 100,
+                fit: true
             }
         },
-        grid: {
-            y: {
-                show: true
+        y: {
+            label: {
+                text: '<?=_('Temperature (°C)')?>',
+                position: 'outer-middle',
+                fit: true
             }
         },
-        zoom: {
-            enabled: true
+        y2: {
+            label: {
+                text: '<?=_('Extract (°)')?>',
+                position: 'outer-middle',
+                fit: false
+            },
+            show: true
         }
-    });
+    },
+    grid: {
+        y: {
+            show: true
+        }
+    },
+    zoom: {
+        enabled: true
+    }
+});
     chart.unload(['angle', 'battery', 'trubidity']);
 </script>
