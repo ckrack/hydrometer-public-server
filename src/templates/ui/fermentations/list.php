@@ -24,7 +24,9 @@
 <?php foreach ($data as $ferm) : ?>
     <tr class="">
         <td>
-            <?=$ferm['name']?><br>
+            <?=$ferm['name']?>
+            <small class="text-muted">(<?=$this->e($ferm['spindle'])?>)</small>
+            <br>
             <small class="text-muted">Last activity: <?=$ferm['activity']?></small><br>
             <small><?=$ferm['begin']?> &ndash; <?=$ferm['ending']?></small>
         </td>

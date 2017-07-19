@@ -21,9 +21,10 @@
           xFormat: '%Y-%m-%d %H:%M',
           columns: [
 <?php foreach ($data as $key => $value):
-array_unshift($value, $key);
-echo json_encode($value).',';
-endforeach;?>
+    array_unshift($value, $key);
+    echo json_encode($value).',';
+endforeach;
+?>
           ],
           axes: {
             temperature: 'y',
@@ -55,16 +56,26 @@ endforeach;?>
             label: {
                 text: '<?=_('Temperature (°C)')?>',
                 position: 'outer-middle',
-                fit: true
+            },
+            tick: {
+                format: d3.format('d')
             }
         },
         y2: {
             label: {
-                text: '<?=_('Extract (°)')?>',
+                text: '<?=_('Extract (°P)')?>',
                 position: 'outer-middle',
                 fit: false
             },
             show: true
+        }
+    },
+    tooltip: {
+        format: {
+            value: function (value, ratio, id) {
+                return id === 'temperature' ? d3.format('.2f')(value)+'°C' : d3.format('.2f')(value)+'°P';
+                return format(value);
+            }
         }
     },
     grid: {
