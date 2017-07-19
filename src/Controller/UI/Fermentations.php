@@ -10,6 +10,7 @@ use Valitron\Validator;
 use App\Entity\Fermentation;
 use App\Entity\Spindle;
 use App\Entity\User;
+use App\Modules\Stats;
 
 class Fermentations
 {
@@ -21,12 +22,14 @@ class Fermentations
     public function __construct(
         EntityManager $em,
         Optimus $optimus,
+        Stats\Data $statsModule,
         Plates $view,
         BootForm $form,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->optimus = $optimus;
+        $this->statsModule = $statsModule;
         $this->form = $form;
         $this->view = $view;
         $this->logger = $logger;
@@ -56,11 +59,52 @@ class Fermentations
         );
     }
 
+    /**
+     *
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
+     */
+    public function details($request, $response, $args)
+    {
+        $fermentation = null;
+        $user = $request->getAttribute('user');
+        if (isset($args['fermentation'])) {
+            $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
+        }
+
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
+
+        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getSpindle());
+
+        // render template
+        return $this->view->render(
+            '/ui/fermentations/details.php',
+            array_merge(
+                $platoData,
+                [
+                    'user' => $user,
+                    'fermentation' => $fermentation
+                ]
+            )
+        );
+    }
+
+    /**
+     * Add new fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
+     */
     public function add($request, $response, $args)
     {
         try {
             $post = $request->getParsedBody();
             $user = $request->getAttribute('user');
+            $user = $this->em->find(get_class($user), $user->getId());
 
             $validator = new Validator($post);
             $validator->rule('required', 'name');
@@ -100,9 +144,11 @@ class Fermentations
             $this->em->persist($fermentation);
             $this->em->flush();
 
-            return $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $spindle);
+            $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $spindle);
+
+            return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            $this->logger->error($e->getMessage());
         }
     }
 

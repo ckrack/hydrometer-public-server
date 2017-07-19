@@ -29,20 +29,9 @@ class Data
         $this->logger = $logger;
     }
 
-    public function status(Spindle $spindle = null)
-    {
-
-        $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
-
-        $this->logger->debug('iSpindle: Latest data', (array) $latestData);
-        return $latestData;
-    }
-
-    public function platoCombined(Spindle $spindle)
+    public function platoCombined(array $latestData, Spindle $spindle)
     {
         list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($spindle);
-
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
 
         // flag to indicate whether there are gravity values.
         // this indicates that the new firmware is used (>= 4.0)
@@ -100,9 +89,13 @@ class Data
         return $values;
     }
 
+    /**
+     * get angle and temperature values
+     * @param  Spindle $spindle [description]
+     * @return [type]           [description]
+     */
     public function angle(Spindle $spindle)
     {
-
         $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
 
         $data = [];
@@ -111,6 +104,8 @@ class Data
                 $data[$unit][] = $v;
             }
         }
+
+        unset($data['groupTime']);
 
         // render template
         return [

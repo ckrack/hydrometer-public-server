@@ -50,7 +50,7 @@ class Status
                 $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
             }
 
-            $latestData = $this->statsModule->status($spindle);
+            $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
 
             // render template
             return $this->view->render(
@@ -80,7 +80,9 @@ class Status
             $args['spindle'] = $this->optimus->decode($args['spindle']);
             $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
         }
-        $platoData = $this->statsModule->platoCombined($spindle);
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
+
+        $platoData = $this->statsModule->platoCombined($latestData, $spindle);
 
         // render template
         return $this->view->render(
@@ -134,7 +136,7 @@ class Status
             $args['spindle'] = $this->optimus->decode($args['spindle']);
             $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
         }
-        $latestData = $this->statsModule->status($spindle);
+        $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
         // render template
         return $this->view->render(
             '/ui/battery.php',

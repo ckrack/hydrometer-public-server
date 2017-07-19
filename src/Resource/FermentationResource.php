@@ -23,7 +23,7 @@ class FermentationResource extends EntityRepository
 
             $qb->select("f.id, f.name,
                          DATE_FORMAT(f.begin, '%Y-%m-%d %H:%i') begin,
-                         DATE_FORMAT(f.end, '%Y-%m-%d %H:%i') AS ending,
+                         DATE_FORMAT(f.end, '%m-%d %H:%i') AS ending,
                          DATE_FORMAT(MAX(d.created), '%Y-%m-%d %H:%i') AS activity,
                          AVG(d.temperature) AS temperature,
                          MAX(d.temperature) AS max_temperature,
@@ -33,7 +33,8 @@ class FermentationResource extends EntityRepository
                          MAX(d.gravity) AS max_gravity,
                          MIN(d.gravity) AS min_gravity,
                          MAX(d.trubidity) AS max_trubidity,
-                         MIN(d.trubidity) AS min_trubidity")
+                         MIN(d.trubidity) AS min_trubidity,
+                         s.name spindle")
                 ->from('App\Entity\Fermentation', 'f')
                 ->join('App\Entity\DataPoint', 'd', 'WITH', 'd.fermentation = f')
                 ->join('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
@@ -48,6 +49,18 @@ class FermentationResource extends EntityRepository
             return $q->getArrayResult();
         } catch (\Exception $e) {
             echo $e->getMessage().$q->getDQL();
+            return null;
+        }
+    }
+
+    public function findOneByUser($fermentation, User $user)
+    {
+        try {
+            return $this->findOneBy([
+                'user' => $user,
+                'id' => $fermentation
+            ]);
+        } catch (\Exception $e) {
             return null;
         }
     }

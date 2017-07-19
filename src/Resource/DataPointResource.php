@@ -44,6 +44,39 @@ class DataPointResource extends EntityRepository
             $q = $qb->getQuery();
             return $q->getArrayResult();
         } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get the latest values from a fermentation
+     * @param  Fermentation $fermentation [description]
+     * @return [type]           [description]
+     */
+    public function findByFermentation(Fermentation $fermentation)
+    {
+        try {
+            $em = $this->getEntityManager();
+            $qb = $em->createQueryBuilder();
+
+            $qb->select("DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time,
+                         AVG(d.temperature) temperature,
+                         AVG(d.angle) angle,
+                         AVG(d.gravity) gravity,
+                         AVG(d.trubidity) trubidity,
+                         AVG(d.battery) battery,
+                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime")
+                ->from('App\Entity\DataPoint', 'd')
+                ->orderBy('d.created', 'ASC')
+                ->groupBy('groupTime')
+                ->andWhere('d.fermentation = :fermentation')
+                ->setParameter('fermentation', $fermentation->getId());
+
+            $qb->setMaxResults(500);
+
+            $q = $qb->getQuery();
+            return $q->getArrayResult();
+        } catch (\Exception $e) {
             echo $e->getMessage();
             return null;
         }
