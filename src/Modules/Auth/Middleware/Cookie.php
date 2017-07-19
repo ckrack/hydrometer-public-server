@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
 use App\Modules\Auth\PasswordLess;
+use Valitron\Validator;
 use Hashids\Hashids;
 
 /**
@@ -25,19 +26,19 @@ class Cookie
      * PassWordLess Auth Module
      * @var [type]
      */
-    protected $passWordLess;
+    protected $passwordLess;
 
     /**
      *
-     * @param PasswordLess    $passWordLess [description]
+     * @param PasswordLess    $passwordLess [description]
      * @param LoggerInterface $logger       [description]
      */
     public function __construct(
-        PasswordLess $passWordLess,
+        PasswordLess $passwordLess,
         Hashids $hash,
         LoggerInterface $logger
     ) {
-        $this->passWordLess = $passWordLess;
+        $this->passwordLess = $passwordLess;
         $this->hash = $hash;
         $this->logger = $logger;
     }
