@@ -24,11 +24,13 @@
 <?php foreach ($data as $ferm) : ?>
     <tr class="">
         <td>
-            <?=$ferm['name']?>
-            <small class="text-muted">(<?=$this->e($ferm['spindle'])?>)</small>
-            <br>
-            <small class="text-muted">Last activity: <?=$ferm['activity']?></small><br>
-            <small><?=$ferm['begin']?> &ndash; <?=$ferm['ending']?></small>
+            <a href="/ui/fermentations/<?=$optimus->encode((int)$ferm['id'])?>">
+                <?=$ferm['name']?>
+                <small class="text-muted">(<?=$this->e($ferm['spindle'])?>)</small>
+                <br>
+                <small class="text-muted">Last activity: <?=$ferm['activity']?></small><br>
+                <small><?=$ferm['begin']?> &ndash; <?=$ferm['ending']?></small>
+            </a>
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['temperature'])) : ?>
