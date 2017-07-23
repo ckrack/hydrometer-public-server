@@ -23,6 +23,9 @@ $angleAnomaly = new Anomaly(2, $logger);
     <thead class="thead-inverse">
         <tr>
             <th><?=_('Date')?></th>
+            <?php if(empty($spindle)) : ?>
+            <th><?=_('Spindle')?></th>
+            <?php endif ?>
             <th class="text-right"><?=_('Temperature')?></th>
             <th class="text-right"><?=_('Angle')?></th>
             <th class="text-right"><?=_('Battery')?></th>
@@ -37,6 +40,11 @@ $angleAnomaly = new Anomaly(2, $logger);
             <td>
                 <?=$point['time']?>
             </td>
+            <?php if(empty($spindle)) : ?>
+            <td>
+                <?=$point['spindle']?>
+            </td>
+            <?php endif ?>
             <td class="text-right <?php if ($tempAnomaly->is($point['temperature'])) echo 'table-warning' ?>">
                 <?=number_format($point['temperature'], 2)?> &deg;C
             </td>

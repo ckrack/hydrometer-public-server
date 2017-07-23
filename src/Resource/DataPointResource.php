@@ -28,8 +28,10 @@ class DataPointResource extends EntityRepository
                          AVG(d.gravity) gravity,
                          AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
-                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime")
+                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime,
+                         s.name spindle")
                 ->from('App\Entity\DataPoint', 'd')
+                ->leftJoin('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
                 ->orderBy('d.created', 'ASC')
                 ->groupBy('groupTime');
 
@@ -93,9 +95,9 @@ class DataPointResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery")
+            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery, s.name spindle")
                 ->from('App\Entity\DataPoint', 'd')
-                ->join('App\Entity\Spindle', 's')
+                ->join('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
                 ->orderBy('d.created', 'DESC')
                 ->groupBy('time')
                 ->andWhere('s.user = :user')
