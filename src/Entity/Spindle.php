@@ -47,12 +47,6 @@ class Spindle extends Entity\Entity
     protected $name;
 
     /**
-     * @ORM\Column(name="api_token", type="string", length=32, nullable=true)
-     * @var string
-     */
-    protected $apiToken;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User")
      * ORM\JoinColumn(
      *     name="user_id",
@@ -63,13 +57,24 @@ class Spindle extends Entity\Entity
     protected $user;
 
     /**
+     * @ORM\OneToOne(targetEntity="Token")
+     * ORM\JoinColumn(
+     *     name="token_id",
+     *     referencedColumnName="id",
+     *     nullable=true,
+     *     unique=true
+     * )
+     */
+    protected $token;
+
+    /**
      * @ORM\OneToMany(targetEntity="Fermentation", mappedBy="user")
      */
     protected $fermentations;
 
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "apiToken", "user"})
+     * @Gedmo\Timestampable(on="change", field={"name", "token", "user"})
      * @var \DateTime
      */
     protected $contentChanged;
@@ -107,21 +112,21 @@ class Spindle extends Entity\Entity
     }
 
     /**
-     * @return string
+     * @return Token
      */
-    public function getApiToken()
+    public function getToken()
     {
-        return $this->apiToken;
+        return $this->token;
     }
 
     /**
-     * @param string $apiToken
+     * @param Token $token
      *
      * @return self
      */
-    public function setApiToken($apiToken)
+    public function setToken($token)
     {
-        $this->apiToken = $apiToken;
+        $this->token = $token;
 
         return $this;
     }

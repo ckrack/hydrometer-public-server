@@ -3,12 +3,14 @@ namespace App\Controller\Api;
 
 use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
+use App\Modules\Auth\PasswordLess;
 use App\Entity;
 
 class DataPoint
 {
     protected $logger;
     protected $em;
+    protected $passwordLess;
 
     /**
      * Use League\Container for auto-wiring dependencies into the controller
@@ -17,9 +19,11 @@ class DataPoint
      */
     public function __construct(
         EntityManager $em,
+        PasswordLess $passwordLess,
         LoggerInterface $logger
     ) {
         $this->em = $em;
+        $this->passwordLess = $passwordLess;
         $this->logger = $logger;
     }
 
@@ -34,17 +38,31 @@ class DataPoint
     {
         try {
             $data = $request->getParsedBody();
-            $this->logger->debug('iSpindle: Receive data', [$data]);
+            $this->logger->debug('iSpindle: Receive data', [$data, $args]);
 
             if (empty($data)) {
+                $this->logger->debug('api::post: no data passed', [$args, $data]);
                 throw new \InvalidArgumentException('Api::post: No data passed');
             }
 
-            if (! isset($data['id'])) {
-                throw new \InvalidArgumentException('Api::post: Data missing (id)');
+            if (! isset($args['token']) && ! (isset($data['ID'])) && isset($data['userToken'])) {
+                $this->logger->debug('api::post: missing identifier', [$args, $data]);
+                throw new \InvalidArgumentException('Api::post: Data missing (ID or token)');
             }
 
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getOrCreate($data['id']);
+            // confirm existance of the token
+            $user = $this->passwordLess->confirm(empty($args['token']) ? $data['userToken'] : $args['token'], null, null, 'device', '10 years ago');
+            $this->logger->debug('api::post: by user', [$user]);
+
+            if (! $user instanceof \App\Entity\User) {
+                throw new \Exception("Could not confirm token", 1);
+            }
+
+            $spindle = $this->em->getRepository('App\Entity\Spindle')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['userToken'] : $args['token']);
+
+            // set token and user on the spindle
+            $spindle->setUser($this->getEntityManager()->getRepository('App\Entity\User')->find($user->getId()));
+            $spindle->setToken($this->getEntityManager()->getRepository('App\Entity\Token')->findOneBy(['value' => $token]));
 
             // set the spindle name if specified
             if (isset($data['name'])) {
@@ -55,9 +73,7 @@ class DataPoint
 
             $dataPoint = new Entity\DataPoint;
 
-            $methods = get_class_methods(get_class($dataPoint));
-
-            // prevent overwriting the id by unsetting the espId
+            // prevent overwriting the ID by unsetting the espId
             unset($data['id']);
 
             $dataPoint->import($data);

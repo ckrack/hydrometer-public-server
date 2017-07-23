@@ -79,6 +79,8 @@ class PasswordLess
         // get token by value
         $token = $this->em->getRepository('App\Entity\Token')->findByValue($tokenStr);
 
+        $this->logger->debug('passwordless::token: '. $tokenStr, [$token]);
+
         // check type
         if ($token->getType() !== $type) {
             throw new \Exception(_("Token type differs."), 1);
@@ -96,7 +98,7 @@ class PasswordLess
         }
 
         // verify with IDs passed in as hashid decoded string
-        if ($token->getType() != 'api' &&
+        if ($token->getType() != 'api' && $token->getType() != 'device' &&
             ($token->getId() != $tokenId || $token->getUser()->getId() != $userId)
         ) {
             throw new \Exception("Token User was not verified", 4);
@@ -131,7 +133,6 @@ class PasswordLess
         $this->em->flush();
 
         // send email with register-token
-
         $link = $this->router->pathFor('auth-register-token', ['ids' => $this->hash->encode([$token->getId(), $user->getId()]), 'token' => $token->getValue()]);
 
         return $this->email($user, $link, 'register');

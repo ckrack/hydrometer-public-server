@@ -199,7 +199,9 @@ class SpindleResource extends EntityRepository
     public function getOrCreate($id)
     {
         try {
+            // try to find an existing spindel
             $spindle = $this->find($id);
+
             if ($spindle instanceof \App\Entity\Spindle) {
                 return $spindle;
             }
