@@ -3,20 +3,30 @@
 // Routes
 
 //####### API
-$app->post('/api', 'App\Controller\Api\DataPoint:post');
-$app->get('/api/spindles/{spindle:[0-9]+}', 'App\Controller\Api\Spindle:details');
-$app->get('/api/spindles', 'App\Controller\Api\Spindle:get');
+$app->group('/api', function () {
+    $this->get('/spindles/{spindle:[0-9]+}', 'App\Controller\Api\Spindle:details');
+    $this->get('/spindles', 'App\Controller\Api\Spindle:get');
 
-$app->get('/api/data/{spindle:[0-9]+}', 'App\Controller\Api\DataPoint:get');
-$app->get('/api/data', 'App\Controller\Api\DataPoint:get');
+    $this->get('/data/{spindle:[0-9]+}', 'App\Controller\Api\DataPoint:get');
+    $this->get('/data', 'App\Controller\Api\DataPoint:get');
 
-$app->get('/api/fermentations/{fermentation:[0-9]+}', 'App\Controller\Api\Fermentations:details');
-$app->get('/api/fermentations', 'App\Controller\Api\Fermentations:get');
-$app->post('/api/fermentations', 'App\Controller\Api\Fermentations:post');
+    $this->get('/fermentations/{fermentation:[0-9]+}', 'App\Controller\Api\Fermentations:details');
+    $this->get('/fermentations', 'App\Controller\Api\Fermentations:get');
+    $this->post('/fermentations', 'App\Controller\Api\Fermentations:post');
 
-$app->get('/api/calibrations/{calibration:[0-9]+}', 'App\Controller\Api\Calibrations:details');
-$app->get('/api/calibrations', 'App\Controller\Api\Calibrations:get');
-$app->post('/api/calibrations', 'App\Controller\Api\Calibrations:post');
+    $this->get('/calibrations/{calibration:[0-9]+}', 'App\Controller\Api\Calibrations:details');
+    $this->get('/calibrations', 'App\Controller\Api\Calibrations:get');
+    $this->post('/calibrations', 'App\Controller\Api\Calibrations:post');
+})
+// require a 'user' in $request that matches an App\Entity\User object
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
+// look for userId in session
+#->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'))
+;
+
+// this allows posting without auth, as the auth is in the token
+$app->post('/api/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-token');
+
 
 //####### auth
 $app->group('/auth', function () {
