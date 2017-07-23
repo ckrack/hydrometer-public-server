@@ -52,6 +52,7 @@ $app->group('/ui', function () {
     $this->any('/fermentations/add', 'App\Controller\UI\Fermentations:add')->setName('fermentations-add');
     $this->get('/fermentations/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:details')->setName('fermentations-details');
     $this->get('/fermentations', 'App\Controller\UI\Fermentations:display')->setName('fermentations');
+    $this->get('/spindles/add', 'App\Controller\UI\Spindles:token')->setName('spindle-add-token');
 })
 // require a 'user' in $request that matches an App\Entity\User object
 ->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
