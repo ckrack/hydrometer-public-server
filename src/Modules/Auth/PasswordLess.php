@@ -81,6 +81,11 @@ class PasswordLess
 
         $this->logger->debug('passwordless::token: '. $tokenStr, [$token]);
 
+        if (! $token instanceof \App\Entity\Token) {
+            throw new \Exception("Not a valid token");
+
+        }
+
         // check type
         if ($token->getType() !== $type) {
             throw new \Exception(_("Token type differs."), 1);
