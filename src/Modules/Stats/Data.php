@@ -4,7 +4,7 @@ namespace App\Modules\Stats;
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
 use Doctrine\ORM\EntityManager;
-use App\Entity\Spindle;
+use App\Entity\Hydrometer;
 use App\Entity\Calibration;
 use App\Entity\DataPoint;
 
@@ -29,9 +29,9 @@ class Data
         $this->logger = $logger;
     }
 
-    public function platoCombined(array $latestData, Spindle $spindle)
+    public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
-        list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($spindle);
+        list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($hydrometer);
 
         // flag to indicate whether there are gravity values.
         // this indicates that the new firmware is used (>= 4.0)
@@ -60,7 +60,7 @@ class Data
 
         // render template
         return [
-            'name' => $spindle->getName(),
+            'name' => $hydrometer->getName(),
             'data' => $data,
             'isCalib' => $isCalibrated
         ];
@@ -69,12 +69,12 @@ class Data
     /**
      * Get an array of calibration values
      * Use the returned array with list($const1, $const2, $const3)
-     * @param  Spindle $spindle [description]
+     * @param  Hydrometer $hydrometer [description]
      * @return [type]           [description]
      */
-    protected function getCalibrationValues(Spindle $spindle)
+    protected function getCalibrationValues(Hydrometer $hydrometer)
     {
-        $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['spindle' => $spindle]);
+        $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['hydrometer' => $hydrometer]);
 
         $values = [0, 0, 0, false];
 
@@ -91,12 +91,12 @@ class Data
 
     /**
      * get angle and temperature values
-     * @param  Spindle $spindle [description]
+     * @param  Hydrometer $hydrometer [description]
      * @return [type]           [description]
      */
-    public function angle(Spindle $spindle)
+    public function angle(Hydrometer $hydrometer)
     {
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($hydrometer);
 
         $data = [];
         foreach ($latestData as $value) {
@@ -109,7 +109,7 @@ class Data
 
         // render template
         return [
-            'name' => $spindle->getName(),
+            'name' => $hydrometer->getName(),
             'data' => $data
         ];
     }

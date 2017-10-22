@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\SpindleResource")
+ * @ORM\Entity(repositoryClass="App\Resource\HydrometerResource")
  * @ORM\Table(
- *     name="spindles",
+ *     name="hydrometers",
  *     options={
  *         "collate"="utf8mb4_unicode_ci",
  *         "charset"="utf8mb4"
@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     }
  * )
  */
-class Spindle extends Entity\Entity
+class Hydrometer extends Entity\Entity
 {
     public function __construct()
     {
@@ -34,17 +34,30 @@ class Spindle extends Entity\Entity
     /**
      * This is the ESP8266 Arduino ChipId.
      * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @var Integer
+     * @ORM\Column(name="esp_id", type="string", nullable=true)
+     * @var string
      */
-    protected $id;
+    protected $esp_id;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
      * @var string
      */
     protected $name;
+
+    /**
+     * The metric of the temperature units (Celsius / Fahrenheit)
+     * @ORM\Column(type="string", length=190, nullable=true)
+     * @var string
+     */
+    protected $metricTemperature;
+
+    /**
+     * The metric of the gravity units (SG, Plato, Brix)
+     * @ORM\Column(type="string", length=190, nullable=true)
+     * @var string
+     */
+    protected $metricGravity;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -74,7 +87,7 @@ class Spindle extends Entity\Entity
 
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "token", "user"})
+     * @Gedmo\Timestampable(on="change", field={"name", "token", "user", "esp_id"})
      * @var \DateTime
      */
     protected $contentChanged;
@@ -165,5 +178,65 @@ class Spindle extends Entity\Entity
     public function getContentChanged()
     {
         return $this->contentChanged;
+    }
+
+    /**
+     * @return Integer
+     */
+    public function getEspId()
+    {
+        return $this->esp_id;
+    }
+
+    /**
+     * @param Integer $esp_id
+     *
+     * @return self
+     */
+    public function setEspId(int $esp_id)
+    {
+        $this->esp_id = $esp_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetricTemperature()
+    {
+        return $this->metricTemperature;
+    }
+
+    /**
+     * @param string $metricTemperature
+     *
+     * @return self
+     */
+    public function setMetricTemperature($metricTemperature)
+    {
+        $this->metricTemperature = $metricTemperature;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetricGravity()
+    {
+        return $this->metricGravity;
+    }
+
+    /**
+     * @param string $metricGravity
+     *
+     * @return self
+     */
+    public function setMetricGravity($metricGravity)
+    {
+        $this->metricGravity = $metricGravity;
+
+        return $this;
     }
 }

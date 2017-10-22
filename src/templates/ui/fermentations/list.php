@@ -26,7 +26,7 @@
         <td>
             <a href="/ui/fermentations/<?=$optimus->encode((int)$ferm['id'])?>">
                 <?=$ferm['name']?>
-                <small class="text-muted">(<?=$this->e($ferm['spindle'])?>)</small>
+                <small class="text-muted">(<?=$this->e($ferm['hydrometer'])?>)</small>
                 <br>
                 <small class="text-muted">Last activity: <?=$ferm['activity']?></small><br>
                 <small><?=$ferm['begin']?> &ndash; <?=$ferm['ending']?></small>

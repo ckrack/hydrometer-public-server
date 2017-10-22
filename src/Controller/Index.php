@@ -20,7 +20,7 @@ class Index
     }
 
     /**
-     * List of available spindles
+     * List of available hydrometers
      * @param  [type] $request  [description]
      * @param  [type] $response [description]
      * @param  [type] $args     [description]

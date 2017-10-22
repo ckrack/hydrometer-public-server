@@ -28,7 +28,7 @@ class DataPoint
     }
 
     /**
-     * Receive datapoint for spindle via HTTP POST
+     * Receive datapoint for hydrometer via HTTP POST
      * @param  [type] $request  [description]
      * @param  [type] $response [description]
      * @param  [type] $args     [description]
@@ -38,7 +38,7 @@ class DataPoint
     {
         try {
             $data = $request->getParsedBody();
-            $this->logger->debug('iSpindle: Receive data', [$data, $args]);
+            $this->logger->debug('iHydrometer: Receive data', [$data, $args]);
 
             if (empty($data)) {
                 $this->logger->debug('api::post: no data passed', [$args, $data]);
@@ -58,18 +58,18 @@ class DataPoint
                 throw new \Exception("Could not confirm token", 1);
             }
 
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['userToken'] : $args['token']);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['userToken'] : $args['token']);
 
-            // set token and user on the spindle
-            $spindle->setUser($this->getEntityManager()->getRepository('App\Entity\User')->find($user->getId()));
-            $spindle->setToken($this->getEntityManager()->getRepository('App\Entity\Token')->findOneBy(['value' => $token]));
+            // set token and user on the hydrometer
+            $hydrometer->setUser($this->getEntityManager()->getRepository('App\Entity\User')->find($user->getId()));
+            $hydrometer->setToken($this->getEntityManager()->getRepository('App\Entity\Token')->findOneBy(['value' => $token]));
 
-            // set the spindle name if specified
+            // set the hydrometer name if specified
             if (isset($data['name'])) {
-                $spindle->setName($data['name']);
+                $hydrometer->setName($data['name']);
             }
 
-            $this->logger->debug('iSpindle: Receive data for Spindle', [$spindle, $data]);
+            $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
 
             $dataPoint = new Entity\DataPoint;
 
@@ -77,9 +77,9 @@ class DataPoint
             unset($data['id']);
 
             $dataPoint->import($data);
-            $dataPoint->setSpindle($spindle);
+            $dataPoint->setHydrometer($hydrometer);
 
-            $this->em->persist($spindle);
+            $this->em->persist($hydrometer);
             $this->em->persist($dataPoint);
 
             $this->em->flush();
@@ -103,13 +103,13 @@ class DataPoint
     public function get($request, $response, $args)
     {
         try {
-            $spindle = null;
-            if (isset($args['spindle'])) {
-                $spindle = $this->em->find('App\Entity\Spindle', $args['spindle']);
+            $hydrometer = null;
+            if (isset($args['hydrometer'])) {
+                $hydrometer = $this->em->find('App\Entity\Hydrometer', $args['hydrometer']);
             }
-            $this->logger->debug('Api:Data: Find data', [$spindle, $args]);
+            $this->logger->debug('Api:Data: Find data', [$hydrometer, $args]);
 
-            $dataPoints = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
+            $dataPoints = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($hydrometer);
 
             // add first row
             $keys = array_keys(array_pop($dataPoints));

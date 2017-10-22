@@ -8,11 +8,11 @@
 <hr class="mb-3">
 
 <?=$form->text(_('Name'), 'name')->placeholder(_('e.g. Pilsener Batch #1, My Pale Ale #2'))?>
-<?=$form->select(_('Spindle'), 'spindle_id', $spindles)?>
+<?=$form->select(_('Hydrometer'), 'hydrometer_id', $hydrometers)?>
 <?=$form->dateTimeLocal(_('Begin'), 'begin')->placeholder(_('YYYY-MM-DD HH:MM'))->defaultValue(\DateTime::createFromFormat('U', time()))?>
 <?=$form->dateTimeLocal(_('End'), 'end')->placeholder(_('YYYY-MM-DD HH:MM'))->defaultValue(\DateTime::createFromFormat('U', time()))?>
 <p class="form-text text-warning">
-    <?=_('All datapoints of the selected spindle in the defined timeframe, that are not yet part of a fermentation, will be added to the new fermentation.')?>
+    <?=_('All datapoints of the selected hydrometer in the defined timeframe, that are not yet part of a fermentation, will be added to the new fermentation.')?>
 </p>
 <?=$form->submit(_('Register'))->addClass('btn btn-primary')?>
 <?=$form->close()?>

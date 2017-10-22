@@ -14,13 +14,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class DataPoint extends Entity\Entity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Spindle")
+     * @ORM\ManyToOne(targetEntity="Hydrometer")
      * ORM\JoinColumn(
-     *     name="spindle_id",
+     *     name="hydrometer_id",
      *     referencedColumnName="id"
      * )
      */
-    protected $spindle;
+    protected $hydrometer;
 
     /**
      * @ORM\ManyToOne(targetEntity="Fermentation")
@@ -85,19 +85,19 @@ class DataPoint extends Entity\Entity
     /**
      * @return mixed
      */
-    public function getSpindle()
+    public function getHydrometer()
     {
-        return $this->spindle;
+        return $this->hydrometer;
     }
 
     /**
-     * @param mixed $spindle
+     * @param mixed $hydrometer
      *
      * @return self
      */
-    public function setSpindle($spindle)
+    public function setHydrometer($hydrometer)
     {
-        $this->spindle = $spindle;
+        $this->hydrometer = $hydrometer;
 
         return $this;
     }

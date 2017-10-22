@@ -35,21 +35,21 @@ class DataPoints
     public function display($request, $response, $args)
     {
         $user = $request->getAttribute('user');
-        $spindle = null;
-        if (isset($args['spindle'])) {
-            $args['spindle'] = $this->optimus->decode($args['spindle']);
+        $hydrometer = null;
+        if (isset($args['hydrometer'])) {
+            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
             // @TODO add user restriction
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
         }
 
-        $data = $this->em->getRepository('App\Entity\DataPoint')->findAllByUser($user, $spindle);
+        $data = $this->em->getRepository('App\Entity\DataPoint')->findAllByUser($user, $hydrometer);
 
         // render template
         return $this->view->render(
             '/ui/data.php',
             [
                 'data' => $data,
-                'spindle' => $spindle,
+                'hydrometer' => $hydrometer,
                 'optimus' => $this->optimus,
                 'user' => $user,
                 'logger' => $this->logger

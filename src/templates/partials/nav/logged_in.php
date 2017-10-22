@@ -3,7 +3,7 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="/ui/"><?=_('Spindles')?></a>
+            <a class="nav-link" href="/ui/"><?=_('Hydrometers')?></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/ui/fermentations"><?=_('Fermentations')?></a>

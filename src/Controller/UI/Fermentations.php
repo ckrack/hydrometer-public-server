@@ -8,7 +8,7 @@ use Jenssegers\Optimus\Optimus;
 use AdamWathan\BootForms\BootForm;
 use Valitron\Validator;
 use App\Entity\Fermentation;
-use App\Entity\Spindle;
+use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Modules\Stats;
 
@@ -77,7 +77,7 @@ class Fermentations
 
         $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
 
-        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getSpindle());
+        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 
         // render template
         return $this->view->render(
@@ -108,7 +108,7 @@ class Fermentations
 
             $validator = new Validator($post);
             $validator->rule('required', 'name');
-            $validator->rule('integer', 'spindle_id');
+            $validator->rule('integer', 'hydrometer_id');
             $validator->rule('date', 'begin');
             $validator->rule('date', 'end');
             $validator->rule('optional', 'end');
@@ -122,29 +122,29 @@ class Fermentations
                     'ui/fermentations/form.php',
                     [
                         'form' => $this->form,
-                        'spindles' => $this->em->getRepository('App\Entity\Spindle')->formByUser($user),
+                        'hydrometers' => $this->em->getRepository('App\Entity\Hydrometer')->formByUser($user),
                         'user' => $user
                     ]
                 );
             }
             $_SESSION['_old_input'] = $post;
 
-            $spindle = $this->em
-                ->getRepository('App\Entity\Spindle')
-                ->findOneByUser($post['spindle_id'], $user);
+            $hydrometer = $this->em
+                ->getRepository('App\Entity\Hydrometer')
+                ->findOneByUser($post['hydrometer_id'], $user);
 
             $fermentation = new Fermentation;
             $fermentation
                 ->setName($post['name'])
                 ->setBegin(\DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']))
                 ->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']))
-                ->setSpindle($spindle)
+                ->setHydrometer($hydrometer)
                 ->setUser($user);
 
             $this->em->persist($fermentation);
             $this->em->flush();
 
-            $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $spindle);
+            $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $hydrometer);
 
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {

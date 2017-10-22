@@ -6,4 +6,4 @@
       Nice to see you again, <?=$this->e($user->getUsername())?>!
   </p>
 </div>
-<a href="/ui/" class="btn btn-primary">Go to your spindles</a>
+<a href="/ui/" class="btn btn-primary">Go to your hydrometers</a>

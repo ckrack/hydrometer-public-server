@@ -2,7 +2,7 @@
 namespace App\Resource;
 
 use Doctrine\ORM\EntityRepository;
-use App\Entity\Spindle;
+use App\Entity\Hydrometer;
 use App\Entity\User;
 
 /**
@@ -11,7 +11,7 @@ use App\Entity\User;
 class FermentationResource extends EntityRepository
 {
     /**
-     * Get the latest values from a spindle
+     * Get the latest values from a hydrometer
      * @param  User $user [description]
      * @return [type]           [description]
      */
@@ -34,10 +34,10 @@ class FermentationResource extends EntityRepository
                          MIN(d.gravity) AS min_gravity,
                          MAX(d.trubidity) AS max_trubidity,
                          MIN(d.trubidity) AS min_trubidity,
-                         s.name spindle")
+                         s.name hydrometer")
                 ->from('App\Entity\Fermentation', 'f')
                 ->join('App\Entity\DataPoint', 'd', 'WITH', 'd.fermentation = f')
-                ->join('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
+                ->join('App\Entity\Hydrometer', 's', 'WITH', 'd.hydrometer = s')
                 ->orderBy('begin', 'DESC')
                 ->groupBy('f')
                 ->andWhere('f.user = :user')

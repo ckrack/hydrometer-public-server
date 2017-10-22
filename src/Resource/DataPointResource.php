@@ -2,7 +2,7 @@
 namespace App\Resource;
 
 use Doctrine\ORM\EntityRepository;
-use App\Entity\Spindle;
+use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Entity\Fermentation;
 
@@ -12,11 +12,11 @@ use App\Entity\Fermentation;
 class DataPointResource extends EntityRepository
 {
     /**
-     * Get the latest values from a spindle
-     * @param  Spindle $spindle [description]
+     * Get the latest values from a hydrometer
+     * @param  Hydrometer $hydrometer [description]
      * @return [type]           [description]
      */
-    public function findInColumns(Spindle $spindle = null)
+    public function findInColumns(Hydrometer $hydrometer = null)
     {
         try {
             $em = $this->getEntityManager();
@@ -29,16 +29,16 @@ class DataPointResource extends EntityRepository
                          AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
                          ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime,
-                         s.name spindle")
+                         s.name hydrometer")
                 ->from('App\Entity\DataPoint', 'd')
-                ->leftJoin('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
+                ->leftJoin('App\Entity\Hydrometer', 's', 'WITH', 'd.hydrometer = s')
                 ->orderBy('d.created', 'ASC')
                 ->groupBy('groupTime');
 
 
-            if ($spindle) {
-                $qb->andWhere('d.spindle = :spindle');
-                $qb->setParameter('spindle', $spindle->getId());
+            if ($hydrometer) {
+                $qb->andWhere('d.hydrometer = :hydrometer');
+                $qb->setParameter('hydrometer', $hydrometer->getId());
             }
 
             $qb->setMaxResults(500);
@@ -85,19 +85,19 @@ class DataPointResource extends EntityRepository
     }
 
     /**
-     * Get the latest values from a spindle
+     * Get the latest values from a hydrometer
      * @param  User $user [description]
      * @return [type]           [description]
      */
-    public function findAllByUser(User $user, Spindle $spindle = null, $limit = 500, $offset = 0)
+    public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0)
     {
         try {
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery, s.name spindle")
+            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery, s.name hydrometer")
                 ->from('App\Entity\DataPoint', 'd')
-                ->join('App\Entity\Spindle', 's', 'WITH', 'd.spindle = s')
+                ->join('App\Entity\Hydrometer', 's', 'WITH', 'd.hydrometer = s')
                 ->orderBy('d.created', 'DESC')
                 ->groupBy('time')
                 ->andWhere('s.user = :user')
@@ -105,9 +105,9 @@ class DataPointResource extends EntityRepository
                 ->setFirstResult($offset)
                 ->setMaxResults($limit);
 
-            if ($spindle) {
-                $qb->andWhere('d.spindle = :spindle');
-                $qb->setParameter('spindle', $spindle->getId());
+            if ($hydrometer) {
+                $qb->andWhere('d.hydrometer = :hydrometer');
+                $qb->setParameter('hydrometer', $hydrometer->getId());
             }
 
             $q = $qb->getQuery();
@@ -119,19 +119,19 @@ class DataPointResource extends EntityRepository
 
     /**
      * Add all un-assigned datapoints that match a fermentations timerange and
-     * the defined spindle to a (new) fermentation.
+     * the defined hydrometer to a (new) fermentation.
      * @param Fermentation $fermentation [description]
-     * @param Spindle      $spindle      [description]
+     * @param Hydrometer      $hydrometer      [description]
      */
-    public function addToFermentation(Fermentation $fermentation, Spindle $spindle)
+    public function addToFermentation(Fermentation $fermentation, Hydrometer $hydrometer)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
 
         $qb->update('App\Entity\DataPoint', 'd')
            ->andWhere('d.fermentation IS NULL')
-           ->andWhere('d.spindle = :spindle')
-           ->setParameter('spindle', $spindle)
+           ->andWhere('d.hydrometer = :hydrometer')
+           ->setParameter('hydrometer', $hydrometer)
            ->andWhere('d.created >= :begin')
            ->setParameter('begin', $fermentation->getBegin())
            ->set('d.fermentation', ':fermentation')

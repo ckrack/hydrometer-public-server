@@ -15,16 +15,16 @@ $angleAnomaly = new Anomaly(2, $logger);
 </h1>
 <hr class="mb-3">
 
-<?php if (!empty($spindle)) : ?>
-<h2 class="mt-2 mb-3"><?=$spindle->getName()?></h2>
+<?php if (!empty($hydrometer)) : ?>
+<h2 class="mt-2 mb-3"><?=$hydrometer->getName()?></h2>
 <?php endif ?>
 
 <table class="table table-striped table-hover table-sm">
     <thead class="thead-inverse">
         <tr>
             <th><?=_('Date')?></th>
-            <?php if(empty($spindle)) : ?>
-            <th><?=_('Spindle')?></th>
+            <?php if(empty($hydrometer)) : ?>
+            <th><?=_('Hydrometer')?></th>
             <?php endif ?>
             <th class="text-right"><?=_('Temperature')?></th>
             <th class="text-right"><?=_('Angle')?></th>
@@ -40,9 +40,9 @@ $angleAnomaly = new Anomaly(2, $logger);
             <td>
                 <?=$point['time']?>
             </td>
-            <?php if(empty($spindle)) : ?>
+            <?php if(empty($hydrometer)) : ?>
             <td>
-                <?=$point['spindle']?>
+                <?=$point['hydrometer']?>
             </td>
             <?php endif ?>
             <td class="text-right <?php if ($tempAnomaly->is($point['temperature'])) echo 'table-warning' ?>">

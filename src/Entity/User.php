@@ -29,7 +29,7 @@ class User extends Entity\Entity
     {
         parent::__construct();
         $this->fermentations = new ArrayCollection();
-        $this->spindles = new ArrayCollection();
+        $this->hydrometers = new ArrayCollection();
         $this->token = new ArrayCollection();
     }
 
@@ -58,9 +58,9 @@ class User extends Entity\Entity
     protected $timeZone;
 
     /**
-     * @ORM\OneToMany(targetEntity="Spindle", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Hydrometer", mappedBy="user")
      */
-    protected $spindles;
+    protected $hydrometers;
 
     /**
      * @ORM\OneToMany(targetEntity="Fermentation", mappedBy="user")
@@ -152,9 +152,9 @@ class User extends Entity\Entity
     /**
      * @return mixed
      */
-    public function getSpindles()
+    public function getHydrometers()
     {
-        return $this->spindles;
+        return $this->hydrometers;
     }
 
     /**

@@ -5,7 +5,7 @@ use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
 use App\Entity\DataPoint;
 
-class Spindle
+class Hydrometer
 {
     protected $logger;
     protected $em;
@@ -24,7 +24,7 @@ class Spindle
     }
 
     /**
-     * Receive datapoint for spindle via HTTP POST
+     * Receive datapoint for hydrometer via HTTP POST
      * @param  [type] $request  [description]
      * @param  [type] $response [description]
      * @param  [type] $args     [description]
@@ -33,9 +33,9 @@ class Spindle
     public function get($request, $response, $args)
     {
         try {
-            $spindles = $this->em->getRepository('App\Entity\Spindle')->findAll();
+            $hydrometers = $this->em->getRepository('App\Entity\Hydrometer')->findAll();
 
-            return json_encode($spindles);
+            return json_encode($hydrometers);
 
             return $response
                 ->withStatus(200);

@@ -42,15 +42,15 @@ class Status
     public function display($request, $response, $args)
     {
         try {
-            $spindle = null;
+            $hydrometer = null;
             $user = $request->getAttribute('user');
-            if (isset($args['spindle'])) {
-                $args['spindle'] = $this->optimus->decode($args['spindle']);
+            if (isset($args['hydrometer'])) {
+                $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
 
-                $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
+                $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
             }
 
-            $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
+            $latestData = $this->em->getRepository('App\Entity\Hydrometer')->getLatestData($hydrometer);
 
             // render template
             return $this->view->render(
@@ -74,15 +74,15 @@ class Status
      */
     public function plato($request, $response, $args)
     {
-        $spindle = null;
+        $hydrometer = null;
         $user = $request->getAttribute('user');
-        if (isset($args['spindle'])) {
-            $args['spindle'] = $this->optimus->decode($args['spindle']);
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
+        if (isset($args['hydrometer'])) {
+            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
         }
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($spindle);
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($hydrometer);
 
-        $platoData = $this->statsModule->platoCombined($latestData, $spindle);
+        $platoData = $this->statsModule->platoCombined($latestData, $hydrometer);
 
         // render template
         return $this->view->render(
@@ -103,13 +103,13 @@ class Status
      */
     public function angle($request, $response, $args)
     {
-        $spindle = null;
+        $hydrometer = null;
         $user = $request->getAttribute('user');
-        if (isset($args['spindle'])) {
-            $args['spindle'] = $this->optimus->decode($args['spindle']);
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
+        if (isset($args['hydrometer'])) {
+            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
         }
-        $angleData = $this->statsModule->angle($spindle);
+        $angleData = $this->statsModule->angle($hydrometer);
 
         // render template
         return $this->view->render(
@@ -130,13 +130,13 @@ class Status
      */
     public function battery($request, $response, $args)
     {
-        $spindle = null;
+        $hydrometer = null;
         $user = $request->getAttribute('user');
-        if (isset($args['spindle'])) {
-            $args['spindle'] = $this->optimus->decode($args['spindle']);
-            $spindle = $this->em->getRepository('App\Entity\Spindle')->findOneByUser($args['spindle'], $user);
+        if (isset($args['hydrometer'])) {
+            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
         }
-        $latestData = $this->em->getRepository('App\Entity\Spindle')->getLatestData($spindle);
+        $latestData = $this->em->getRepository('App\Entity\Hydrometer')->getLatestData($hydrometer);
         // render template
         return $this->view->render(
             '/ui/battery.php',

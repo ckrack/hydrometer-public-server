@@ -26,7 +26,7 @@ class Index
     }
 
     /**
-     * List of available spindles
+     * List of available hydrometers
      * @param  [type] $request  [description]
      * @param  [type] $response [description]
      * @param  [type] $args     [description]
@@ -36,13 +36,13 @@ class Index
     {
         $user = $request->getAttribute('user');
 
-        $spindles = $this->em->getRepository('App\Entity\Spindle')->findAllWithLastActivity($user);
+        $hydrometers = $this->em->getRepository('App\Entity\Hydrometer')->findAllWithLastActivity($user);
 
         // render template
         return $this->view->render(
-            '/ui/index.php',
+            '/ui/hydrometers/index.php',
             [
-                'spindles' => $spindles,
+                'hydrometers' => $hydrometers,
                 'optimus' => $this->optimus,
                 'user' => $user
             ]
