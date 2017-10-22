@@ -1,18 +1,31 @@
 <?php
-// DIC configuration
-$container = $app->getContainer();
+/** Dependency Injection Config */
+use Slim\Collection;
 
-// Slim router
-$container->add('Slim\Router', function () use ($container) {
-    return $container->get('router');
-});
+// use Slim when it is initialized
+if (isset($app) && $app instanceof \Slim\App) {
+    $container = $app->getContainer();
+
+    // Slim router
+    $container->add('Slim\Router', function () use ($container) {
+        return $container->get('router');
+    });
+} else {
+    // Not using Slim, must pass settings to container
+    $container->share('settings', function () use ($settings) {
+        return $settings['settings'];
+    });
+
+    // enable auto-wiring
+    $container->delegate(new League\Container\ReflectionContainer);
+}
+
 
 // monolog
 $container->add('Psr\Log\LoggerInterface', function () use ($container) {
     $settings = $container->get('settings')['logger'];
     $logger = new Monolog\Logger($settings['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-
     if (getenv('APP_ENV') == "development") {
         $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], Monolog\Logger::DEBUG));
     } else {
