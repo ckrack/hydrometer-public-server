@@ -20,6 +20,14 @@ Token are used for registering, logging in and cookies.
 
 An image outlining the ERM can be found in `docs/ERM.png`.
 
+## Database
+
+You can install the database schema by running:
+```
+php vendor/bin/doctrine orm:schema-tool:update -f
+php vendor/bin/doctrine orm:generate-proxies
+```
+
 ## API
 
 There is an API to write and read data from the spindles.
@@ -43,3 +51,27 @@ Copy `example.env` to `.env`and modify at least the database settings.
 To get started, you can import `example/ispindel_sample_data.sql`
 
 Run `gulp` to start the built-in PHP server and open a browser window.
+
+# Query for python:
+
+Parameter: token
+
+SELECT
+    h.id hydrometer_id,
+    f.id fermentation_id
+FROM
+    token t
+JOIN
+    hydrometers h
+    ON h.token_id = t.id
+    AND h.user_id = t.user_id
+LEFT JOIN 
+    fermentations f
+    ON f.hydrometer_id = h.id
+    AND f.user_id = t.user_id
+    AND (f.end IS NULL OR f.end > NOW())
+WHERE
+    t.value = :token;
+
+# Example JSON from Spindle
+{"name":"eSpindel","ID":"1068313","angle":71.11,"temperature":18.25,"battery":5.54,"gravity":24.89, "token": "1234567"}
