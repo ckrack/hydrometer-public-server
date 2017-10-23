@@ -45,20 +45,20 @@ class DataPoint
                 throw new \InvalidArgumentException('Api::post: No data passed');
             }
 
-            if (! isset($args['token']) && ! (isset($data['ID'])) && isset($data['userToken'])) {
+            if (! isset($args['token']) && ! (isset($data['ID'])) && isset($data['token'])) {
                 $this->logger->debug('api::post: missing identifier', [$args, $data]);
                 throw new \InvalidArgumentException('Api::post: Data missing (ID or token)');
             }
 
             // confirm existance of the token
-            $user = $this->passwordLess->confirm(empty($args['token']) ? $data['userToken'] : $args['token'], null, null, 'device', '10 years ago');
+            $user = $this->passwordLess->confirm(empty($args['token']) ? $data['token'] : $args['token'], null, null, 'device', '10 years ago');
             $this->logger->debug('api::post: by user', [$user]);
 
             if (! $user instanceof \App\Entity\User) {
                 throw new \Exception("Could not confirm token", 1);
             }
 
-            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['userToken'] : $args['token']);
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['token'] : $args['token']);
 
             // set token and user on the hydrometer
             $hydrometer->setUser($this->getEntityManager()->getRepository('App\Entity\User')->find($user->getId()));
