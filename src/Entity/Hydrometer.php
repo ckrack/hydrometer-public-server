@@ -193,7 +193,7 @@ class Hydrometer extends Entity\Entity
      *
      * @return self
      */
-    public function setEspId(int $esp_id)
+    public function setEspId($esp_id)
     {
         $this->esp_id = $esp_id;
 
