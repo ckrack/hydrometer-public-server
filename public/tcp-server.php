@@ -19,7 +19,7 @@ $em = $container->get('Doctrine\ORM\EntityManager');
 $TCP = $container->get('App\Modules\Ispindle\TCP');
 
 // open TCP server
-$server = stream_socket_server("tcp://192.168.178.20:9000", $errno, $errorMessage);
+$server = stream_socket_server("tcp://".getenv('TCP_API_HOST').":".getenv('TCP_API_PORT'), $errno, $errorMessage);
 
 if ($server === false) {
     $logger->error('Could not bind to socket: ' . $errorMessage);
@@ -75,7 +75,6 @@ while (true) {
         } catch (\Exception $e) {
             $logger->error('Exception: ' . $e->getMessage());
             throw $e;
-
         }
     }
 }
