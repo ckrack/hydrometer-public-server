@@ -29,5 +29,7 @@
     <div class="container">
         <?=$this->section('content')?>
     </div>
+
+    <script src="/js/vendor/bootstrap.min.js"></script>
 </body>
 </html>
