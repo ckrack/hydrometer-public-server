@@ -6,13 +6,10 @@
         About
     </h1>
     <p class="lead">
-        You own an <a href="">iSpindel</a> electronic hydrometer?<br>
+        You own an electronic hydrometer, such as Tilt or the open-source iSpindle?<br>
         Monitor your fermentations in an easy to use online interface!
     </p>
     <hr class="my-4">
-    <p>
-        Best of all, it's free.
-    </p>
     <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth/register" role="button">Sign up</a>
   </div>
 </div>
