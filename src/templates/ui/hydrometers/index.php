@@ -15,8 +15,10 @@ use Jenssegers\Date\Date;
     <div class="card mb-3">
         <h5 class="card-header">
             <?=$hydrometer['name']?>
-            <a class="float-right" href="/ui/hydrometers/help/<?=$optimus->encode($hydrometer['id'])?>"><?=_('?')?></a>
-            <a class="float-right" href="/ui/hydrometers/edit/<?=$optimus->encode($hydrometer['id'])?>"><?=_('edit')?></a>
+            <div class="btn-group float-right">
+                <a class="btn btn-secondary btn-sm" href="/ui/hydrometers/help/<?=$optimus->encode($hydrometer['id'])?>"><?=_('setup')?></a>
+                <a class="btn btn-secondary btn-sm" href="/ui/hydrometers/edit/<?=$optimus->encode($hydrometer['id'])?>"><?=_('edit')?></a>
+            </div>
         </h5>
         <div class="card-block">
         <?php if (!empty($hydrometer['activity'])) : ?>
