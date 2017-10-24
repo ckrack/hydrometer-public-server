@@ -7,7 +7,7 @@ if (isset($app) && $app instanceof \Slim\App) {
     $container = $app->getContainer();
 
     // Slim router
-    $container->add('Slim\Router', function () use ($container) {
+    $container->share('Slim\Router', function () use ($container) {
         return $container->get('router');
     });
 } else {
@@ -22,7 +22,7 @@ if (isset($app) && $app instanceof \Slim\App) {
 
 
 // monolog
-$container->add('Psr\Log\LoggerInterface', function () use ($container) {
+$container->share('Psr\Log\LoggerInterface', function () use ($container) {
     $settings = $container->get('settings')['logger'];
     $logger = new Monolog\Logger($settings['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
@@ -35,7 +35,7 @@ $container->add('Psr\Log\LoggerInterface', function () use ($container) {
 });
 
 // Leauge\Plates via Bridge
-$container->add('Projek\Slim\Plates', function () use ($container) {
+$container->share('Projek\Slim\Plates', function () use ($container) {
     $settings = $container->get('settings')['view'];
     $view = new \Projek\Slim\Plates($settings);
 
@@ -52,19 +52,19 @@ $container->add('Projek\Slim\Plates', function () use ($container) {
 });
 
 // Hash-IDs
-$container->add('Hashids\Hashids', function () use ($container) {
+$container->share('Hashids\Hashids', function () use ($container) {
     $settings = $container->get('settings');
     return new \Hashids\Hashids($settings['hashids']['salt'], $settings['hashids']['minlength']);
 });
 
 // Optimus-IDs
-$container->add('Jenssegers\Optimus\Optimus', function () use ($container) {
+$container->share('Jenssegers\Optimus\Optimus', function () use ($container) {
     $settings = $container->get('settings');
     return new Jenssegers\Optimus\Optimus($settings['optimus']['prime'], $settings['optimus']['inverse'], $settings['optimus']['random']);
 });
 
 // PHPMailer
-$container->add('PHPMailer', function () use ($container) {
+$container->share('PHPMailer', function () use ($container) {
     $settings = $container->get('settings');
     $mail = new \PHPMailer;
     $mail->CharSet = 'UTF-8';
@@ -78,7 +78,7 @@ $container->add('PHPMailer', function () use ($container) {
 });
 
 // Doctrine
-$container->add('Doctrine\ORM\EntityManager', function () use ($container) {
+$container->share('Doctrine\ORM\EntityManager', function () use ($container) {
     $settings = $container->get('settings');
      $config = new \Doctrine\ORM\Configuration;
 
@@ -152,7 +152,7 @@ $container->add('Doctrine\ORM\EntityManager', function () use ($container) {
 });
 
 // Language
-$container->add('App\Module\Lang\Gettext', function () use ($container) {
+$container->share('App\Module\Lang\Gettext', function () use ($container) {
     $settings = $container->get('settings');
     return new App\Module\Lang\Gettext(
         $settings['languages']['list'],
@@ -161,7 +161,7 @@ $container->add('App\Module\Lang\Gettext', function () use ($container) {
 });
 
 // Bootform
-$container->add('AdamWathan\BootForms\BootForm', function () use ($container) {
+$container->share('AdamWathan\BootForms\BootForm', function () use ($container) {
     $formBuilder = new AdamWathan\Form\FormBuilder;
 
     $formBuilder->setOldInputProvider(new App\Modules\Forms\OldInputProvider);
