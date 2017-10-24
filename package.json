@@ -1,7 +1,7 @@
 {
-  "name": "ispindel-public-server",
-  "version": "0.1.1",
-  "description": "A backend with corresponding UI for the ispindel project",
+  "name": "hydrometer-public-server",
+  "version": "0.1.2",
+  "description": "Public server for electronic hydrometers for homebrewing",
   "main": "gulpfile.js",
   "dependencies": {
     "browser-sync": "^2.18",
