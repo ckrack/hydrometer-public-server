@@ -38,7 +38,6 @@
         "beberlei/DoctrineExtensions": "^1.0",
         "ckrack/slim-league-container-bridge": "^3.1",
         "gedmo/doctrine-extensions": "^2.4",
-        "robmorgan/phinx": "^0.8.1",
         "jenssegers/optimus": "^0.2.3",
         "phpseclib/phpseclib": "^2.0",
         "phpmailer/phpmailer": "^5.2",
