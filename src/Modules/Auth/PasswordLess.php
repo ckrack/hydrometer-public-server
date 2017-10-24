@@ -177,8 +177,6 @@ class PasswordLess
      */
     public function saveCookies(ResponseInterface $response, User $user)
     {
-        $user = $this->em->find(get_class($user), $user->getId());
-
         $token = new Token;
         $token
             ->setType('cookie')

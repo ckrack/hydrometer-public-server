@@ -68,7 +68,6 @@ class Hydrometers
         try {
             $post = $request->getParsedBody();
             $user = $request->getAttribute('user');
-            $user = $this->em->find(get_class($user), $user->getId());
 
             $validator = new Validator($post);
             $validator->rule('required', 'name');
@@ -127,7 +126,6 @@ class Hydrometers
         try {
             $post = $request->getParsedBody();
             $user = $request->getAttribute('user');
-            $user = $this->em->find(get_class($user), $user->getId());
             $hydrometer = null;
 
             if (isset($args['hydrometer'])) {
@@ -187,7 +185,6 @@ class Hydrometers
     public function help($request, $response, $args)
     {
         $user = $request->getAttribute('user');
-        $user = $this->em->find(get_class($user), $user->getId());
         $hydrometer = null;
 
         if (isset($args['hydrometer'])) {

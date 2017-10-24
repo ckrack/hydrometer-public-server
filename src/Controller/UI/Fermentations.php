@@ -104,7 +104,6 @@ class Fermentations
         try {
             $post = $request->getParsedBody();
             $user = $request->getAttribute('user');
-            $user = $this->em->find(get_class($user), $user->getId());
 
             $validator = new Validator($post);
             $validator->rule('required', 'name');
