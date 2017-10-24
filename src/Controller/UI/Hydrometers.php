@@ -108,7 +108,7 @@ class Hydrometers
             $this->em->persist($hydrometer);
             $this->em->flush();
 
-            return $response->withRedirect('/ui/hydrometers');
+            return $response->withRedirect('/ui/hydrometers/help/'.$this->optimus->encode($hydrometer->getId()));
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -162,7 +162,7 @@ class Hydrometers
             $this->em->persist($hydrometer);
             $this->em->flush();
 
-            return $response->withRedirect('/ui/hydrometers');
+            return $response->withRedirect('/ui/');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
