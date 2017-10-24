@@ -38,7 +38,6 @@ class DataPoints
         $hydrometer = null;
         if (isset($args['hydrometer'])) {
             $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
-            // @TODO add user restriction
             $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
         }
 
