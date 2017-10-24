@@ -1,6 +1,6 @@
 {
   "name": "ispindel-public-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A backend with corresponding UI for the ispindel project",
   "main": "gulpfile.js",
   "dependencies": {
