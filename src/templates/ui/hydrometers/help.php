@@ -54,14 +54,14 @@
                         <dt><?=_('Service type')?></dt>
                         <dd><?=_('TCP')?></dd>
 
+                        <dt><?=_('Token')?></dt>
+                        <dd><?=$token->getValue()?></dd>
+
                         <dt><?=_('Server address')?></dt>
                         <dd><?=getenv('TCP_API_HOST')?></dd>
 
                         <dt><?=_('Server port')?></dt>
                         <dd><?=getenv('TCP_API_PORT')?></dd>
-
-                        <dt><?=_('Token')?></dt>
-                        <dd><?=$token->getValue()?></dd>
                     </dl>
                 </li>
             </ol>
@@ -82,14 +82,14 @@
                         <dt><?=_('Service type')?></dt>
                         <dd><?=_('HTTP')?></dd>
 
+                        <dt><?=_('Server URL')?></dt>
+                        <dd><?=$this->pathFor('api-post-spindle', ['token' => $token->getValue()])?></dd>
+
                         <dt><?=_('Server address')?></dt>
                         <dd><?=$this->uriScheme().'://'.$this->uriHost()?></dd>
 
                         <dt><?=_('Server port')?></dt>
                         <dd>80</dd>
-
-                        <dt><?=_('Server URL')?></dt>
-                        <dd><?=$this->pathFor('api-post-spindle', ['token' => $token->getValue()])?></dd>
                     </dl>
                 </li>
             </ol>
