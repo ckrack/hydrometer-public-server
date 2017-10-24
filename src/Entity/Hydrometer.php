@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     }
  * )
  */
-class Hydrometer extends Entity\Entity
+class Hydrometer extends Entity
 {
     public function __construct()
     {

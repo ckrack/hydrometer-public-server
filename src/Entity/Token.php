@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="App\Resource\TokenResource")
  * @ORM\Table(name="token", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Token extends Entity\Entity
+class Token extends Entity
 {
     public function __construct()
     {

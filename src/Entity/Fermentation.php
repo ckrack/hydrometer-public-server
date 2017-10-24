@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(name="fermentations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Fermentation extends Entity\Entity
+class Fermentation extends Entity
 {
     public function __construct()
     {

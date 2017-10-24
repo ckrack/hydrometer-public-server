@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,7 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     }
  * )
  */
-class User extends Entity\Entity
+class User extends Entity
 {
     public function __construct()
     {

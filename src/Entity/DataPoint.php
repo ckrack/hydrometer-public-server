@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(name="data_points", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class DataPoint extends Entity\Entity
+class DataPoint extends Entity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Hydrometer")
