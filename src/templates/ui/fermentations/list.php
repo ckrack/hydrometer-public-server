@@ -69,4 +69,14 @@
 <?php endforeach; ?>
   </tbody>
 </table>
+<?php else: ?>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <p class="lead">
+            Group your data into fermentations. This allows to archive past beers in order to keep a detailled log.
+        </p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg ml-auto mr-0" href="/ui/fermentations/add" role="button">Add your first fermentation</a>
+      </div>
+    </div>
 <?php endif; ?>
