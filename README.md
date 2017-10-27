@@ -30,6 +30,7 @@ composer spark
 
 Modify the database settings to suit your environment.
 Modify optimus configuration with the above numbers.
+Set your SMTP credentials.
 
 ```
 nano ./src/.env
