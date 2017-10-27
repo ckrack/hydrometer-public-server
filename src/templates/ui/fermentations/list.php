@@ -12,7 +12,7 @@
   <thead class="thead-inverse">
     <tr>
       <th><?=_('Name')?></th>
-      <th class="text-center"><?=_('Temp (&deg;C)')?></th>
+      <th class="text-center"><?=_('Temperature')?></th>
       <th class="text-center"><?=_('Angle')?></th>
       <th class="text-center"><?=_('Gravity')?></th>
       <th class="text-center"><?=_('Trubidity')?></th>
@@ -34,8 +34,12 @@
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['temperature'])) : ?>
-                &#216; <?=round($ferm['temperature'], 2)?>&deg;C<br>
-                <small class="text-muted"><?=round($ferm['min_temperature'], 2)?>&deg;C &ndash; <?=round($ferm['max_temperature'], 2)?>&deg;C</small>
+                &#216; <?=round($ferm['temperature'], 2)?> <?=$this->e($ferm['metricTemperature'])?><br>
+                <small class="text-muted">
+                    <?=round($ferm['min_temperature'], 2)?><?=$this->e($ferm['metricTemperature'])?>
+                    &ndash;
+                    <?=round($ferm['max_temperature'], 2)?><?=$this->e($ferm['metricTemperature'])?>
+                </small>
             <?php else : ?>
                 &hellip;
             <?php endif ?>
@@ -49,14 +53,22 @@
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['max_gravity'])) : ?>
-                <small class="text"><?=round($ferm['max_gravity'], 2)?>&deg;P &rarr; <?=round($ferm['min_gravity'], 2)?>&deg;P</small>
+                <small class="text">
+                    <?=round($ferm['max_gravity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    &rarr;
+                    <?=round($ferm['min_gravity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                </small>
             <?php else : ?>
                 &hellip;
             <?php endif ?>
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['max_trubidity'])) : ?>
-                <small class="text"><?=round($ferm['max_trubidity'], 2)?>&deg;P &rarr; <?=round($ferm['min_trubidity'], 2)?>&deg;P</small>
+                <small class="text">
+                    <?=round($ferm['max_trubidity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    &rarr;
+                    <?=round($ferm['min_trubidity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                </small>
             <?php else : ?>
                 &hellip;
             <?php endif ?>
