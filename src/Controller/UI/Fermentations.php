@@ -79,6 +79,8 @@ class Fermentations
 
         $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 
+        $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
+
         // render template
         return $this->view->render(
             '/ui/fermentations/details.php',
@@ -86,6 +88,7 @@ class Fermentations
                 $platoData,
                 [
                     'user' => $user,
+                    'stable' => $stableSince,
                     'fermentation' => $fermentation
                 ]
             )

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity\Hydrometer;
 use App\Entity\Calibration;
 use App\Entity\DataPoint;
+use Jenssegers\Date\Date;
 
 class Data
 {
@@ -29,6 +30,45 @@ class Data
         $this->logger = $logger;
     }
 
+    /**
+     * Returns a string representing a timespan since when the value of $fieldname is stable.
+     * The stability can be refined using $deviance.
+     *
+     * @param  [type] $latestData [description]
+     * @param  [type] $fieldName  [description]
+     * @param  [type] $deviance   [description]
+     * @return string             [description]
+     */
+    public function stableSince($latestData, $fieldName, $deviance)
+    {
+        // turn array around (oldest data first)
+        rsort($latestData);
+
+        if (count($latestData) <= 1) {
+            return _('Not yet');
+        }
+
+        // use first value as initial
+        $initial = $latestData[0][$fieldName];
+
+        $stableSince = null;
+
+        foreach ($latestData as $k => $values) {
+            // go through datasets and mark the first dataset with a difference higher than $deviance
+            if (abs($values[$fieldName] - $initial) > $deviance) {
+                $stableSince = $k;
+                break;
+            }
+        }
+        return Date::parse($latestData[0]['time'])->timespan(Date::parse($latestData[$stableSince]['time']));
+    }
+
+    /**
+     * [platoCombined description]
+     * @param  array      $latestData [description]
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]                 [description]
+     */
     public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
         list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($hydrometer);
