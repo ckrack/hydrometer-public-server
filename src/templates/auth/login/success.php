@@ -1,9 +1,18 @@
 <?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
 
-<div class="alert alert-success mt-4" role="alert">
-  <h4 class="alert-heading">Welcome back!</h4>
-  <p>
-      Nice to see you again, <?=$this->e($user->getUsername())?>!
-  </p>
+<div class="jumbotron jumbotron-fluid ">
+  <div class="container">
+    <div class="alert alert-success">
+        <h1 class="display-3 alert-heading">
+            <?=_('Welcome back!')?>
+        </h1>
+        <p class="lead">
+            <?=_(sprintf('Nice to see you again, %s!', $this->e($user->getUsername())))?>
+        </p>
+    </div>
+    <hr class="my-4">
+    <a href="/ui/" class="btn btn-primary">
+        <?=_('Go to your hydrometers')?>
+    </a>
+  </div>
 </div>
-<a href="/ui/" class="btn btn-primary">Go to your hydrometers</a>

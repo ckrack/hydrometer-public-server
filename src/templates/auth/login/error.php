@@ -1,14 +1,20 @@
 <?php $this->layout('layouts/index.php') ?>
 
-<div class="alert alert-danger mt-4" role="alert">
-  <h4 class="alert-heading">There was a problem</h4>
-<?php if (isset($msg)) : ?>
-    <p>
-        <?=$this->e($msg)?>
-    </p>
-<?php else : ?>
-    <p>
-        We could not complete your login.
-    </p>
-<?php endif; ?>
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <div class="alert alert-danger" role="alert">
+        <h1 class="display-3 alert-heading">
+            <?=_('There was a problem')?>
+        </h1>
+    <?php if (isset($msg)) : ?>
+        <p class="lead">
+            <?=$this->e($msg)?>
+        </p>
+    <?php else : ?>
+        <p class="lead">
+            <?=_('We could not complete your login.')?>
+        </p>
+    <?php endif; ?>
+    </div>
+  </div>
 </div>

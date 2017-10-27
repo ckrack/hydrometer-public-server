@@ -36,7 +36,13 @@
             <?=_('Setup')?>
         </div>
         <div class="card-block">
-            Please select your device-type to get setup instructions.
+            <p>
+                Your generated token is:<br>
+                <strong><?=$token->getValue()?></strong>
+            </p>
+            <p>
+                Please select your device-type to get detailled setup instructions.
+            </p>
         </div>
     </div>
   </div>
