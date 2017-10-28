@@ -51,30 +51,10 @@ $container->share('Projek\Slim\Plates', function () use ($container) {
     return $view;
 });
 
-// Hash-IDs
-$container->share('Hashids\Hashids', function () use ($container) {
-    $settings = $container->get('settings');
-    return new \Hashids\Hashids($settings['hashids']['salt'], $settings['hashids']['minlength']);
-});
-
 // Optimus-IDs
 $container->share('Jenssegers\Optimus\Optimus', function () use ($container) {
     $settings = $container->get('settings');
     return new Jenssegers\Optimus\Optimus($settings['optimus']['prime'], $settings['optimus']['inverse'], $settings['optimus']['random']);
-});
-
-// PHPMailer
-$container->share('PHPMailer', function () use ($container) {
-    $settings = $container->get('settings');
-    $mail = new \PHPMailer;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->SMTPAuth = true;
-    $mail->Username = $settings['smtp']['username'];
-    $mail->Password = $settings['smtp']['password'];
-    $mail->Port = $settings['smtp']['port'] ?? 25;
-    $mail->Host = $settings['smtp']['server'];
-    return $mail;
 });
 
 // Doctrine
@@ -157,6 +137,16 @@ $container->share('App\Module\Lang\Gettext', function () use ($container) {
     return new App\Module\Lang\Gettext(
         $settings['languages']['list'],
         $settings['languages']['path']
+    );
+});
+
+// OAuth Handler
+$container->share('App\Modules\OAuth\Handler', function () use ($container) {
+    $settings = $container->get('settings');
+    return new App\Modules\OAuth\Handler(
+        $settings['oauth'],
+        $container,
+        $container->get('Psr\Log\LoggerInterface')
     );
 });
 

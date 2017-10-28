@@ -14,7 +14,7 @@ if (!defined('API_PROTOCOL')) {
     define('API_PROTOCOL', getenv('API_PROTOCOL'));
 }
 
-date_default_timezone_set("Europe/Berlin");
+date_default_timezone_set('Europe/Berlin');
 
 return [
     'settings' => [
@@ -30,18 +30,13 @@ return [
         // Plates settings
         'view' => [
             // Path to view directory (default: null)
-            'directory' => __DIR__."/templates",
+            'directory' => __DIR__.'/templates',
             // Path to asset directory (default: null)
             'assetPath' => __DIR__.'/../public',
             // Template extension (default: 'php')
             'fileExtension' => null,
             // Template extension (default: false) see: http://platesphp.com/extensions/asset/
             'timestampInFilename' => false,
-        ],
-
-        'hashids' => [
-            'salt' => getenv('HASHIDS_SALT'),
-            'minlength' => getenv('HASHIDS_MINLENGTH')
         ],
 
         'optimus' => [
@@ -90,5 +85,35 @@ return [
                 ],
             ]
         ],
+        'oauth' => [
+            'google' => [
+                'description' => 'Use your Google account to authenticate',
+                'className' => 'League\OAuth2\Client\Provider\Google',
+                'helpUrl' => 'https://console.developers.google.com/apis/credentials',
+                'clientId'     => getenv('OAUTH_GOOGLE_ID'),
+                'clientSecret' => getenv('OAUTH_GOOGLE_SECRET'),
+                'redirectUri'  => getenv('URL_DOMAIN') . '/auth/confirm/google',
+                'hostedDomain' => getenv('URL_DOMAIN'),
+                'scope' => 'profile email',
+                'accessType'   => 'offline',
+            ],
+            'facebook' => [
+                'description' => 'Use your Facebook account to sign in',
+                'className'    => 'League\OAuth2\Client\Provider\Facebook',
+                'helpUrl'      => 'https://developers.facebook.com/apps/',
+                'clientId'     => getenv('OAUTH_FACEBOOK_ID'),
+                'clientSecret' => getenv('OAUTH_FACEBOOK_SECRET'),
+                'redirectUri'  => getenv('URL_DOMAIN') . '/auth/confirm/facebook',
+                'hostedDomain' => getenv('URL_DOMAIN'),
+                'graphApiVersion' => 'v2.10',
+                'options' => [
+                    'scope' => 'email'
+                ]
+            ],
+            /**
+             * You can add any other provider here, as long as it returns an email.
+             * http://oauth2-client.thephpleague.com/providers/thirdparty/
+             */
+        ]
     ],
 ];
