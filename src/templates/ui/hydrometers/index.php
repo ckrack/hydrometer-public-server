@@ -20,7 +20,7 @@ use Jenssegers\Date\Date;
                 <a class="btn btn-secondary btn-sm" href="/ui/hydrometers/edit/<?=$optimus->encode($hydrometer['id'])?>"><?=_('edit')?></a>
             </div>
         </h5>
-        <div class="card-block">
+        <div class="card-body">
         <?php if (!empty($hydrometer['activity'])) : ?>
             <p class="card-text">
                 <?=_('Last activity:')?> <?=Date::parse($hydrometer['activity'])->diffForHumans()?>

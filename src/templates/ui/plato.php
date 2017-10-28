@@ -9,7 +9,7 @@
     <div class="card-header">
         <?=$this->e($name)?>
     </div>
-    <div class="card-block">
+    <div class="card-body">
         <div id="chart"></div>
     </div>
 </div>

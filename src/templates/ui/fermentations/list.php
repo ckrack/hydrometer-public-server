@@ -9,7 +9,7 @@
 <?php if (!empty($data)) : ?>
 
 <table class="table table-striped table-hover">
-  <thead class="thead-inverse">
+  <thead class="thead-dark">
     <tr>
       <th><?=_('Name')?></th>
       <th class="text-center"><?=_('Temperature')?></th>

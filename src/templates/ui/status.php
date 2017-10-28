@@ -9,7 +9,7 @@
     <div class="card-header">
         <?=$this->e($name)?>
     </div>
-    <div class="card-block">
+    <div class="card-body">
         <div id="wrapper" style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
             <div id="battery"></div>
             <div id="angle"></div>

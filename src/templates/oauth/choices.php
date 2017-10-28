@@ -15,7 +15,7 @@
                   <div class="card-header">
                     <?=ucfirst($key)?>
                   </div>
-                  <div class="card-block">
+                  <div class="card-body">
                     <p>
                         <?=$this->e($choice['description'])?>
                     </p>

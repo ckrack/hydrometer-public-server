@@ -35,7 +35,7 @@
         <div class="card-header">
             <?=_('Setup')?>
         </div>
-        <div class="card-block">
+        <div class="card-body">
             <p>
                 Your generated token is:<br>
                 <strong><?=$token->getValue()?></strong>
@@ -51,7 +51,7 @@
         <div class="card-header">
             <?=_('iSpindle TCP')?>
         </div>
-        <div class="card-block">
+        <div class="card-body">
             <ol>
                 <li class="card-text"><?=_('Put iSpindle into configuration mode by pressing reset')?></li>
                 <li class="card-text"><?=_('Open the configuration page and put in:')?></li>
@@ -79,7 +79,7 @@
         <div class="card-header">
             <?=_('iSpindle HTTP')?>
         </div>
-        <div class="card-block">
+        <div class="card-body">
             <ol>
                 <li class="card-text"><?=_('Put iSpindle into configuration mode by pressing reset')?></li>
                 <li class="card-text"><?=_('Open the configuration page and put in:')?></li>
@@ -104,7 +104,7 @@
   </div>
   <div class="tab-pane" id="tilt" role="tabpanel">
       <div class="card">
-        <div class="card-block">
+        <div class="card-body">
               <ol>
                 <li class="card-text"><?=_('Open TILT app on your phone and enter settings.')?></li>
                 <li class="card-text"><?=_('Choose color of your tilt')?></li>
@@ -123,7 +123,7 @@
           <div class="card-header">
               <?=_('Plaato')?>
           </div>
-          <div class="card-block">
+          <div class="card-body">
               Apparently the Plaato device is not yet supported.
           </div>
       </div>
@@ -133,7 +133,7 @@
         <div class="card-header">
             <?=_('Beerbug')?>
         </div>
-        <div class="card-block">
+        <div class="card-body">
             Apparently the Beerbug device is not yet supported.
         </div>
     </div>

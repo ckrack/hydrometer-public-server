@@ -21,7 +21,7 @@ $angleAnomaly = new Anomaly(2, $logger);
 <?php endif ?>
 
 <table class="table table-striped table-hover table-sm">
-    <thead class="thead-inverse">
+    <thead class="thead-dark">
         <tr>
             <th><?=_('Date')?></th>
             <?php if(empty($hydrometer)) : ?>
