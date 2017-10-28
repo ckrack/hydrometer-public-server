@@ -111,10 +111,10 @@ class OAuth
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
             // Failed to get the access token or user details.
             // render template
-            return $this->view->render('auth/register/error.php', ['msg' => $e->getMessage()]);
+            return $this->view->render('oauth/register/error.php', ['msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             // render template
-            return $this->view->render('auth/register/error.php', ['msg' => $e->getMessage()]);
+            return $this->view->render('oauth/register/error.php', ['msg' => $e->getMessage()]);
         }
     }
 
