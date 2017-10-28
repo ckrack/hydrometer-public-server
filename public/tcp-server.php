@@ -5,7 +5,7 @@
  */
 use League\Container\Container;
 
-require_once '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $settings = require __DIR__ . '/../src/settings.php';
 $container = new Container;
@@ -27,21 +27,29 @@ if ($server === false) {
 }
 
 echo "socket server open\n";
-$logger->info("socket server open");
+echo "listening on: ".getenv('TCP_API_HOST').':'.getenv('TCP_API_PORT')."\n";
+$logger->info("socket server open", [getenv('TCP_API_HOST'), getenv('TCP_API_PORT')]);
 
 while (true) {
-    $client = @stream_socket_accept($server);
+    $client = @stream_socket_accept($server, 5);
 
     if ($client) {
         try {
             $logger->info("client connected");
 
-            // read three lines from input
-            $input = fread($client, 1024);
-            $input .= fread($client, 1024);
-            $input .= fread($client, 1024);
+            // read from input until blank line
+            $jsonRaw = '';
+            while ($input = fread($client, 1024)) {
+                $logger->info('Input: ' . $input);
+                $logger->info('Empty?', [$input == ""]);
+                $jsonRaw .= $input;
 
-            $logger->info('Input: ' . $input);
+                if (trim($input) == '') {
+                    break;
+                }
+            }
+
+            $logger->info('Input: ' . $jsonRaw);
 
             // close connection to client
             stream_socket_shutdown($client, STREAM_SHUT_RDWR);
@@ -52,25 +60,25 @@ while (true) {
 
             // now handle data
 
-            if (! $TCP->validateInput($input)) {
-                $logger->error('Invalid input', [$input]);
+            if (! $TCP->validateInput($jsonRaw)) {
+                $logger->error('Invalid input', [$jsonRaw]);
             }
 
-            $json = json_decode($input, true);
+            $jsonDecoded = json_decode($jsonRaw, true);
 
-            if ((!is_array($json) && !is_object($json)) || json_last_error()) {
+            if ((!is_array($jsonDecoded) && !is_object($jsonDecoded)) || json_last_error()) {
                 // data not ok
 
-                $logger->info('Spindle data not ok', [$json, json_last_error()]);
+                $logger->info('Spindle data not ok', [$jsonDecoded, json_last_error()]);
 
                 continue;
             }
 
-            $logger->debug('Spindle data', [$json]);
+            $logger->debug('Spindle data', [$jsonDecoded]);
 
-            // confirm existance of the token
-            $authData = $TCP->authenticate($json['token']);
-            $TCP->saveData($json, $authData['hydrometer_id'], $authData['fermentation_id']);
+            // confirm existance of the token @throws
+            $authData = $TCP->authenticate($jsonDecoded['token']);
+            $TCP->saveData($jsonDecoded, $authData['hydrometer_id'], $authData['fermentation_id']);
 
         } catch (\Exception $e) {
             $logger->error('Exception: ' . $e->getMessage());

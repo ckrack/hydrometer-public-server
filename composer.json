@@ -1,6 +1,6 @@
 {
     "name": "ckrack/hydrometer-public-server",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "description": "Public server for electronic hydrometers for homebrewing",
     "type": "project",
     "license": "MIT",
@@ -22,11 +22,6 @@
             "email": "info@clemenskrack.com",
             "homepage": "https://www.clemenskrack.com",
             "role": "Developer"
-        },
-        {
-            "name": "Stefan Schreiber",
-            "email": "stephan@sschreiber.de",
-            "role": "Developer"
         }
     ],
     "require": {
@@ -36,19 +31,17 @@
         "projek-xyz/slim-plates": "^0.2.2",
         "vlucas/phpdotenv": "^2.4",
         "doctrine/orm": "^2.5",
-        "hashids/hashids": "^1.0",
-        "zircote/swagger-php": "^2.0",
-        "cocur/slugify": "^2.1",
         "beberlei/DoctrineExtensions": "^1.0",
         "ckrack/slim-league-container-bridge": "^3.1",
         "gedmo/doctrine-extensions": "^2.4",
         "jenssegers/optimus": "^0.2.3",
         "phpseclib/phpseclib": "^2.0",
-        "phpmailer/phpmailer": "^5.2",
         "jenssegers/date": "^3.2",
         "adamwathan/bootforms": "^0.8.5",
         "vlucas/valitron": "^1.4",
-        "dflydev/fig-cookies": "^1.0"
+        "dflydev/fig-cookies": "^1.0",
+        "league/oauth2-google": "^2.0",
+        "league/oauth2-facebook": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8 < 6.0"

@@ -48,7 +48,7 @@ class RequireLogin
                 // return 401 on missing user
                 return $response
                     ->withStatus(401)
-                    ->withRedirect('/auth/login');
+                    ->withRedirect('/auth');
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), [$e->getMessage()]);

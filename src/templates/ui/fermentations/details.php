@@ -21,6 +21,9 @@
     <div class="card-block">
         <div id="chart"></div>
     </div>
+    <div class="card-block">
+        Fermentation seems to be stable since: <?=$this->e($stable)?>.
+    </div>
 </div>
 <script>
     var chart = c3.generate({
@@ -61,14 +64,14 @@ endforeach;?>
             },
             y: {
                 label: {
-                    text: '<?=_('Temperature (°C)')?>',
+                    text: '<?=_('Temperature')?> (<?=$this->e($fermentation->getHydrometer()->getMetricTemperature())?>)',
                     position: 'outer-middle',
                     fit: true
                 }
             },
             y2: {
                 label: {
-                    text: '<?=_('Extract (°)')?>',
+                    text: '<?=_('Extract')?> (<?=$this->e($fermentation->getHydrometer()->getMetricGravity())?>)',
                     position: 'outer-middle',
                     fit: false
                 },

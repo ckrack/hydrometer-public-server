@@ -8,12 +8,13 @@ $angleAnomaly = new Anomaly(2, $logger);
 
 ?>
 
-<?php if (!empty($data)) : ?>
 
 <h1 class="mt-4 mb-3">
     <?=_('Datapoints')?>
 </h1>
 <hr class="mb-3">
+
+<?php if (!empty($data)) : ?>
 
 <?php if (!empty($hydrometer)) : ?>
 <h2 class="mt-2 mb-3"><?=$hydrometer->getName()?></h2>
@@ -67,4 +68,14 @@ $angleAnomaly = new Anomaly(2, $logger);
 <?php endforeach; ?>
   </tbody>
 </table>
+<?php else: ?>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <p class="lead">
+            Once your hydrometers start transfering data, it will appear here.
+        </p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg ml-auto mr-0" href="/ui/hydrometers/add" role="button">Add a hydrometer</a>
+      </div>
+    </div>
 <?php endif; ?>

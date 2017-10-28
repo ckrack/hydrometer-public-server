@@ -14,10 +14,7 @@
     </ul>
     <ul class="navbar-nav ml-auto mr-0">
         <li class="nav-item mr-2">
-            <a class="nav-link btn btn-primary" href="/auth/login"><?=_('Login')?></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link btn btn-success" href="/auth/register"><?=_('Register')?></a>
+            <a class="nav-link btn btn-primary" href="/auth"><?=_('Sign in')?></a>
         </li>
     </ul>
 </div>

@@ -10,6 +10,6 @@
         Monitor your fermentations in an easy to use online interface!
     </p>
     <hr class="my-4">
-    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth/register" role="button">Sign up</a>
+    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth" role="button">Sign in</a>
   </div>
 </div>

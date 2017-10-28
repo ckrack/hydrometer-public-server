@@ -19,38 +19,29 @@ $app->group('/api', function () {
     $this->post('/calibrations', 'App\Controller\Api\Calibrations:post');
 })
 // require a 'user' in $request that matches an App\Entity\User object
-->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
-// look for userId in session
-#->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'))
-;
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'));
 
 // this allows posting without auth, as the auth is in the token
 $app->post('/api/spindle/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
+$app->post('/api/ispindle/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
+$app->post('/api/ispindel/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
 $app->post('/api/tilt/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-tilt');
 
-
-//####### auth
+//####### oauth
 $app->group('/auth', function () {
-    $this->get('/register/{ids}/{token}', 'App\Controller\Auth\Register:token')->setName('auth-register-token');
-    $this->get('/register', 'App\Controller\Auth\Register:form');
-    $this->post('/register', 'App\Controller\Auth\Register:post');
+    $this->any('/init/{provider}', 'App\Controller\OAuth\OAuth:init');
+    $this->any('/confirm/{provider}', 'App\Controller\OAuth\OAuth:confirm');
+    $this->any('[/]', 'App\Controller\OAuth\Choices:display');
 
-    $this->any('/login/{ids}/{token}', 'App\Controller\Auth\Login:token')->setName('auth-login-token');
-    $this->get('/login', 'App\Controller\Auth\Login:form');
-    $this->post('/login', 'App\Controller\Auth\Login:post');
 });
 
 // these require a logged in user
 $app->group('', function () {
-    $this->get('/auth/register/success', 'App\Controller\Auth\Register:success');
-    $this->any('/auth/success', 'App\Controller\Auth\Login:success');
-    $this->any('/auth/logout', 'App\Controller\Auth\Login:logout');
+    $this->any('/auth/success[/{register}]', 'App\Controller\OAuth\OAuth:success');
+    $this->any('/auth/logout', 'App\Controller\OAuth\OAuth:logout');
 })
 // require a 'user' in $request that matches an App\Entity\User object
-->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
-// look for userId in session
-#->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'))
-;
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'));
 
 //####### UI
 $app->group('/ui', function () {
@@ -68,15 +59,10 @@ $app->group('/ui', function () {
     $this->any('/hydrometers/help/{hydrometer:[0-9]+}', 'App\Controller\UI\Hydrometers:help')->setName('hydrometer-help');
 })
 // require a 'user' in $request that matches an App\Entity\User object
-->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
-// look for a cookie token
-->add($app->getContainer()->get('App\Modules\Auth\Middleware\Cookie'))
-// look for userId in session
-#->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'))
-;
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'));
 
+// Pages
 $app->get('/[{site}]', 'App\Controller\Index:display');
-
 
 // all requests check for session login
 $app->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'));
