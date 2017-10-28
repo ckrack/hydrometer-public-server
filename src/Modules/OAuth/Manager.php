@@ -5,6 +5,7 @@ use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
+use Slim\Http\Response;
 
 /**
  * Manage OAuth flows and provide methods for logging in and out.
@@ -62,7 +63,7 @@ class Manager
      * @param  User              $user     [description]
      * @return [type]                      [description]
      */
-    public function logout(ResponseInterface $response, User $user)
+    public function logout(Response $response, User $user)
     {
         unset($_SESSION['userId']);
 
