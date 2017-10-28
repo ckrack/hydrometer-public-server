@@ -140,6 +140,16 @@ $container->share('App\Module\Lang\Gettext', function () use ($container) {
     );
 });
 
+// OAuth Handler
+$container->share('App\Modules\OAuth\Handler', function () use ($container) {
+    $settings = $container->get('settings');
+    return new App\Modules\OAuth\Handler(
+        $settings['oauth'],
+        $container,
+        $container->get('Psr\Log\LoggerInterface')
+    );
+});
+
 // Bootform
 $container->share('AdamWathan\BootForms\BootForm', function () use ($container) {
     $formBuilder = new AdamWathan\Form\FormBuilder;
