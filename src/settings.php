@@ -39,11 +39,6 @@ return [
             'timestampInFilename' => false,
         ],
 
-        'hashids' => [
-            'salt' => getenv('HASHIDS_SALT'),
-            'minlength' => getenv('HASHIDS_MINLENGTH')
-        ],
-
         'optimus' => [
             'prime' => getenv('OPTIMUS_PRIME'),
             'inverse' => getenv('OPTIMUS_INVERSE'),
