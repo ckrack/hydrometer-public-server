@@ -10,7 +10,7 @@ The Hydrometers and their data are saved in a relational database.
 Users can register and authenticate via email without using a password.
 The data is visualized using [C3.js](http://c3js.org/) charts.
 The interface is built with [Bootstrap 4](https://v4-alpha.getbootstrap.com/).
-
+Authentication is handled by OAuth2, with various supported providers.
 
 ## Installation
 
@@ -30,6 +30,7 @@ composer spark
 
 Modify the database settings to suit your environment.
 Modify optimus configuration with the above numbers.
+Create credentials at an oauth2 provider (@see .env).
 
 ```
 nano ./src/.env
