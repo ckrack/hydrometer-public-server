@@ -64,5 +64,8 @@ $app->group('/ui', function () {
 // Pages
 $app->get('/[{site}]', 'App\Controller\Index:display');
 
+// try to translate for user
+$app->add($app->getContainer()->get('App\Modules\Lang\UserLangMiddleware'));
+
 // all requests check for session login
 $app->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'));

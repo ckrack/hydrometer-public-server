@@ -57,6 +57,12 @@ class User extends Entity
     protected $timeZone;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     */
+    protected $language;
+
+    /**
      * @ORM\OneToMany(targetEntity="Hydrometer", mappedBy="user")
      */
     protected $hydrometers;
@@ -180,6 +186,26 @@ class User extends Entity
     public function setApiToken($apiToken)
     {
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     *
+     * @return self
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
 
         return $this;
     }

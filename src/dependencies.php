@@ -136,7 +136,8 @@ $container->share('App\Module\Lang\Gettext', function () use ($container) {
     $settings = $container->get('settings');
     return new App\Module\Lang\Gettext(
         $settings['languages']['list'],
-        $settings['languages']['path']
+        $settings['languages']['path'],
+        $container->get('Psr\Log\LoggerInterface')
     );
 });
 

@@ -70,7 +70,7 @@ return [
             ],
         ],
         'languages' => [
-            'path'  => realpath(getenv('LANGUAGE_PATH')),
+            'path'  => getenv('LANGUAGE_PATH'),
             'list' => [
                 'en' => [
                     // the name in it's language
