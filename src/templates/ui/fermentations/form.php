@@ -14,5 +14,5 @@
 <p class="form-text text-warning">
     <?=_('All datapoints of the selected hydrometer in the defined timeframe, that are not yet part of a fermentation, will be added to the new fermentation.')?>
 </p>
-<?=$form->submit(_('Register'))->addClass('btn btn-primary')?>
+<?=$form->submit(_('Add'))->addClass('btn btn-primary')?>
 <?=$form->close()?>

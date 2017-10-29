@@ -3,12 +3,12 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display-3">
-        FAQ
+        <?=_('FAQ')?>
     </h1>
     <p class="lead">
-        None yet :)
+        <?=_('None yet :)')?>
     </p>
     <hr class="my-4">
-    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth" role="button">Sign in</a>
+    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth" role="button"><?=_('Sign in')?></a>
   </div>
 </div>

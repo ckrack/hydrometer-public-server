@@ -72,10 +72,10 @@ $angleAnomaly = new Anomaly(2, $logger);
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <p class="lead">
-            Once your hydrometers start transfering data, it will appear here.
+            <?=_('Once your hydrometers start transfering data, it will appear here.')?>
         </p>
         <hr class="my-4">
-        <a class="btn btn-primary btn-lg ml-auto mr-0" href="/ui/hydrometers/add" role="button">Add a hydrometer</a>
+        <a class="btn btn-primary btn-lg ml-auto mr-0" href="/ui/hydrometers/add" role="button"><?=_('Add a hydrometer')?></a>
       </div>
     </div>
 <?php endif; ?>

@@ -37,11 +37,11 @@
         </div>
         <div class="card-body">
             <p>
-                Your generated token is:<br>
+                <?=_('Your generated token is')?>:<br>
                 <strong><?=$token->getValue()?></strong>
             </p>
             <p>
-                Please select your device-type to get detailled setup instructions.
+                <?=_('Please select your device-type to get detailled setup instructions.')?>
             </p>
         </div>
     </div>
@@ -124,7 +124,7 @@
               <?=_('Plaato')?>
           </div>
           <div class="card-body">
-              Apparently the Plaato device is not yet supported.
+              <?=_('Apparently the Plaato device is not yet supported.')?>
           </div>
       </div>
   </div>
@@ -134,7 +134,7 @@
             <?=_('Beerbug')?>
         </div>
         <div class="card-body">
-            Apparently the Beerbug device is not yet supported.
+            <?=_('Apparently the Beerbug device is not yet supported.')?>
         </div>
     </div>
   </div>

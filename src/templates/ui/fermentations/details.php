@@ -22,7 +22,7 @@
         <div id="chart"></div>
     </div>
     <div class="card-body">
-        Fermentation seems to be stable since: <?=$this->e($stable)?>.
+        <?=_('Fermentation seems to be stable since')?>: <?=$this->e($stable)?>.
     </div>
 </div>
 <script>
@@ -57,9 +57,13 @@ endforeach;?>
                 },
                 type : 'timeseries',
                 tick: {
-                    format: '%Y-%m-%d %H:%M',
-                    count: 100,
-                    fit: true
+                    format: window.innerWidth > 500 ? '%Y-%m-%d %H:%M' : '%Y-%m-%d',
+                    count: 10,
+                    fit: true,
+                    culling: true,
+                    culling: {
+                        max: window.innerWidth > 500 ? 8 : 3
+                    }
                 }
             },
             y: {
