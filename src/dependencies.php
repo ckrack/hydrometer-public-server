@@ -20,6 +20,10 @@ if (isset($app) && $app instanceof \Slim\App) {
     $container->delegate(new League\Container\ReflectionContainer);
 }
 
+$container->share('Slim\Csrf\Guard', function () {
+    return new \Slim\Csrf\Guard;
+});
+
 
 // monolog
 $container->share('Psr\Log\LoggerInterface', function () use ($container) {

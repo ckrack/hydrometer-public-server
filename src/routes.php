@@ -59,7 +59,9 @@ $app->group('/ui', function () {
     $this->any('/hydrometers/help/{hydrometer:[0-9]+}', 'App\Controller\UI\Hydrometers:help')->setName('hydrometer-help');
 })
 // require a 'user' in $request that matches an App\Entity\User object
-->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'));
+->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
+// add CSRF
+->add(new \Slim\Csrf\Guard);
 
 // Pages
 $app->get('/[{site}]', 'App\Controller\Index:display');

@@ -41,7 +41,8 @@
         "vlucas/valitron": "^1.4",
         "dflydev/fig-cookies": "^1.0",
         "league/oauth2-google": "^2.0",
-        "league/oauth2-facebook": "^2.0"
+        "league/oauth2-facebook": "^2.0",
+        "slim/csrf": "^0.8.2"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8 < 6.0"
