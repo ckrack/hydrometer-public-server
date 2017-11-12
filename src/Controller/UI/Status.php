@@ -56,7 +56,8 @@ class Status
             return $this->view->render(
                 '/ui/status.php',
                 array_merge(
-                    $latestData,
+                    ['name' => $hydrometer->getName()],
+                    (array) $latestData,
                     ['user' => $user]
                 )
             );
@@ -88,7 +89,8 @@ class Status
         return $this->view->render(
             '/ui/plato.php',
             array_merge(
-                $platoData,
+                ['name' => $hydrometer->getName()],
+                (array) $platoData,
                 ['user' => $user]
             )
         );
@@ -115,7 +117,8 @@ class Status
         return $this->view->render(
             '/ui/angle.php',
             array_merge(
-                $angleData,
+                ['name' => $hydrometer->getName()],
+                (array) $angleData,
                 ['user' => $user]
             )
         );
@@ -141,7 +144,8 @@ class Status
         return $this->view->render(
             '/ui/battery.php',
             array_merge(
-                $latestData,
+                ['name' => $hydrometer->getName()],
+                (array) $latestData,
                 ['user' => $user]
             )
         );
