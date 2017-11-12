@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var moduleImporter = require('sass-npm-import');
 var concat = require('gulp-concat');
 var autoprefixer = require('gulp-autoprefixer');
 var cssnano = require('gulp-cssnano');
@@ -23,7 +24,7 @@ var paths = {
  */
 gulp.task('sass', function () {
     return gulp.src(paths.sass)
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({ importer: moduleImporter() }).on('error', sass.logError))
         .pipe(autoprefixer({ cascade: true }))
         .pipe(sourcemaps.init())
         .pipe(cssnano())

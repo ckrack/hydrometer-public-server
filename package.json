@@ -4,6 +4,7 @@
   "description": "Public server for electronic hydrometers for homebrewing",
   "main": "gulpfile.js",
   "dependencies": {
+    "bootstrap": "^4.0.0-beta.2",
     "browser-sync": "^2.18",
     "gulp": "^3.9",
     "gulp-autoprefixer": "^3.1",
@@ -12,7 +13,9 @@
     "gulp-cssnano": "^2.1",
     "gulp-sass": "^3.1",
     "gulp-sourcemaps": "^2.4",
-    "gulp-uglifyjs": "^0.6"
+    "gulp-uglifyjs": "^0.6",
+    "include-media": "^1.4.9",
+    "sass-npm-import": "0.0.1"
   },
   "devDependencies": {},
   "author": "Clemens Krack <info@clemenskrack.com>",
