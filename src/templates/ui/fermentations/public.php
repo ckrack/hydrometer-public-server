@@ -1,4 +1,4 @@
-<?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
+<?php $this->layout('layouts/public.php') ?>
 
 <h1 class="mt-4 mb-3">
     <?=_('Fermentation')?>
@@ -9,7 +9,7 @@
     <small class="text-muted float-md-right">
         <?=$fermentation->getBegin()->format('Y-m-d')?>
         &ndash;
-        <?=($fermentation->getEnd()) ? $fermentation->getEnd()->format('Y-m-d') : $data['time'][0]?>
+        <?=$fermentation->getEnd()->format('Y-m-d')?>
     </small>
 </h2>
 <hr class="mb-3">
@@ -57,13 +57,9 @@ endforeach;?>
                 },
                 type : 'timeseries',
                 tick: {
-                    format: window.innerWidth > 500 ? '%Y-%m-%d %H:%M' : '%Y-%m-%d',
-                    count: 10,
-                    fit: true,
-                    culling: true,
-                    culling: {
-                        max: window.innerWidth > 500 ? 8 : 3
-                    }
+                    format: '%Y-%m-%d %H:%M',
+                    count: 100,
+                    fit: true
                 }
             },
             y: {

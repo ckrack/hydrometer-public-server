@@ -77,9 +77,9 @@ class DataPointResource extends EntityRepository
             $qb->setMaxResults(500);
 
             $q = $qb->getQuery();
+
             return $q->getArrayResult();
         } catch (\Exception $e) {
-            echo $e->getMessage();
             return null;
         }
     }
@@ -135,6 +135,27 @@ class DataPointResource extends EntityRepository
            ->andWhere('d.created >= :begin')
            ->setParameter('begin', $fermentation->getBegin())
            ->set('d.fermentation', ':fermentation')
+           ->setParameter('fermentation', $fermentation);
+
+        $q = $qb->getQuery();
+
+        return $q->execute();
+    }
+
+    /**
+     * Add all un-assigned datapoints that match a fermentations timerange and
+     * the defined hydrometer to a (new) fermentation.
+     * @param Fermentation $fermentation [description]
+     * @param Hydrometer      $hydrometer      [description]
+     */
+    public function removeFromFermentation(Fermentation $fermentation)
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->update('App\Entity\DataPoint', 'd')
+           ->andWhere('d.fermentation = :fermentation')
+           ->set('d.fermentation', 'NULL')
            ->setParameter('fermentation', $fermentation);
 
         $q = $qb->getQuery();

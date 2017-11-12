@@ -69,6 +69,13 @@ class Fermentation extends Entity
      */
     protected $end;
 
+
+    /**
+     * @ORM\Column(name="is_public", type="boolean", nullable=true)
+     * @var boolean
+     */
+    protected $public;
+
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"name", "calibration", "user"})
@@ -226,6 +233,26 @@ class Fermentation extends Entity
     public function setEnd($end)
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * @param boolean $public
+     *
+     * @return self
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
 
         return $this;
     }

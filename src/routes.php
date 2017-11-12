@@ -51,7 +51,10 @@ $app->group('/ui', function () {
     $this->get('/angle/{hydrometer:[0-9]+}', 'App\Controller\UI\Status:angle')->setName('angle');
     $this->get('/battery/{hydrometer:[0-9]+}', 'App\Controller\UI\Status:battery')->setName('battery');
     $this->get('/data[/{hydrometer:[0-9]+}]', 'App\Controller\UI\DataPoints:display')->setName('datapoints');
+    $this->any('/data/delete/{datapoint:[0-9]+}', 'App\Controller\UI\DataPoints:delete')->setName('data-delete');
     $this->any('/fermentations/add', 'App\Controller\UI\Fermentations:add')->setName('fermentations-add');
+    $this->any('/fermentations/edit/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:edit')->setName('fermentation-edit');
+    $this->any('/fermentations/delete/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:delete')->setName('fermentation-delete');
     $this->get('/fermentations/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:details')->setName('fermentations-details');
     $this->get('/fermentations', 'App\Controller\UI\Fermentations:display')->setName('fermentations');
     $this->any('/hydrometers/add', 'App\Controller\UI\Hydrometers:add')->setName('hydrometer-add');
@@ -65,6 +68,10 @@ $app->group('/ui', function () {
 
 // Pages
 $app->get('/[{site}]', 'App\Controller\Index:display');
+
+// Public fermentations
+$app->get('/fermentations/public/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:show')->setName('fermentations-show');
+
 
 // try to translate for user
 $app->add($app->getContainer()->get('App\Modules\Lang\UserLangMiddleware'));

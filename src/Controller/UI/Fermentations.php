@@ -3,6 +3,7 @@ namespace App\Controller\UI;
 
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
+use Slim\Csrf\Guard;
 use Doctrine\ORM\EntityManager;
 use Jenssegers\Optimus\Optimus;
 use AdamWathan\BootForms\BootForm;
@@ -25,12 +26,14 @@ class Fermentations
         Stats\Data $statsModule,
         Plates $view,
         BootForm $form,
+        Guard $csrf,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->optimus = $optimus;
         $this->statsModule = $statsModule;
         $this->form = $form;
+        $this->csrf = $csrf;
         $this->view = $view;
         $this->logger = $logger;
     }
@@ -95,6 +98,45 @@ class Fermentations
         );
     }
 
+
+    /**
+     * Show a fermentation publicly
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
+     */
+    public function show($request, $response, $args)
+    {
+        $fermentation = null;
+        if (isset($args['fermentation'])) {
+            $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($args['fermentation']);
+        }
+
+        if (!$fermentation->isPublic()) {
+            throw new \Exception("Fermentation is not public");
+        }
+
+        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
+
+        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
+
+        $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
+
+        // render template
+        return $this->view->render(
+            '/ui/fermentations/public.php',
+            array_merge(
+                $platoData,
+                [
+                    'stable' => $stableSince,
+                    'fermentation' => $fermentation
+                ]
+            )
+        );
+    }
+
     /**
      * Add new fermentation
      * @param  [type] $request  [description]
@@ -112,18 +154,23 @@ class Fermentations
             $validator->rule('required', 'name');
             $validator->rule('integer', 'hydrometer_id');
             $validator->rule('date', 'begin');
-            $validator->rule('date', 'end');
             $validator->rule('optional', 'end');
 
             if (! $request->isPost() || ! $validator->validate()) {
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
+                $csrf = [
+                    $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
+                    $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
+                ];
+
                 // render template
                 return $this->view->render(
                     'ui/fermentations/form.php',
                     [
                         'form' => $this->form,
+                        'csrf' => $csrf,
                         'hydrometers' => $this->em->getRepository('App\Entity\Hydrometer')->formByUser($user),
                         'user' => $user
                     ]
@@ -139,14 +186,147 @@ class Fermentations
             $fermentation
                 ->setName($post['name'])
                 ->setBegin(\DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']))
-                ->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']))
                 ->setHydrometer($hydrometer)
                 ->setUser($user);
+
+            if (! empty($post['end'])) {
+                $fermentation->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']));
+            }
 
             $this->em->persist($fermentation);
             $this->em->flush();
 
             $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $hydrometer);
+
+            return $response->withRedirect('/ui/fermentations');
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * Edit Fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
+     */
+    public function edit($request, $response, $args)
+    {
+        try {
+            $post = $request->getParsedBody();
+            $user = $request->getAttribute('user');
+
+            $fermentation = null;
+
+            if (isset($args['fermentation'])) {
+                $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+                $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
+            }
+
+            $validator = new Validator($post);
+            $validator->rule('required', 'name');
+            $validator->rule('integer', 'hydrometer_id');
+            $validator->rule('integer', 'public');
+            $validator->rule('date', 'begin');
+            $validator->rule('optional', 'end');
+            $validator->rule('optional', 'public');
+
+            if (! $request->isPost() || ! $validator->validate()) {
+                $_SESSION['_old_input'] = $post;
+                $this->setErrors($validator->errors());
+
+                $csrf = [
+                    $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
+                    $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
+                ];
+
+
+                // render template
+                return $this->view->render(
+                    'ui/fermentations/editForm.php',
+                    [
+                        'form' => $this->form,
+                        'csrf' => $csrf,
+                        'hydrometers' => $this->em->getRepository('App\Entity\Hydrometer')->formByUser($user),
+                        'fermentation' => $fermentation,
+                        'user' => $user
+                    ]
+                );
+            }
+            $_SESSION['_old_input'] = $post;
+
+            $hydrometer = $this->em
+                ->getRepository('App\Entity\Hydrometer')
+                ->findOneByUser($post['hydrometer_id'], $user);
+
+            $fermentation
+                ->setName($post['name'])
+                ->setBegin(\DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']))
+                ->setPublic($post['public'])
+                ->setHydrometer($hydrometer);
+
+            if (! empty($post['end'])) {
+                $fermentation->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']));
+            } else {
+                $fermentation->setEnd(null);
+            }
+
+            $this->em->persist($fermentation);
+            $this->em->flush();
+
+            return $response->withRedirect('/ui/fermentations');
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+    }
+
+    /**
+     * Delete Fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
+     */
+    public function delete($request, $response, $args)
+    {
+        try {
+            $post = $request->getParsedBody();
+            $user = $request->getAttribute('user');
+
+            $fermentation = null;
+
+            if (isset($args['fermentation'])) {
+                $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+                $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
+            }
+
+            if (! $request->isPost()) {
+                $_SESSION['_old_input'] = $post;
+
+                $csrf = [
+                    $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
+                    $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
+                ];
+
+
+                // render template
+                return $this->view->render(
+                    'ui/fermentations/deleteForm.php',
+                    [
+                        'form' => $this->form,
+                        'csrf' => $csrf,
+                        'fermentation' => $fermentation,
+                        'user' => $user
+                    ]
+                );
+            }
+            $_SESSION['_old_input'] = $post;
+
+            $this->em->getRepository('App\Entity\DataPoint')->removeFromFermentation($fermentation);
+
+            $this->em->remove($fermentation);
+            $this->em->flush();
 
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {

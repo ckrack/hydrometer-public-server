@@ -14,5 +14,11 @@
 <p class="form-text text-warning">
     <?=_('All datapoints of the selected hydrometer in the defined timeframe, that are not yet part of a fermentation, will be added to the new fermentation.')?>
 </p>
+<?=$form->checkbox(_('Public'), 'public')?>
+
+<?php foreach ($csrf as $key => $value):?>
+    <?=$form->hidden($key, $key)->value($value)?>
+<?php endforeach; ?>
+
 <?=$form->submit(_('Add'))->addClass('btn btn-primary')?>
 <?=$form->close()?>

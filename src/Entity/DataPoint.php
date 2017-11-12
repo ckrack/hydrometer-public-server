@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class DataPoint extends Entity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Hydrometer")
+     * @ORM\ManyToOne(targetEntity="Hydrometer", fetch="EAGER")
      * ORM\JoinColumn(
      *     name="hydrometer_id",
      *     referencedColumnName="id"

@@ -8,7 +8,7 @@
 
 <?php if (!empty($data)) : ?>
 
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover table-responsive">
   <thead class="thead-dark">
     <tr>
       <th><?=_('Name')?></th>
@@ -29,7 +29,7 @@
                 <small class="text-muted">(<?=$this->e($ferm['hydrometer'])?>)</small>
                 <br>
                 <small class="text-muted"><?=_('Last activity')?>: <?=$ferm['activity']?></small><br>
-                <small><?=$ferm['begin']?> &ndash; <?=$ferm['ending']?></small>
+                <small><?=$ferm['begin']?> &ndash; <?=(!empty($ferm['ending'])) ? $ferm['ending'] : $ferm['activity']?></small>
             </a>
         </td>
         <td class="text-center">
@@ -74,8 +74,12 @@
             <?php endif ?>
         </td>
         <td class="text-right">
-            <a href="/ui/fermentations/<?=$optimus->encode((int)$ferm['id'])?>" class="btn btn-sm btn-primary float-sm-left">details</a>
-            <a href="/ui/fermentations/delete/<?=$optimus->encode((int)$ferm['id'])?>" class="close"><span aria-hidden="true">&times;</span></a>
+            <div class="btn-group">
+                <a class="btn btn-secondary btn-sm" href="/ui/fermentations/edit/<?=$optimus->encode($ferm['id'])?>"><?=_('edit')?></a>
+                <a class="btn btn-sm btn-primary" href="/ui/fermentations/<?=$optimus->encode((int)$ferm['id'])?>">details</a>
+            </div>
+            &nbsp;
+            <a class="close" href="/ui/fermentations/delete/<?=$optimus->encode((int)$ferm['id'])?>"><span aria-hidden="true">&times;</span></a>
         </td>
     </tr>
 <?php endforeach; ?>
