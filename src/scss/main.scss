@@ -1,0 +1,12 @@
+/**
+ * main.scss file
+ * as we use bootstrap, for now we just add additional stuff here
+ */
+
+@import "~include-media/dist/_include-media";
+
+.display-3 {
+    @include media("<=phone") {
+        font-size: 3rem;
+    }
+}
