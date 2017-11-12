@@ -92,7 +92,7 @@ class Data
         }
 
         // use the flag to overwrite old data
-        if (false === $useGravity) {
+        if (false === $useGravity && isset($data['dens'])) {
             $data['gravity'] = $data['dens'];
         }
         unset($data['dens']);
