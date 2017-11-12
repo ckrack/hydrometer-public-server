@@ -53,13 +53,19 @@ class UserLangMiddleware
             // get user
             $user = $request->getAttribute('user');
 
+            $lang = 'en';
+            if ($user instanceof \App\Entity\User) {
+                $userLang = $user->getLanguage();
+                if (! empty($userLang)) {
+                    $lang = $userLang;
+                }
+            }
+
             // set user lang
             $this->lang
-                ->setLang($user->getLanguage())
+                ->setLang($lang)
                 ->setPath(getenv('LANGUAGE_PATH'))
                 ->setTextdomain('hydrometer');
-
-            $this->logger->debug('Set language', [$user->getLanguage()]);
 
             $response = $next($request, $response);
             return $response;
