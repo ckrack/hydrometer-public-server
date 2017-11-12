@@ -25,13 +25,15 @@ use Jenssegers\Date\Date;
             <p class="card-text">
                 <?=_('Last activity:')?> <?=Date::parse($hydrometer['activity'])->diffForHumans()?>
             </p>
-        <?php endif; ?>
 
             <a class="card-link" href="/ui/status/<?=$optimus->encode($hydrometer['id'])?>"><?=_('Status')?></a>
             <a class="card-link" href="/ui/plato/<?=$optimus->encode($hydrometer['id'])?>"><?=_('Plato')?></a>
             <a class="card-link" href="/ui/angle/<?=$optimus->encode($hydrometer['id'])?>"><?=_('Angle')?></a>
             <a class="card-link" href="/ui/battery/<?=$optimus->encode($hydrometer['id'])?>"><?=_('Battery')?></a>
             <a class="card-link" href="/ui/data/<?=$optimus->encode($hydrometer['id'])?>"><?=_('Datapoints')?></a>
+        <?php else: ?>
+            <?=_('No data yet')?>
+        <?php endif; ?>
         </div>
     </div>
 <?php endforeach; ?>
