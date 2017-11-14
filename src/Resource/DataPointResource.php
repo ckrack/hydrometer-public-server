@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Entity\Fermentation;
+use DateTime;
 
 /**
  * Class Resource
@@ -137,18 +138,26 @@ class DataPointResource extends EntityRepository
            ->set('d.fermentation', ':fermentation')
            ->setParameter('fermentation', $fermentation);
 
+        // use end if supplied
+        if ($fermentation->getEnd() != null) {
+            $qb->andWhere('d.created < :end')
+            ->setParameter('end', $fermentation->getEnd());
+        }
+
         $q = $qb->getQuery();
 
         return $q->execute();
     }
 
     /**
-     * Add all un-assigned datapoints that match a fermentations timerange and
-     * the defined hydrometer to a (new) fermentation.
-     * @param Fermentation $fermentation [description]
-     * @param Hydrometer      $hydrometer      [description]
+     * Remove datapoints from fermentation.
+     * If the before and after parameters are supplied, only datapoints
+     * @param  Fermentation  $fermentation [description]
+     * @param  DateTime|null $before       [description]
+     * @param  DateTime|null $after        [description]
+     * @return [type]                      [description]
      */
-    public function removeFromFermentation(Fermentation $fermentation)
+    public function removeFromFermentation(Fermentation $fermentation, DateTime $before = null, DateTime $after = null)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -157,6 +166,20 @@ class DataPointResource extends EntityRepository
            ->andWhere('d.fermentation = :fermentation')
            ->set('d.fermentation', 'NULL')
            ->setParameter('fermentation', $fermentation);
+
+        $orX = $qb->expr()->orX();
+
+        if ($before instanceof \DateTime) {
+            $orX->add($qb->expr()->lt('d.created', ':before'));
+            $qb->setParameter('before', $before);
+        }
+
+        if ($after instanceof \DateTime) {
+            $orX->add($qb->expr()->gte('d.created', ':after'));
+            $qb->setParameter('after', $after);
+        }
+
+        $qb->andWhere($orX);
 
         $q = $qb->getQuery();
 

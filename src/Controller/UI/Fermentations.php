@@ -182,16 +182,20 @@ class Fermentations
                 ->getRepository('App\Entity\Hydrometer')
                 ->findOneByUser($post['hydrometer_id'], $user);
 
+	    $end = null;
+	    $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
+	    if (! empty($post['end'])) {
+		$end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
+		$fermentation->setEnd($end);
+	    }
+
             $fermentation = new Fermentation;
             $fermentation
                 ->setName($post['name'])
-                ->setBegin(\DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']))
+		->setBegin($begin)
+		->setEnd($end)
                 ->setHydrometer($hydrometer)
                 ->setUser($user);
-
-            if (! empty($post['end'])) {
-                $fermentation->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']));
-            }
 
             $this->em->persist($fermentation);
             $this->em->flush();
@@ -260,20 +264,25 @@ class Fermentations
                 ->getRepository('App\Entity\Hydrometer')
                 ->findOneByUser($post['hydrometer_id'], $user);
 
+	    $end = null;
+	    $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
+	    if (! empty($post['end'])) {
+		$end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
+		$fermentation->setEnd($end);
+	    }
+
             $fermentation
                 ->setName($post['name'])
-                ->setBegin(\DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']))
+		->setBegin($begin)
+		->setEnd($end)
                 ->setPublic($post['public'])
                 ->setHydrometer($hydrometer);
 
-            if (! empty($post['end'])) {
-                $fermentation->setEnd(\DateTime::createFromFormat('Y-m-d\TH:i', $post['end']));
-            } else {
-                $fermentation->setEnd(null);
-            }
-
             $this->em->persist($fermentation);
             $this->em->flush();
+
+	    // remove datapoints outside the date-range
+	    $this->em->getRepository('App\Entity\DataPoint')->removeFromFermentation($fermentation, $begin, $end);
 
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
