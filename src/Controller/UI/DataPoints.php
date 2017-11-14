@@ -115,6 +115,10 @@ class DataPoints
             return $response->withRedirect('/ui/data');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 }

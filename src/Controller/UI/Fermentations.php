@@ -12,6 +12,7 @@ use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Modules\Stats;
+use DateTime;
 
 class Fermentations
 {
@@ -71,31 +72,38 @@ class Fermentations
      */
     public function details($request, $response, $args)
     {
-        $fermentation = null;
-        $user = $request->getAttribute('user');
-        if (isset($args['fermentation'])) {
-            $args['fermentation'] = $this->optimus->decode($args['fermentation']);
-            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
+        try {
+            $fermentation = null;
+            $user = $request->getAttribute('user');
+            if (isset($args['fermentation'])) {
+                $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+                $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
+            }
+
+            $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
+
+            $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
+
+            $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
+
+            // render template
+            return $this->view->render(
+                '/ui/fermentations/details.php',
+                array_merge(
+                    $platoData,
+                    [
+                        'user' => $user,
+                        'stable' => $stableSince,
+                        'fermentation' => $fermentation
+                    ]
+                )
+            );
+        } catch (\Exception $e) {
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
-
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
-
-        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
-
-        $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
-
-        // render template
-        return $this->view->render(
-            '/ui/fermentations/details.php',
-            array_merge(
-                $platoData,
-                [
-                    'user' => $user,
-                    'stable' => $stableSince,
-                    'fermentation' => $fermentation
-                ]
-            )
-        );
     }
 
 
@@ -108,33 +116,39 @@ class Fermentations
      */
     public function show($request, $response, $args)
     {
-        $fermentation = null;
-        if (isset($args['fermentation'])) {
-            $args['fermentation'] = $this->optimus->decode($args['fermentation']);
-            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($args['fermentation']);
+        try {
+            $fermentation = null;
+            if (isset($args['fermentation'])) {
+                $args['fermentation'] = $this->optimus->decode($args['fermentation']);
+                $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($args['fermentation']);
+            }
+
+            if (!$fermentation->isPublic()) {
+                throw new \Exception("Fermentation is not public");
+            }
+
+            $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
+
+            $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
+
+            $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
+
+            // render template
+            return $this->view->render(
+                '/ui/fermentations/public.php',
+                array_merge(
+                    $platoData,
+                    [
+                        'stable' => $stableSince,
+                        'fermentation' => $fermentation
+                    ]
+                )
+            );
+        } catch (\Exception $e) {
+            return $this->view->render(
+                'ui/exception.php'
+            );
         }
-
-        if (!$fermentation->isPublic()) {
-            throw new \Exception("Fermentation is not public");
-        }
-
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
-
-        $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
-
-        $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
-
-        // render template
-        return $this->view->render(
-            '/ui/fermentations/public.php',
-            array_merge(
-                $platoData,
-                [
-                    'stable' => $stableSince,
-                    'fermentation' => $fermentation
-                ]
-            )
-        );
     }
 
     /**
@@ -182,18 +196,18 @@ class Fermentations
                 ->getRepository('App\Entity\Hydrometer')
                 ->findOneByUser($post['hydrometer_id'], $user);
 
-	    $end = null;
-	    $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
-	    if (! empty($post['end'])) {
-		$end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
-		$fermentation->setEnd($end);
-	    }
+            $end = null;
+            $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
+            if (! empty($post['end'])) {
+                $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
+                $fermentation->setEnd($end);
+            }
 
             $fermentation = new Fermentation;
             $fermentation
                 ->setName($post['name'])
-		->setBegin($begin)
-		->setEnd($end)
+                ->setBegin($begin)
+                ->setEnd($end)
                 ->setHydrometer($hydrometer)
                 ->setUser($user);
 
@@ -205,6 +219,10 @@ class Fermentations
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 
@@ -264,29 +282,34 @@ class Fermentations
                 ->getRepository('App\Entity\Hydrometer')
                 ->findOneByUser($post['hydrometer_id'], $user);
 
-	    $end = null;
-	    $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
-	    if (! empty($post['end'])) {
-		$end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
-		$fermentation->setEnd($end);
-	    }
+            $end = null;
+            $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
+            if (! empty($post['end'])) {
+                $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
+                $fermentation->setEnd($end);
+            }
 
             $fermentation
                 ->setName($post['name'])
-		->setBegin($begin)
-		->setEnd($end)
+                ->setBegin($begin)
+                ->setEnd($end)
                 ->setPublic($post['public'])
                 ->setHydrometer($hydrometer);
 
             $this->em->persist($fermentation);
             $this->em->flush();
 
-	    // remove datapoints outside the date-range
-	    $this->em->getRepository('App\Entity\DataPoint')->removeFromFermentation($fermentation, $begin, $end);
+            // remove datapoints outside the date-range
+            $this->em->getRepository('App\Entity\DataPoint')->removeFromFermentation($fermentation, $begin, $end);
 
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 
@@ -340,6 +363,10 @@ class Fermentations
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 

@@ -71,39 +71,43 @@ class Data
      */
     public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
-        list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($hydrometer);
+        try {
+            list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($hydrometer);
 
-        // flag to indicate whether there are gravity values.
-        // this indicates that the new firmware is used (>= 4.0)
-        $useGravity = false;
+            // flag to indicate whether there are gravity values.
+            // this indicates that the new firmware is used (>= 4.0)
+            $useGravity = false;
 
-        $data = [];
+            $data = [];
 
-        foreach ($latestData as $value) {
-            $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
-            $data['dens'][] = $dens;
-            foreach ($value as $unit => $v) {
-                $data[$unit][] = $v;
+            foreach ($latestData as $value) {
+                $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
+                $data['dens'][] = $dens;
+                foreach ($value as $unit => $v) {
+                    $data[$unit][] = $v;
 
-                if ($unit === 'gravity' && $v) {
-                    $useGravity = true;
+                    if ($unit === 'gravity' && $v) {
+                        $useGravity = true;
+                    }
                 }
             }
-        }
 
-        // use the flag to overwrite old data
-        if (false === $useGravity && isset($data['dens'])) {
-            $data['gravity'] = $data['dens'];
-        }
-        unset($data['dens']);
-        unset($data['groupTime']);
+            // use the flag to overwrite old data
+            if (false === $useGravity && isset($data['dens'])) {
+                $data['gravity'] = $data['dens'];
+            }
+            unset($data['dens']);
+            unset($data['groupTime']);
 
-        // render template
-        return [
-            'name' => $hydrometer->getName(),
-            'data' => $data,
-            'isCalib' => $isCalibrated
-        ];
+            // render template
+            return [
+                'name' => $hydrometer->getName(),
+                'data' => $data,
+                'isCalib' => $isCalibrated
+            ];
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**

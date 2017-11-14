@@ -41,19 +41,26 @@ class Hydrometers
      */
     public function display($request, $response, $args)
     {
-        $user = $request->getAttribute('user');
+        try {
+            $user = $request->getAttribute('user');
 
-        $hydrometers = $this->em->getRepository('App\Entity\Hydrometer')->findAllWithLastActivity($user);
+            $hydrometers = $this->em->getRepository('App\Entity\Hydrometer')->findAllWithLastActivity($user);
 
-        // render template
-        return $this->view->render(
-            '/ui/index.php',
-            [
-                'hydrometers' => $hydrometers,
-                'optimus' => $this->optimus,
-                'user' => $user
-            ]
-        );
+            // render template
+            return $this->view->render(
+                '/ui/index.php',
+                [
+                    'hydrometers' => $hydrometers,
+                    'optimus' => $this->optimus,
+                    'user' => $user
+                ]
+            );
+        } catch (\Exception $e) {
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
+        }
     }
 
     /**
@@ -111,6 +118,10 @@ class Hydrometers
             return $response->withRedirect('/ui/hydrometers/help/'.$this->optimus->encode($hydrometer->getId()));
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 
@@ -165,6 +176,10 @@ class Hydrometers
             return $response->withRedirect('/ui/');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
     }
 
@@ -184,25 +199,32 @@ class Hydrometers
      */
     public function help($request, $response, $args)
     {
-        $user = $request->getAttribute('user');
-        $hydrometer = null;
+        try {
+            $user = $request->getAttribute('user');
+            $hydrometer = null;
 
-        if (isset($args['hydrometer'])) {
-            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
-            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
+            if (isset($args['hydrometer'])) {
+                $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
+                $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
+            }
+
+            $token = $hydrometer->getToken();
+
+            // render template
+            return $this->view->render(
+                '/ui/hydrometers/help.php',
+                [
+                    'token' => $token,
+                    'hydrometer' => $hydrometer,
+                    'optimus' => $this->optimus,
+                    'user' => $user
+                ]
+            );
+        } catch (\Exception $e) {
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
-
-        $token = $hydrometer->getToken();
-
-        // render template
-        return $this->view->render(
-            '/ui/hydrometers/help.php',
-            [
-                'token' => $token,
-                'hydrometer' => $hydrometer,
-                'optimus' => $this->optimus,
-                'user' => $user
-            ]
-        );
     }
 }
