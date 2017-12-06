@@ -58,6 +58,9 @@ class DataPoint
 
             $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
 
+            // data needs to be changed possibly?
+            $data = $this->prepareData($data);
+
             $dataPoint = new Entity\DataPoint;
 
             // prevent overwriting the ID by unsetting the espId
@@ -79,6 +82,21 @@ class DataPoint
             $this->logger->error($e->getMessage());
             return $response
                 ->withStatus(500);
+        }
+    }
+
+    protected function prepareData($data)
+    {
+        switch (true) {
+            // Tilt
+            case isset($data['Timepoint']):
+                $transformedData = [
+                    'temperature' => $data['Temp'],
+                    'gravity' => $data['SG']
+                ];
+                return $transformedData;
+            default:
+                return $data;
         }
     }
 
