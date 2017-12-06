@@ -18,8 +18,8 @@ node_modules
 .sass-cache/
 
 # public css/js
-public/css/*
-!public/css/vendor/*
-public/js/*
-!public/js/vendor*
+html/css/*
+!html/css/vendor/*
+html/js/*
+!html/js/vendor*
 src/Proxies

@@ -29,7 +29,7 @@ gulp.task('sass', function () {
         .pipe(sourcemaps.init())
         .pipe(cssnano())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./public/css'))
+        .pipe(gulp.dest('./html/css'))
     ;
 });
 
@@ -40,7 +40,7 @@ gulp.task('js', function () {
     return gulp.src(paths.js)
         .pipe(uglify())
         .pipe(concat('main.js'))
-        .pipe(gulp.dest('./public/js'))
+        .pipe(gulp.dest('./html/js'))
     ;
 });
 
@@ -59,7 +59,7 @@ gulp.task('watch', function () {
  * @see https://fettblog.eu/php-browsersync-grunt-gulp/
  */
 gulp.task('php', function() {
-    php.server({ base: 'public', port: 8010, keepalive: true});
+    php.server({ base: 'html', port: 8010, keepalive: true});
 });
 
 /**

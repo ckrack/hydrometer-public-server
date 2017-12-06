@@ -59,7 +59,7 @@
     },
     "scripts": {
         "test": "phpunit",
-        "start": "php -S localhost:8080 -t public/",
+        "start": "php -S localhost:8080 -t html/",
         "post-create-project-cmd": [
             "php -r \"copy('src/example.env', 'src/.env');\""
         ],
