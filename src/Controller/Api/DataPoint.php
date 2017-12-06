@@ -3,7 +3,8 @@ namespace App\Controller\Api;
 
 use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
-use App\Modules\Auth\PasswordLess;
+use App\Modules\Auth\Token;
+use App\Modules\Formula\Tilt\Timepoint;
 use App\Entity;
 
 class DataPoint
@@ -19,11 +20,11 @@ class DataPoint
      */
     public function __construct(
         EntityManager $em,
-        PasswordLess $passwordLess,
+        Token $tokenAuth,
         LoggerInterface $logger
     ) {
         $this->em = $em;
-        $this->passwordLess = $passwordLess;
+        $this->tokenAuth = $tokenAuth;
         $this->logger = $logger;
     }
 
@@ -50,31 +51,19 @@ class DataPoint
                 throw new \InvalidArgumentException('Api::post: Data missing (ID or token)');
             }
 
-            // confirm existance of the token
-            $user = $this->passwordLess->confirm(empty($args['token']) ? $data['token'] : $args['token'], null, null, 'device', '10 years ago');
-            $this->logger->debug('api::post: by user', [$user]);
+            // confirm existance of the token @throws
+            $authData = $this->tokenAuth->authenticate(empty($args['token']) ? $data['token'] : $args['token']);
 
-            if (! $user instanceof \App\Entity\User) {
-                throw new \Exception("Could not confirm token", 1);
-            }
-
-            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->getOrCreate($data['ID'], $user, empty($args['token']) ? $data['token'] : $args['token']);
-
-            // set token and user on the hydrometer
-            $hydrometer->setUser($this->getEntityManager()->getRepository('App\Entity\User')->find($user->getId()));
-            $hydrometer->setToken($this->getEntityManager()->getRepository('App\Entity\Token')->findOneBy(['value' => $token]));
-
-            // set the hydrometer name if specified
-            if (isset($data['name'])) {
-                $hydrometer->setName($data['name']);
-            }
+            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->find($authData['hydrometer_id']);
 
             $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
 
             $dataPoint = new Entity\DataPoint;
 
             // prevent overwriting the ID by unsetting the espId
-            unset($data['id']);
+            if (isset($data['id'])) {
+                unset($data['id']);
+            }
 
             $dataPoint->import($data);
             $dataPoint->setHydrometer($hydrometer);
