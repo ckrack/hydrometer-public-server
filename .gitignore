@@ -23,3 +23,6 @@ html/css/*
 html/js/*
 !html/js/vendor*
 src/Proxies
+
+# ignore the database volume
+database/
