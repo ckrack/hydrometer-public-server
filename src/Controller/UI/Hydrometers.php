@@ -3,6 +3,7 @@ namespace App\Controller\UI;
 
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
+use Slim\Csrf\Guard;
 use Doctrine\ORM\EntityManager;
 use Jenssegers\Optimus\Optimus;
 use AdamWathan\BootForms\BootForm;
@@ -23,6 +24,7 @@ class Hydrometers
         Optimus $optimus,
         Plates $view,
         BootForm $form,
+        Guard $csrf,
         LoggerInterface $logger
     ) {
         $this->em = $em;
@@ -30,6 +32,7 @@ class Hydrometers
         $this->view = $view;
         $this->logger = $logger;
         $this->form = $form;
+        $this->csrf = $csrf;
     }
 
     /**
@@ -85,11 +88,17 @@ class Hydrometers
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
+                $csrf = [
+                    $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
+                    $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
+                ];
+
                 // render template
                 return $this->view->render(
                     'ui/hydrometers/form.php',
                     [
                         'form' => $this->form,
+                        'csrf' => $csrf,
                         'user' => $user
                     ]
                 );
@@ -153,11 +162,17 @@ class Hydrometers
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
+                $csrf = [
+                    $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
+                    $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
+                ];
+
                 // render template
                 return $this->view->render(
                     'ui/hydrometers/editForm.php',
                     [
                         'form' => $this->form,
+                        'csrf' => $this->csrf,
                         'hydrometer' => $hydrometer,
                         'user' => $user
                     ]

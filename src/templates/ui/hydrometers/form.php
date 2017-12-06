@@ -10,5 +10,11 @@
 <?=$form->text(_('Name'), 'name')->placeholder(_('e.g. color of hydrometer or any name'))?>
 <?=$form->select(_('Temperature metric'), 'metric_temp', ['°C' => _('Celsius'), '°F' => _('Fahrenheit')])?>
 <?=$form->select(_('Gravity metric'), 'metric_gravity', ['°P' => _('Plato'), 'SG' => _('Specific gravity (SG)'), '%' => 'Brix'])?>
+
+<?php foreach ($csrf as $key => $value):?>
+    <?=$form->hidden($key, $key)->value($value)?>
+<?php endforeach; ?>
+
+
 <?=$form->submit(_('Add'))->addClass('btn btn-primary')?>
 <?=$form->close()?>
