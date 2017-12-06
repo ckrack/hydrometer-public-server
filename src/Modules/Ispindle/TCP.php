@@ -27,7 +27,6 @@ class TCP
 
     public function authenticate($token)
     {
-        # code...
         try {
             $qb = $this->em->createQueryBuilder();
 
