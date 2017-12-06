@@ -12,7 +12,7 @@ $container = new Container;
 require __DIR__ . '/../src/dependencies.php';
 
 // Set time limit to indefinite execution
-set_time_limit (0);
+set_time_limit(0);
 
 $logger = $container->get('Psr\Log\LoggerInterface');
 $em = $container->get('Doctrine\ORM\EntityManager');
@@ -59,7 +59,6 @@ while (true) {
             fclose($client);
 
             // now handle data
-
             if (! $TCP->validateInput($jsonRaw)) {
                 $logger->error('Invalid input', [$jsonRaw]);
             }
@@ -79,11 +78,9 @@ while (true) {
             // confirm existance of the token @throws
             $authData = $TCP->authenticate($jsonDecoded['token']);
             $TCP->saveData($jsonDecoded, $authData['hydrometer_id'], $authData['fermentation_id']);
-
         } catch (\Exception $e) {
             $logger->error('Exception: ' . $e->getMessage());
             throw $e;
         }
     }
 }
-

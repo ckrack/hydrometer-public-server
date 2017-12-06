@@ -44,5 +44,5 @@ composer setup-db
 
 ## TCP-Server or HTTP?
 
-If you wish to run the TCP-Server, you need to run `php ./public/tcp-server.php` as a process.
+If you wish to run the TCP-Server, you need to run `php ./bin/tcp-server.php` as a process.
 You can always use the HTTP API.
