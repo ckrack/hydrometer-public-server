@@ -65,10 +65,10 @@ gulp.task('php', function() {
 /**
  * watch files, start builtin php server and serve with browser-sync
  */
-gulp.task('serve', ['php', 'watch'], function() {
+gulp.task('serve', ['watch'], function() {
   browserSync({
-    // proxy to our created php server
-    proxy: "localhost:8010",
+    // proxy to our docker server
+    proxy: "localhost",
     open: true,
     notify: false,
     // Customise the placement of the snippet
