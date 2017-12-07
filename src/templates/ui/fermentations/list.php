@@ -1,5 +1,8 @@
 <?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
+<?php
+use App\Modules\Formula\Formatter;
 
+?>
 <h1 class="mt-4 mb-3">
     <?=_('Fermentations')?>
     <a href="/ui/fermentations/add" class="btn btn-success float-md-right"><?=_('Add fermentation')?></a>
@@ -34,11 +37,13 @@
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['temperature'])) : ?>
-                &#216; <?=round($ferm['temperature'], 2)?> <?=$this->e($ferm['metricTemperature'])?><br>
+                &#216;
+                <?=$this->e(Formatter::format($ferm['temperature'], $ferm['metricTemperature']))?>
+                <br>
                 <small class="text-muted">
-                    <?=round($ferm['min_temperature'], 2)?><?=$this->e($ferm['metricTemperature'])?>
+                    <?=$this->e(Formatter::format($ferm['min_temperature'], $ferm['metricTemperature']))?>
                     &ndash;
-                    <?=round($ferm['max_temperature'], 2)?><?=$this->e($ferm['metricTemperature'])?>
+                    <?=$this->e(Formatter::format($ferm['max_temperature'], $ferm['metricTemperature']))?>
                 </small>
             <?php else : ?>
                 &hellip;
@@ -46,7 +51,11 @@
         </td>
         <td class="text-center">
             <?php if (!empty($ferm['max_angle'])) : ?>
-                <small class="text"><?=round($ferm['max_angle'], 2)?>&deg; &rarr; <?=round($ferm['min_angle'], 2)?>&deg;</small>
+                <small class="text">
+                    <?=$this->e(Formatter::format($ferm['max_angle'], '°'))?>
+                    &rarr;
+                    <?=$this->e(Formatter::format($ferm['min_angle'], '°'))?>
+                </small>
             <?php else : ?>
                 &hellip;
             <?php endif ?>
@@ -54,9 +63,9 @@
         <td class="text-center">
             <?php if (!empty($ferm['max_gravity'])) : ?>
                 <small class="text">
-                    <?=round($ferm['max_gravity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    <?=$this->e(Formatter::format($ferm['max_gravity'], $ferm['metricGravity']))?>
                     &rarr;
-                    <?=round($ferm['min_gravity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    <?=$this->e(Formatter::format($ferm['min_gravity'], $ferm['metricGravity']))?>
                 </small>
             <?php else : ?>
                 &hellip;
@@ -65,9 +74,9 @@
         <td class="text-center">
             <?php if (!empty($ferm['max_trubidity'])) : ?>
                 <small class="text">
-                    <?=round($ferm['max_trubidity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    <?=$this->e(Formatter::format($ferm['min_trubidity']))?>
                     &rarr;
-                    <?=round($ferm['min_trubidity'], 2)?><?=$this->e($ferm['metricGravity'])?>
+                    <?=$this->e(Formatter::format($ferm['max_trubidity']))?>
                 </small>
             <?php else : ?>
                 &hellip;

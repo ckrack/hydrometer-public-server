@@ -1,5 +1,6 @@
 <?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
 <?php
+use App\Modules\Formula\Formatter;
 use App\Modules\Stats\Anomaly;
 use App\Modules\Stats\AnomalyFixed;
 
@@ -24,7 +25,7 @@ $angleAnomaly = new Anomaly(2, $logger);
     <thead class="thead-dark">
         <tr>
             <th><?=_('Date')?></th>
-            <?php if(empty($hydrometer)) : ?>
+            <?php if (empty($hydrometer)) : ?>
             <th><?=_('Hydrometer')?></th>
             <?php endif ?>
             <th class="text-right"><?=_('Temperature')?></th>
@@ -41,25 +42,29 @@ $angleAnomaly = new Anomaly(2, $logger);
             <td>
                 <?=$point['time']?>
             </td>
-            <?php if(empty($hydrometer)) : ?>
+            <?php if (empty($hydrometer)) : ?>
             <td>
                 <?=$point['hydrometer']?>
             </td>
             <?php endif ?>
-            <td class="text-right <?php if ($tempAnomaly->is($point['temperature'])) echo 'table-warning' ?>">
-                <?=number_format($point['temperature'], 2)?> &deg;C
+            <td class="text-right <?php if ($tempAnomaly->is($point['temperature'])) {
+    echo 'table-warning';
+} ?>">
+                <?=$this->e(Formatter::format($point['temperature'], $point['metricTemperature']))?>
             </td>
-            <td class="text-right <?php if ($angleAnomaly->is($point['angle'])) echo 'table-warning' ?>">
-                <?=number_format($point['angle'], 2)?>&deg;
-            </td>
-            <td class="text-right">
-                <?=number_format($point['battery'], 2)?> V
-            </td>
-            <td class="text-right">
-                <?=number_format($point['gravity'], 2)?> &deg;P
+            <td class="text-right <?php if ($angleAnomaly->is($point['angle'])) {
+    echo 'table-warning';
+} ?>">
+                <?=$this->e(Formatter::format($point['angle'], '°'))?>
             </td>
             <td class="text-right">
-                <?=number_format($point['trubidity'], 0)?>
+                <?=$this->e(Formatter::format($point['battery'], 'V'))?>
+            </td>
+            <td class="text-right">
+                <?=$this->e(Formatter::format($point['gravity'], $point['metricGravity']))?>
+            </td>
+            <td class="text-right">
+                <?=$this->e(Formatter::format($point['trubidity']))?>
             </td>
             <td class="text-right">
                 <a href="/ui/data/delete/<?=$optimus->encode((int)$point['id'])?>" class="close"><span aria-hidden="true">&times;</span></a>
