@@ -2,7 +2,7 @@
 namespace App\Modules\Formula\Tilt;
 
 /**
- * Formula to convert the slightly weird
+ * Formula to convert the slightly weird timepoint format by Tilt into a Unix timestamp
  */
 class Timepoint
 {
@@ -32,7 +32,7 @@ class Timepoint
         }
 
         // return invokable
-        return Timepoint($value);
+        return (new Timepoint)($value);
     }
 
     /**
@@ -40,8 +40,12 @@ class Timepoint
      * @param  float $timepoint value in timepoint
      * @return float        specific gravity
      */
-    public function __invoke($timepoint)
+    public function __invoke($timepoint = null)
     {
+        if ($timepoint === null) {
+            $timepoint = $this->value;
+        }
+
         return round($timepoint * 24 * 60 * 60 - (25569 * 24 * 60 * 60), 0);
     }
 }

@@ -12,13 +12,13 @@ class Brix
     /**
      * the value in brix
      */
-    protected float $value;
+    protected $value;
 
     /**
      * You can start calculations by creating an object with the brix value
      * @param float $value value in brix
      */
-    public function __construct(float $value)
+    public function __construct(float $value = null)
     {
         $this->value = $value;
     }
@@ -32,7 +32,7 @@ class Brix
      */
     public static function fromRefractometer($value, $conversionFactor = 1.04)
     {
-        return new Brix($value / $conversionFactor);
+        return (new Brix)($value / $conversionFactor);
     }
 
     /**
@@ -47,7 +47,7 @@ class Brix
         }
 
         // return invokable from SpecificGravity class
-        return SpecificGravity($value);
+        return (new SpecificGravity)($value);
     }
 
     /**
@@ -55,8 +55,12 @@ class Brix
      * @param  float $specificGravity specific gravity value
      * @return float                  brix value
      */
-    public function __invoke($specificGravity)
+    public function __invoke($specificGravity = null)
     {
+        if ($specificGravity === null) {
+            $specificGravity = $this->value;
+        }
+
         return (((182.4601 * $specificGravity - 775.6821) * $specificGravity + 1262.7794) * $specificGravity - 669.5622);
     }
 }

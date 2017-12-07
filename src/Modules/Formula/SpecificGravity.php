@@ -11,7 +11,7 @@ class SpecificGravity
     /**
      * the value in specific gravity
      */
-    protected float $value;
+    protected $value;
 
     /**
      * You can start calculations by creating an object with the sg value
@@ -34,7 +34,7 @@ class SpecificGravity
         }
 
         // return invokable from SpecificGravity class
-        return Plato($value);
+        return (new Plato)($value);
     }
 
     /**
@@ -42,8 +42,11 @@ class SpecificGravity
      * @param  float $plato value in plato
      * @return float        specific gravity
      */
-    public function __invoke($plato)
+    public function __invoke($plato = null)
     {
-        return 1 + ($plato / (258.6 – (($plato / 258.2) * 227.1)));
+        if ($plato === null) {
+            $plato = $this->value;
+        }
+        return 1+($plato/(258.6 - (($plato/258.2)*227.1)));
     }
 }

@@ -11,13 +11,13 @@ class Plato
     /**
      * the value in plato
      */
-    protected float $value;
+    protected $value;
 
     /**
      * You can start calculations by creating an object with the plato value
      * @param float $value value in plato
      */
-    public function __construct(float $value)
+    public function __construct(float $value = null)
     {
         $this->value = $value;
     }
@@ -34,7 +34,7 @@ class Plato
         }
 
         // return invokable from SpecificGravity class
-        return SpecificGravity($value);
+        return (new SpecificGravity)($value);
     }
 
     /**
@@ -42,8 +42,12 @@ class Plato
      * @param  float $specificGravity specific gravity value
      * @return float                  degrees plato value
      */
-    public function __invoke($specificGravity)
+    public function __invoke($specificGravity = null)
     {
-        return (-1 * 616.868) + (1111.14 * $specificGravity) – (630.272 * $specificGravity**2) + (135.997 * $specificGravity**3);
+        if ($specificGravity === null) {
+            $specificGravity = $this->value;
+        }
+
+        return (-1*616.868)+(1111.14*$specificGravity)-(630.272*$specificGravity**2)+(135.997*$specificGravity**3);
     }
 }
