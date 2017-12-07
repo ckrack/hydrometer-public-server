@@ -300,6 +300,9 @@ class Fermentations
             // remove datapoints outside the date-range
             $this->em->getRepository('App\Entity\DataPoint')->removeFromFermentation($fermentation, $begin, $end);
 
+            // add datapoints inside the date-range
+            $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $hydrometer);
+
             return $response->withRedirect('/ui/fermentations');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
