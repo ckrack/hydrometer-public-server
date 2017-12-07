@@ -51,7 +51,7 @@ class Status
 
                 $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
 
-                if (! ($hydrometer instanceof App\Entity\Hydrometer)) {
+                if (! ($hydrometer instanceof \App\Entity\Hydrometer)) {
                     throw new \InvalidArgumentException('Hydrometer not found.');
                 }
             }
@@ -93,7 +93,7 @@ class Status
                 $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
                 $hydrometer = $this->em->getRepository(Hydrometer::class)->findOneByUser($args['hydrometer'], $user);
 
-                if (! ($hydrometer instanceof App\Entity\Hydrometer)) {
+                if (! ($hydrometer instanceof \App\Entity\Hydrometer)) {
                     throw new \InvalidArgumentException('Hydrometer not found.');
                 }
             }
@@ -135,7 +135,7 @@ class Status
                 $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
                 $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
 
-                if (! ($hydrometer instanceof App\Entity\Hydrometer)) {
+                if (! ($hydrometer instanceof \App\Entity\Hydrometer)) {
                     throw new \InvalidArgumentException('Hydrometer not found.');
                 }
             }
@@ -174,7 +174,7 @@ class Status
                 $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
                 $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
 
-                if (! ($hydrometer instanceof App\Entity\Hydrometer)) {
+                if (! ($hydrometer instanceof \App\Entity\Hydrometer)) {
                     throw new \InvalidArgumentException('Hydrometer not found.');
                 }
             }
