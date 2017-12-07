@@ -200,7 +200,6 @@ class Fermentations
             $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
             if (! empty($post['end'])) {
                 $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
-                $fermentation->setEnd($end);
             }
 
             $fermentation = new Fermentation;
@@ -286,7 +285,6 @@ class Fermentations
             $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
             if (! empty($post['end'])) {
                 $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
-                $fermentation->setEnd($end);
             }
 
             $fermentation
