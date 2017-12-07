@@ -30,9 +30,11 @@ class DataPointResource extends EntityRepository
                          AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
                          ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime,
-                         s.name hydrometer")
+                         h.name hydrometer,
+                         h.metricTemperature,
+                         h.metricGravity")
                 ->from('App\Entity\DataPoint', 'd')
-                ->leftJoin('App\Entity\Hydrometer', 's', 'WITH', 'd.hydrometer = s')
+                ->leftJoin('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
                 ->orderBy('d.created', 'ASC')
                 ->groupBy('groupTime');
 
@@ -96,12 +98,15 @@ class DataPointResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery, s.name hydrometer")
+            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery,
+                h.name hydrometer,
+                h.metricTemperature,
+                h.metricGravity")
                 ->from('App\Entity\DataPoint', 'd')
-                ->join('App\Entity\Hydrometer', 's', 'WITH', 'd.hydrometer = s')
+                ->join('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
                 ->orderBy('d.created', 'DESC')
                 ->groupBy('time')
-                ->andWhere('s.user = :user')
+                ->andWhere('h.user = :user')
                 ->setParameter('user', $user->getId())
                 ->setFirstResult($offset)
                 ->setMaxResults($limit);
