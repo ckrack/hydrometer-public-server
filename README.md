@@ -1,13 +1,11 @@
 # Electronic Hydrometer Public Server
 
-This is a public server for electronic hydrometers like [iSpindel](https://github.com/universam1/iSpindel), that are commonly used to measure fermentation process in homebrewing.
-The server allows iSpindel users to keep a log of the data and visualize it via charts.
-Support for [Tilt Hydrometer](https://tilthydrometer.com/) is planned.
+This is a public server for electronic hydrometers like [Tilt Hydrometer](https://tilthydrometer.com/) or [iSpindel](https://github.com/universam1/iSpindel), that are commonly used to measure fermentation process in homebrewing.
+The server allows homebrewers to keep a log of the data and visualize it via charts.
 
 ## Approach
 
 The Hydrometers and their data are saved in a relational database.
-Users can register and authenticate via email without using a password.
 The data is visualized using [C3.js](http://c3js.org/) charts.
 The interface is built with [Bootstrap 4](https://v4-alpha.getbootstrap.com/).
 Authentication is handled by OAuth2, with various supported providers.
