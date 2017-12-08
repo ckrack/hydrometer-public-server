@@ -12,18 +12,18 @@ npm-debug.log*
 # ---> Node
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
-node_modules
+/node_modules/
 
 # Sass cache
-.sass-cache/
+/.sass-cache/
 
 # public css/js
-html/css/*
-!html/css/vendor/*
-html/js/*
-!html/js/vendor*
-src/Proxies
+/html/css/*
+!/html/css/vendor/*
+/html/js/*
+!/html/js/vendor*
+/src/Proxies
 
 # ignore the database volume
-database/
-!database/.gitkeep
+/database/
+!/database/.gitkeep
