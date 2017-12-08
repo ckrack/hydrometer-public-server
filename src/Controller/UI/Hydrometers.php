@@ -11,6 +11,7 @@ use Valitron\Validator;
 use App\Entity\User;
 use App\Entity\Token;
 use App\Entity\Hydrometer;
+use App\Entity\DataPoint;
 use Exception;
 
 class Hydrometers
@@ -50,9 +51,11 @@ class Hydrometers
 
             $hydrometers = $this->em->getRepository('App\Entity\Hydrometer')->findAllWithLastActivity($user);
 
+            $hydrometers = $this->findLastActivity($hydrometers);
+
             // render template
             return $this->view->render(
-                '/ui/index.php',
+                '/ui/hydrometers/index.php',
                 [
                     'hydrometers' => $hydrometers,
                     'optimus' => $this->optimus,
@@ -65,6 +68,22 @@ class Hydrometers
                 ['user' => $user]
             );
         }
+    }
+
+    /**
+     * Find the last activity for every hydrometer
+     * @param  [type] $hydrometers [description]
+     * @return [type]              [description]
+     */
+    protected function findLastActivity($hydrometers)
+    {
+        foreach ($hydrometers as $key => $hydrometer) {
+            if (!empty($hydrometer['last_datapoint_id'])) {
+                $activity = $this->em->getRepository(DataPoint::class)->findActivity($hydrometer['last_datapoint_id']);
+                $hydrometers[$key] = array_merge($hydrometer, (array) $activity);
+            }
+        }
+        return $hydrometers;
     }
 
     /**

@@ -21,11 +21,16 @@ class HydrometerResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select('UNIX_TIMESTAMP(d.created) unixtime, d.temperature, d.angle, d.gravity, d.trubidity')
+            $qb->select('
+                UNIX_TIMESTAMP(d.created) unixtime,
+                d.temperature,
+                d.angle,
+                d.gravity,
+                d.trubidity')
                 ->from('App\Entity\DataPoint', 'd')
-                ->join('d.hydrometer', 's')
+                ->join('d.hydrometer', 'h')
                 ->orderBy('d.created', 'ASC')
-                ->andWhere('s = :hydrometer')
+                ->andWhere('h = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer);
 
             if ($hours) {
@@ -93,13 +98,20 @@ class HydrometerResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $q = $qb->select('MAX(d.created) activity, d.temperature, d.angle, d.battery, d.gravity, d.trubidity, s.name, s.id')
-                ->from('App\Entity\Hydrometer', 's')
-                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = s')
+            $q = $qb->select('
+                    MAX(d.created) activity,
+                    MAX(d.id) last_datapoint_id,
+                    MAX(d.gravity) max_gravity,
+                    h.name,
+                    h.id,
+                    h.metricTemperature,
+                    h.metricGravity')
+                ->from('App\Entity\Hydrometer', 'h')
+                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = h AND d.deleted IS NULL')
                 ->orderBy('activity', 'DESC')
-                ->andWhere('s.user = :user')
+                ->andWhere('h.user = :user')
                 ->setParameter('user', $user->getId())
-                ->groupBy('s')
+                ->groupBy('h')
                 ->getQuery();
 
             return $q->getArrayResult();

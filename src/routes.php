@@ -27,7 +27,7 @@ $app->group('', function () {
 
 //####### UI
 $app->group('/ui', function () {
-    $this->get('[/]', 'App\Controller\UI\Index:display');
+    $this->get('[/]', 'App\Controller\UI\Hydrometers:display');
     $this->get('/status/{hydrometer:[0-9]+}', 'App\Controller\UI\Status:display')->setName('status');
     $this->get('/plato/{hydrometer:[0-9]+}', 'App\Controller\UI\Status:plato')->setName('plato');
     $this->get('/angle/{hydrometer:[0-9]+}', 'App\Controller\UI\Status:angle')->setName('angle');

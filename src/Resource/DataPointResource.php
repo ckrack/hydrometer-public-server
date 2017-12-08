@@ -190,4 +190,27 @@ class DataPointResource extends EntityRepository
 
         return $q->execute();
     }
+
+    public function findActivity($activity_id)
+    {
+        try {
+            $em = $this->getEntityManager();
+            $qb = $em->createQueryBuilder();
+
+            $q = $qb->select('
+                    d.temperature,
+                    d.angle,
+                    d.gravity,
+                    d.battery,
+                    d.trubidity')
+                ->from('App\Entity\DataPoint', 'd')
+                ->andWhere('d = :activity')
+                ->setParameter('activity', $activity_id)
+                ->getQuery();
+
+            return $q->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }
