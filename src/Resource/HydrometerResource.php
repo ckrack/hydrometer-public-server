@@ -50,30 +50,6 @@ class HydrometerResource extends EntityRepository
     }
 
     /**
-     * Get Datetime of last reset time for a hydrometer.
-     * @param  [type] $hydrometer [description]
-     * @return [type]          [description]
-     */
-    public function getLastResetTime($hydrometer)
-    {
-        try {
-            $em = $this->getEntityManager();
-            $qb = $em->createQueryBuilder();
-
-            $q = $qb->select('MAX(d.created) time')
-                ->from('App\Entity\DataPoint', 'd')
-                ->join('d.hydrometer', 's')
-                ->andWhere('s = :hydrometer')
-                ->setParameter('hydrometer', $hydrometer)
-                ->getQuery();
-
-            return $q->getSingleScalarResult();
-        } catch (\Exception $e) {
-            return 0;
-        }
-    }
-
-    /**
      * Get the latest values from a hydrometer
      * @param  Hydrometer $hydrometer [description]
      * @return [type]           [description]
@@ -84,12 +60,19 @@ class HydrometerResource extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $q = $qb->select('UNIX_TIMESTAMP(d.created) time, d.temperature, d.angle, d.battery, d.gravity, d.trubidity, s.name')
+            $q = $qb->select('
+                UNIX_TIMESTAMP(d.created) time,
+                d.temperature,
+                d.angle,
+                d.battery,
+                d.gravity,
+                d.trubidity,
+                h.name')
                 ->from('App\Entity\DataPoint', 'd')
-                ->join('d.hydrometer', 's')
+                ->join('d.hydrometer', 'h')
                 ->orderBy('d.created', 'DESC')
                 ->setMaxResults(1)
-                ->andWhere('s = :hydrometer')
+                ->andWhere('h = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer)
                 ->getQuery();
 
