@@ -3,7 +3,7 @@
 
 # log files
 /logs/*
-!/logs/README.md
+!/logs/.gitkeep
 npm-debug.log*
 
 # config
@@ -26,3 +26,4 @@ src/Proxies
 
 # ignore the database volume
 database/
+!database/.gitkeep
