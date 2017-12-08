@@ -1,33 +1,29 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
+/**
+ * This library is a PSR-7 Middleware to authenticate a user via a userId that is in the session
  */
-
 namespace App\Modules\Lang;
 
-use App\Entity\User;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Modules\Lang\Gettext;
+use App\Entity\User;
+
 
 /**
- * This class sets lang to a language for the user.
+ * This class sets lang to a language for the user
  */
 class UserLangMiddleware
 {
     /**
-     * PSR-3 logger.
-     *
+     * PSR-3 logger
      * @var [type]
      */
     protected $logger;
 
     /**
-     * [__construct description].
-     *
+     * [__construct description]
      * @param Gettext         $lang   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -40,11 +36,11 @@ class UserLangMiddleware
     }
 
     /**
-     * Act as an invokable class.
+     * Act as an invokable class
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request  PSR-7 request
-     * @param \Psr\Http\Message\ResponseInterface      $response PSR-7 response
-     * @param callable                                 $next     Next middleware
+     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR-7 request
+     * @param  \Psr\Http\Message\ResponseInterface      $response PSR-7 response
+     * @param  callable                                 $next     Next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -60,7 +56,7 @@ class UserLangMiddleware
             $lang = 'en';
             if ($user instanceof \App\Entity\User) {
                 $userLang = $user->getLanguage();
-                if (!empty($userLang)) {
+                if (! empty($userLang)) {
                     $lang = $userLang;
                 }
             }
@@ -72,12 +68,10 @@ class UserLangMiddleware
                 ->setTextdomain('hydrometer');
 
             $response = $next($request, $response);
-
             return $response;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), [$e->getMessage()]);
             $response = $next($request, $response);
-
             return $response;
         }
     }

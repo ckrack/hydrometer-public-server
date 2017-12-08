@@ -1,17 +1,12 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Modules\Ispindle;
 
-use App\Entity\DataPoint;
-use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Projek\Slim\Plates;
+use Doctrine\ORM\EntityManager;
+use App\Entity\Hydrometer;
+use App\Entity\Fermentation;
+use App\Entity\DataPoint;
 
 class TCP
 {
@@ -19,8 +14,7 @@ class TCP
     protected $em;
 
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
+     * Use League\Container for auto-wiring dependencies into the controller
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
@@ -57,16 +51,14 @@ class TCP
         $input = trim($input);
 
         // first sign {
-        if (0 === !mb_strpos($input, '{')) {
+        if (! strpos($input, "{") == 0) {
             $this->logger->error('First sign not {');
-
             return false;
         }
 
         // last sign }
-        if (!mb_strpos($input, '}') === mb_strlen($input)) {
+        if (! strpos($input, "}") == strlen($input)) {
             $this->logger->error('Last sign not }');
-
             return false;
         }
 
@@ -89,10 +81,12 @@ class TCP
 
         $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
 
-        $dataPoint = new DataPoint();
+
+        $dataPoint = new DataPoint;
 
         unset($data['id'], $data['ID']);
         $dataPoint->import($data);
+
 
         if ($fermentation) {
             $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($fermentation);
@@ -107,3 +101,4 @@ class TCP
         $this->em->flush();
     }
 }
+

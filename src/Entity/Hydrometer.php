@@ -1,16 +1,9 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\HydrometerResource")
@@ -39,35 +32,28 @@ class Hydrometer extends Entity
 
     /**
      * This is the ESP8266 Arduino ChipId.
-     * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis.
-     *
+     * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis
      * @ORM\Column(name="esp_id", type="string", nullable=true)
-     *
      * @var string
      */
     protected $esp_id;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $name;
 
     /**
-     * The metric of the temperature units (Celsius / Fahrenheit).
-     *
+     * The metric of the temperature units (Celsius / Fahrenheit)
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $metricTemperature;
 
     /**
-     * The metric of the gravity units (SG, Plato, Brix).
-     *
+     * The metric of the gravity units (SG, Plato, Brix)
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $metricGravity;
@@ -101,7 +87,6 @@ class Hydrometer extends Entity
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"name", "token", "user", "esp_id"})
-     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -109,8 +94,7 @@ class Hydrometer extends Entity
     /**
      * Setter for Id.
      * This is the only Id we allow to be set manually, as we use the one from the ESP board.
-     *
-     * @param int $id the id of the ESP-Board
+     * @param integer $id the id of the ESP-Board.
      */
     public function setId($id)
     {
@@ -196,7 +180,7 @@ class Hydrometer extends Entity
     }
 
     /**
-     * @return int
+     * @return Integer
      */
     public function getEspId()
     {
@@ -204,7 +188,7 @@ class Hydrometer extends Entity
     }
 
     /**
-     * @param int $esp_id
+     * @param Integer $esp_id
      *
      * @return self
      */

@@ -1,10 +1,6 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
+/** Dependency Injection Config */
+use Slim\Collection;
 
 // use Slim when it is initialized
 if (isset($app) && $app instanceof \Slim\App) {
@@ -21,24 +17,24 @@ if (isset($app) && $app instanceof \Slim\App) {
     });
 
     // enable auto-wiring
-    $container->delegate(new League\Container\ReflectionContainer());
+    $container->delegate(new League\Container\ReflectionContainer);
 }
 
 $container->share('Slim\Csrf\Guard', function () {
-    return new \Slim\Csrf\Guard();
+    return new \Slim\Csrf\Guard;
 });
+
 
 // monolog
 $container->share('Psr\Log\LoggerInterface', function () use ($container) {
     $settings = $container->get('settings')['logger'];
     $logger = new Monolog\Logger($settings['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    if ('development' === getenv('APP_ENV')) {
+    if (getenv('APP_ENV') == "development") {
         $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], Monolog\Logger::DEBUG));
     } else {
-        $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], (int) getenv('LOG_LEVEL')));
+        $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], (integer)getenv('LOG_LEVEL')));
     }
-
     return $logger;
 });
 
@@ -62,20 +58,19 @@ $container->share('Projek\Slim\Plates', function () use ($container) {
 // Optimus-IDs
 $container->share('Jenssegers\Optimus\Optimus', function () use ($container) {
     $settings = $container->get('settings');
-
     return new Jenssegers\Optimus\Optimus($settings['optimus']['prime'], $settings['optimus']['inverse'], $settings['optimus']['random']);
 });
 
 // Doctrine
 $container->share('Doctrine\ORM\EntityManager', function () use ($container) {
     $settings = $container->get('settings');
-    $config = new \Doctrine\ORM\Configuration();
+     $config = new \Doctrine\ORM\Configuration;
 
-    if ('development' === getenv('APP_ENV')) {
-        $cache = new \Doctrine\Common\Cache\ArrayCache();
+    if (getenv('APP_ENV') == "development") {
+        $cache = new \Doctrine\Common\Cache\ArrayCache;
         $config->setAutoGenerateProxyClasses(true);
     } else {
-        $cache = new \Doctrine\Common\Cache\ApcCache();
+        $cache = new \Doctrine\Common\Cache\ApcCache;
         $config->setAutoGenerateProxyClasses(false);
     }
 
@@ -103,7 +98,7 @@ $container->share('Doctrine\ORM\EntityManager', function () use ($container) {
     // for that we need another metadata driver used for Entity namespace
     $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
         $cachedAnnotationReader, // our cached annotation reader
-        [__DIR__.'/src/Entity'] // paths to look in
+        array(__DIR__.'/src/Entity') // paths to look in
     );
     // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
     // register annotation driver for our application Entity fully qualified namespace
@@ -125,26 +120,24 @@ $container->share('Doctrine\ORM\EntityManager', function () use ($container) {
     $config->setQueryCacheImpl($cache);
     $config->setProxyDir($settings['doctrine']['meta']['proxy_dir']);
     $config->setProxyNamespace($settings['doctrine']['meta']['proxy_namespace']);
-    $config->setCustomStringFunctions([
-                'LEAST' => 'DoctrineExtensions\Query\Mysql\Least',
-                'GREATEST' => 'DoctrineExtensions\Query\Mysql\Greatest',
-                'LPAD' => 'DoctrineExtensions\Query\Mysql\Lpad',
-                'REPLACE' => 'DoctrineExtensions\Query\Mysql\Replace',
-                'RPAD' => 'DoctrineExtensions\Query\Mysql\Rpad',
-                'SUBSTRING_INDEX' => 'DoctrineExtensions\Query\Mysql\SubstringIndex',
-                'DATE_FORMAT' => 'DoctrineExtensions\Query\Mysql\DateFormat',
-                'UNIX_TIMESTAMP' => 'DoctrineExtensions\Query\Mysql\UnixTimestamp',
-                'ROUND' => 'DoctrineExtensions\Query\Mysql\Round',
-                'NOW' => 'DoctrineExtensions\Query\Mysql\Now',
-            ]);
-
+    $config->setCustomStringFunctions(array(
+                'LEAST'             => 'DoctrineExtensions\Query\Mysql\Least',
+                'GREATEST'          => 'DoctrineExtensions\Query\Mysql\Greatest',
+                'LPAD'              => 'DoctrineExtensions\Query\Mysql\Lpad',
+                'REPLACE'           => 'DoctrineExtensions\Query\Mysql\Replace',
+                'RPAD'              => 'DoctrineExtensions\Query\Mysql\Rpad',
+                'SUBSTRING_INDEX'   => 'DoctrineExtensions\Query\Mysql\SubstringIndex',
+                'DATE_FORMAT'       => 'DoctrineExtensions\Query\Mysql\DateFormat',
+                'UNIX_TIMESTAMP'    => 'DoctrineExtensions\Query\Mysql\UnixTimestamp',
+                'ROUND'             => 'DoctrineExtensions\Query\Mysql\Round',
+                'NOW'               => 'DoctrineExtensions\Query\Mysql\Now'
+            ));
     return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config, $evm);
 });
 
 // Language
 $container->share('App\Module\Lang\Gettext', function () use ($container) {
     $settings = $container->get('settings');
-
     return new App\Module\Lang\Gettext(
         $settings['languages']['list'],
         $settings['languages']['path'],
@@ -155,7 +148,6 @@ $container->share('App\Module\Lang\Gettext', function () use ($container) {
 // OAuth Handler
 $container->share('App\Modules\OAuth\Handler', function () use ($container) {
     $settings = $container->get('settings');
-
     return new App\Modules\OAuth\Handler(
         $settings['oauth'],
         $container,
@@ -165,15 +157,14 @@ $container->share('App\Modules\OAuth\Handler', function () use ($container) {
 
 // Bootform
 $container->share('AdamWathan\BootForms\BootForm', function () use ($container) {
-    $formBuilder = new AdamWathan\Form\FormBuilder();
+    $formBuilder = new AdamWathan\Form\FormBuilder;
 
-    $formBuilder->setOldInputProvider(new App\Modules\Forms\OldInputProvider());
-    $formBuilder->setErrorStore(new App\Modules\Forms\ErrorStore());
+    $formBuilder->setOldInputProvider(new App\Modules\Forms\OldInputProvider);
+    $formBuilder->setErrorStore(new App\Modules\Forms\ErrorStore);
 
     $basicBootFormsBuilder = new AdamWathan\BootForms\BasicFormBuilder($formBuilder);
     $horizontalBootFormsBuilder = new AdamWathan\BootForms\HorizontalFormBuilder($formBuilder);
 
     $bootForm = new AdamWathan\BootForms\BootForm($basicBootFormsBuilder, $horizontalBootFormsBuilder);
-
     return $bootForm;
 });

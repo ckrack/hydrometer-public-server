@@ -1,16 +1,9 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\FermentationResource")
@@ -27,7 +20,6 @@ class Fermentation extends Entity
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $name;
@@ -67,29 +59,26 @@ class Fermentation extends Entity
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
      * @var \DateTime
      */
     protected $begin;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
      * @var \DateTime
      */
     protected $end;
 
+
     /**
      * @ORM\Column(name="is_public", type="boolean", nullable=true)
-     *
-     * @var bool
+     * @var boolean
      */
     protected $public;
 
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"name", "calibration", "user"})
-     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -100,8 +89,7 @@ class Fermentation extends Entity
     protected $deleted;
 
     /**
-     * [getContentChanged description].
-     *
+     * [getContentChanged description]
      * @return \DateTime
      */
     public function getContentChanged()
@@ -250,7 +238,7 @@ class Fermentation extends Entity
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isPublic()
     {
@@ -258,7 +246,7 @@ class Fermentation extends Entity
     }
 
     /**
-     * @param bool $public
+     * @param boolean $public
      *
      * @return self
      */

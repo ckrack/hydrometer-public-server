@@ -1,17 +1,11 @@
 <?php
 
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace Tests\Functional;
 
 use ckrack\SlimLeagueContainerBridge\App;
-use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\Environment;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -29,12 +23,11 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
     protected $withMiddleware = true;
 
     /**
-     * Process the application given a request method and URI.
+     * Process the application given a request method and URI
      *
-     * @param string            $requestMethod the request method (e.g. GET, POST, etc.)
-     * @param string            $requestUri    the request URI
-     * @param array|object|null $requestData   the request data
-     *
+     * @param string $requestMethod the request method (e.g. GET, POST, etc.)
+     * @param string $requestUri the request URI
+     * @param array|object|null $requestData the request data
      * @return \Slim\Http\Response
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
@@ -43,7 +36,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $environment = Environment::mock(
             [
                 'REQUEST_METHOD' => $requestMethod,
-                'REQUEST_URI' => $requestUri,
+                'REQUEST_URI' => $requestUri
             ]
         );
 
@@ -59,21 +52,21 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         // Use the application settings
-        $settings = require __DIR__.'/../../src/settings.php';
+        $settings = require __DIR__ . '/../../src/settings.php';
 
         // Instantiate the application
         $app = new App($settings);
 
         // Set up dependencies
-        require __DIR__.'/../../src/dependencies.php';
+        require __DIR__ . '/../../src/dependencies.php';
 
         // Register middleware
         if ($this->withMiddleware) {
-            require __DIR__.'/../../src/middleware.php';
+            require __DIR__ . '/../../src/middleware.php';
         }
 
         // Register routes
-        require __DIR__.'/../../src/routes.php';
+        require __DIR__ . '/../../src/routes.php';
 
         // Process the application
         $response = $app->process($request, $response);

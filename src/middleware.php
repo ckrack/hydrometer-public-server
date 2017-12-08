@@ -1,10 +1,5 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
+// Application middleware
 
 // try to translate for user
 $app->add($app->getContainer()->get('App\Modules\Lang\UserLangMiddleware'));

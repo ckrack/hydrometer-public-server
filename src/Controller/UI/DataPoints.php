@@ -1,26 +1,18 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Controller\UI;
 
+use Psr\Log\LoggerInterface;
+use Projek\Slim\Plates;
+use Slim\Csrf\Guard;
 use AdamWathan\BootForms\BootForm;
 use Doctrine\ORM\EntityManager;
-use Exception;
 use Jenssegers\Optimus\Optimus;
-use Projek\Slim\Plates;
-use Psr\Log\LoggerInterface;
-use Slim\Csrf\Guard;
+use Exception;
 
 class DataPoints
 {
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
+     * Use League\Container for auto-wiring dependencies into the controller
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -41,13 +33,11 @@ class DataPoints
     }
 
     /**
-     * List of datapoints.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * List of datapoints
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function display($request, $response, $args)
     {
@@ -69,12 +59,11 @@ class DataPoints
                     'hydrometer' => $hydrometer,
                     'optimus' => $this->optimus,
                     'user' => $user,
-                    'logger' => $this->logger,
+                    'logger' => $this->logger
                 ]
             );
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -82,14 +71,13 @@ class DataPoints
         }
     }
 
+
     /**
-     * Delete datapoint.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * Delete datapoint
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function delete($request, $response, $args)
     {
@@ -105,10 +93,10 @@ class DataPoints
             }
 
             if ($datapoint->getHydrometer()->getUser()->getId() !== $user->getId()) {
-                throw new \Exception('Can not access datapoint.');
+                throw new \Exception("Can not access datapoint.");
             }
 
-            if (!$request->isPost()) {
+            if (! $request->isPost()) {
                 $_SESSION['_old_input'] = $post;
 
                 $csrf = [
@@ -123,7 +111,7 @@ class DataPoints
                         'form' => $this->form,
                         'csrf' => $csrf,
                         'datapoint' => $datapoint,
-                        'user' => $user,
+                        'user' => $user
                     ]
                 );
             }
@@ -136,7 +124,6 @@ class DataPoints
             return $response->withRedirect('/ui/data');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]

@@ -1,31 +1,24 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Controller\UI;
 
+use Psr\Log\LoggerInterface;
+use Projek\Slim\Plates;
+use Slim\Csrf\Guard;
+use Doctrine\ORM\EntityManager;
+use Jenssegers\Optimus\Optimus;
 use AdamWathan\BootForms\BootForm;
+use Valitron\Validator;
 use App\Entity\Fermentation;
+use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Modules\Stats;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Exception;
-use Jenssegers\Optimus\Optimus;
-use Projek\Slim\Plates;
-use Psr\Log\LoggerInterface;
-use Slim\Csrf\Guard;
-use Valitron\Validator;
 
 class Fermentations
 {
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
+     * Use League\Container for auto-wiring dependencies into the controller
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -48,13 +41,11 @@ class Fermentations
     }
 
     /**
-     * List of fermentations.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * List of fermentations
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function display($request, $response, $args)
     {
@@ -69,12 +60,11 @@ class Fermentations
                 [
                     'data' => $data,
                     'optimus' => $this->optimus,
-                    'user' => $user,
+                    'user' => $user
                 ]
             );
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -83,11 +73,11 @@ class Fermentations
     }
 
     /**
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
      *
-     * @return [type] [description]
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function details($request, $response, $args)
     {
@@ -113,7 +103,7 @@ class Fermentations
                     [
                         'user' => $user,
                         'stable' => $stableSince,
-                        'fermentation' => $fermentation,
+                        'fermentation' => $fermentation
                     ]
                 )
             );
@@ -125,14 +115,13 @@ class Fermentations
         }
     }
 
+
     /**
-     * Show a fermentation publicly.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * Show a fermentation publicly
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function show($request, $response, $args)
     {
@@ -146,7 +135,7 @@ class Fermentations
             }
 
             if (!$fermentation->isPublic()) {
-                throw new \Exception('Fermentation is not public');
+                throw new \Exception("Fermentation is not public");
             }
 
             $latestData = $this->em->getRepository('App\Entity\DataPoint')->findByFermentation($fermentation);
@@ -162,7 +151,7 @@ class Fermentations
                     $platoData,
                     [
                         'stable' => $stableSince,
-                        'fermentation' => $fermentation,
+                        'fermentation' => $fermentation
                     ]
                 )
             );
@@ -175,13 +164,11 @@ class Fermentations
     }
 
     /**
-     * Add new fermentation.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * Add new fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function add($request, $response, $args)
     {
@@ -195,7 +182,7 @@ class Fermentations
             $validator->rule('date', 'begin');
             $validator->rule('optional', 'end');
 
-            if (!$request->isPost() || !$validator->validate()) {
+            if (! $request->isPost() || ! $validator->validate()) {
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
@@ -211,7 +198,7 @@ class Fermentations
                         'form' => $this->form,
                         'csrf' => $csrf,
                         'hydrometers' => $this->em->getRepository('App\Entity\Hydrometer')->formByUser($user),
-                        'user' => $user,
+                        'user' => $user
                     ]
                 );
             }
@@ -223,11 +210,11 @@ class Fermentations
 
             $end = null;
             $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
-            if (!empty($post['end'])) {
+            if (! empty($post['end'])) {
                 $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
             }
 
-            $fermentation = new Fermentation();
+            $fermentation = new Fermentation;
             $fermentation
                 ->setName($post['name'])
                 ->setBegin($begin)
@@ -243,7 +230,6 @@ class Fermentations
             return $response->withRedirect('/ui/fermentations');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -252,13 +238,11 @@ class Fermentations
     }
 
     /**
-     * Edit Fermentation.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * Edit Fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function edit($request, $response, $args)
     {
@@ -281,7 +265,7 @@ class Fermentations
             $validator->rule('optional', 'end');
             $validator->rule('optional', 'public');
 
-            if (!$request->isPost() || !$validator->validate()) {
+            if (! $request->isPost() || ! $validator->validate()) {
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
@@ -289,6 +273,7 @@ class Fermentations
                     $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
                     $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
                 ];
+
 
                 // render template
                 return $this->view->render(
@@ -298,7 +283,7 @@ class Fermentations
                         'csrf' => $csrf,
                         'hydrometers' => $this->em->getRepository('App\Entity\Hydrometer')->formByUser($user),
                         'fermentation' => $fermentation,
-                        'user' => $user,
+                        'user' => $user
                     ]
                 );
             }
@@ -310,7 +295,7 @@ class Fermentations
 
             $end = null;
             $begin = DateTime::createFromFormat('Y-m-d\TH:i', $post['begin']);
-            if (!empty($post['end'])) {
+            if (! empty($post['end'])) {
                 $end = DateTime::createFromFormat('Y-m-d\TH:i', $post['end']);
             }
 
@@ -342,13 +327,11 @@ class Fermentations
     }
 
     /**
-     * Delete Fermentation.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * Delete Fermentation
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function delete($request, $response, $args)
     {
@@ -363,13 +346,14 @@ class Fermentations
                 $fermentation = $this->em->getRepository('App\Entity\Fermentation')->findOneByUser($args['fermentation'], $user);
             }
 
-            if (!$request->isPost()) {
+            if (! $request->isPost()) {
                 $_SESSION['_old_input'] = $post;
 
                 $csrf = [
                     $this->csrf->getTokenNameKey() => $request->getAttribute($this->csrf->getTokenNameKey()),
                     $this->csrf->getTokenValueKey() => $request->getAttribute($this->csrf->getTokenValueKey()),
                 ];
+
 
                 // render template
                 return $this->view->render(
@@ -378,7 +362,7 @@ class Fermentations
                         'form' => $this->form,
                         'csrf' => $csrf,
                         'fermentation' => $fermentation,
-                        'user' => $user,
+                        'user' => $user
                     ]
                 );
             }
@@ -392,7 +376,6 @@ class Fermentations
             return $response->withRedirect('/ui/fermentations');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]

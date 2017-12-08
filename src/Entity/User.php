@@ -1,16 +1,9 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\UserResource")
@@ -41,35 +34,30 @@ class User extends Entity
 
     /**
      * @ORM\Column(type="string", length=190)
-     *
      * @var string
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=190)
-     *
      * @var string
      */
     protected $username;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     *
      * @var string
      */
     protected $apiToken;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
      * @var string
      */
     protected $timeZone;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
      * @var string
      */
     protected $language;
@@ -92,7 +80,6 @@ class User extends Entity
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"username", "password"})
-     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -103,8 +90,7 @@ class User extends Entity
     protected $deleted;
 
     /**
-     * [getContentChanged description].
-     *
+     * [getContentChanged description]
      * @return \DateTime
      */
     public function getContentChanged()

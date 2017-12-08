@@ -1,15 +1,9 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -29,28 +23,24 @@ class Calibration extends Entity
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(type="float")
-     *
      * @var string
      */
     protected $const1;
 
     /**
      * @ORM\Column(type="float")
-     *
      * @var string
      */
     protected $const2;
 
     /**
      * @ORM\Column(type="float")
-     *
      * @var string
      */
     protected $const3;
@@ -63,7 +53,6 @@ class Calibration extends Entity
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"name", "const1", "const2", "const3"})
-     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -74,8 +63,7 @@ class Calibration extends Entity
     protected $deleted;
 
     /**
-     * [getContentChanged description].
-     *
+     * [getContentChanged description]
      * @return \DateTime
      */
     public function getContentChanged()

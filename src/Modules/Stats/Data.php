@@ -1,19 +1,13 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Modules\Stats;
 
-use App\Entity\Calibration;
-use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManager;
-use Jenssegers\Date\Date;
-use Projek\Slim\Plates;
 use Psr\Log\LoggerInterface;
+use Projek\Slim\Plates;
+use Doctrine\ORM\EntityManager;
+use App\Entity\Hydrometer;
+use App\Entity\Calibration;
+use App\Entity\DataPoint;
+use Jenssegers\Date\Date;
 
 class Data
 {
@@ -22,8 +16,7 @@ class Data
     protected $em;
 
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
+     * Use League\Container for auto-wiring dependencies into the controller
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -41,11 +34,10 @@ class Data
      * Returns a string representing a timespan since when the value of $fieldname is stable.
      * The stability can be refined using $deviance.
      *
-     * @param [type] $latestData [description]
-     * @param [type] $fieldName  [description]
-     * @param [type] $deviance   [description]
-     *
-     * @return string [description]
+     * @param  [type] $latestData [description]
+     * @param  [type] $fieldName  [description]
+     * @param  [type] $deviance   [description]
+     * @return string             [description]
      */
     public function stableSince($latestData, $fieldName, $deviance)
     {
@@ -68,17 +60,14 @@ class Data
                 break;
             }
         }
-
         return Date::parse($latestData[0]['time'])->timespan(Date::parse($latestData[$stableSince]['time']));
     }
 
     /**
-     * [platoCombined description].
-     *
-     * @param array      $latestData [description]
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * [platoCombined description]
+     * @param  array      $latestData [description]
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]                 [description]
      */
     public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
@@ -97,7 +86,7 @@ class Data
                 foreach ($value as $unit => $v) {
                     $data[$unit][] = $v;
 
-                    if ('gravity' === $unit && $v) {
+                    if ($unit === 'gravity' && $v) {
                         $useGravity = true;
                     }
                 }
@@ -114,7 +103,7 @@ class Data
             return [
                 'name' => $hydrometer->getName(),
                 'data' => $data,
-                'isCalib' => $isCalibrated,
+                'isCalib' => $isCalibrated
             ];
         } catch (\Exception $e) {
             throw $e;
@@ -123,11 +112,9 @@ class Data
 
     /**
      * Get an array of calibration values
-     * Use the returned array with list($const1, $const2, $const3).
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Use the returned array with list($const1, $const2, $const3)
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     protected function getCalibrationValues(Hydrometer $hydrometer)
     {
@@ -140,19 +127,16 @@ class Data
                 $calibration->getConst1(),
                 $calibration->getConst2(),
                 $calibration->getConst3(),
-                true,
+                true
             ];
         }
-
         return $values;
     }
 
     /**
-     * get angle and temperature values.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * get angle and temperature values
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function angle(Hydrometer $hydrometer)
     {
@@ -170,7 +154,8 @@ class Data
         // render template
         return [
             'name' => $hydrometer->getName(),
-            'data' => $data,
+            'data' => $data
         ];
     }
 }
+

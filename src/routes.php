@@ -1,10 +1,6 @@
 <?php
 
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
+// Routes
 
 //####### API
 
@@ -49,7 +45,7 @@ $app->group('/ui', function () {
 // require a 'user' in $request that matches an App\Entity\User object
 ->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'))
 // add CSRF
-->add(new \Slim\Csrf\Guard());
+->add(new \Slim\Csrf\Guard);
 
 // Pages
 $app->get('/[{site}]', 'App\Controller\Index:display');

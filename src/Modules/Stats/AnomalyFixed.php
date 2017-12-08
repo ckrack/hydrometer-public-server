@@ -1,11 +1,4 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Modules\Stats;
 
 use Psr\Log\LoggerInterface;
@@ -13,8 +6,7 @@ use Psr\Log\LoggerInterface;
 class AnomalyFixed
 {
     /**
-     * our sample size.
-     *
+     * our sample size
      * @var array
      */
     protected $outlier;

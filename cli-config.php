@@ -1,11 +1,4 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 require __DIR__.'/vendor/autoload.php';
@@ -13,13 +6,13 @@ require __DIR__.'/vendor/autoload.php';
 $settings = include __DIR__.'/src/settings.php';
 $settings = $settings['settings']['doctrine'];
 
-$config = new \Doctrine\ORM\Configuration();
+$config = new \Doctrine\ORM\Configuration;
 
-if ('development' === getenv('APP_ENV')) {
-    $cache = new \Doctrine\Common\Cache\ArrayCache();
+if (getenv('APP_ENV') == "development") {
+    $cache = new \Doctrine\Common\Cache\ArrayCache;
     $config->setAutoGenerateProxyClasses(false);
 } else {
-    $cache = new \Doctrine\Common\Cache\ApcCache();
+    $cache = new \Doctrine\Common\Cache\ApcCache;
     $config->setAutoGenerateProxyClasses(true);
 }
 
@@ -51,7 +44,7 @@ $driverChain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChai
 // for that we need another metadata driver used for Entity namespace
 $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
     $cachedAnnotationReader, // our cached annotation reader
-    [__DIR__.'/src/Entity'] // paths to look in
+    array(__DIR__.'/src/Entity') // paths to look in
 );
 // NOTE: driver for application Entity can be different, Yaml, Xml or whatever
 // register annotation driver for our application Entity fully qualified namespace
@@ -77,7 +70,7 @@ $config->addFilter('softdeleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteable
 //     $cache,
 //     false
 // );
-//return \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
+#return \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
 
 $em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config, $evm);
 

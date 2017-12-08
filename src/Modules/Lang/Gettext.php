@@ -1,11 +1,4 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Modules\Lang;
 
 use Psr\Log\LoggerInterface;
@@ -16,86 +9,79 @@ class Gettext
      * array of allowed languages
      * this array contains a short 2-character code for the name as index,
      * a name in the own language and a list of possible locales to be tried.
-     *
      * @var array
      */
     protected $allowed;
 
     /**
-     * name of active textdomain.
-     *
+     * name of active textdomain
      * @var string
      */
     protected $textdomain = 'default';
 
     /**
-     * path to .po language files.
-     *
+     * path to .po language files
      * @var string
      */
     protected $path;
 
     /**
-     * the default category is LC_MESSAGES.
-     *
-     * @var int
+     * the default category is LC_MESSAGES
+     * @var integer
      */
     protected $category;
 
     /**
-     * the character set for textdomains.
-     *
+     * the character set for textdomains
      * @var string
      */
     protected $charset;
 
     /**
-     * the currently active locale.
-     *
+     * the currently active locale
      * @var string
      */
     protected $activeLocale;
 
     /**
-     * the currently active language shortcode.
-     *
+     * the currently active language shortcode
      * @var string
      */
     protected $activeLang;
 
     public function __construct(
-        $allowed,
-        $path,
-        $category,
-        $charset,
+        $allowed = null,
+        $path = null,
+        $category = LC_MESSAGES,
+        $charset = 'UTF-8',
         LoggerInterface $logger
     ) {
         // defaults
-        $this->allowed = [
+        $this->allowed = array(
             'en' => [
                 // the name in it's language
                 'name' => 'English',
                 // a list of valid locales
-                'locales' => ['en_EN', 'en_GB', 'en_US'],
+                'locales' => ['en_EN', 'en_GB', 'en_US']
             ],
             'de' => [
                 'name' => 'Deutsch',
-                'locales' => ['de_DE', 'German_Germany.1252', 'de_CH', 'de_AT'],
-            ],
-        ];
+                'locales' => ['de_DE', 'German_Germany.1252', 'de_CH', 'de_AT']
+            ]
+        );
 
         // set custom languages
-        if (null !== $allowed) {
+        if ($allowed !== null) {
             $this->allowed = $allowed;
         }
 
         // set path for textdomains
-        if (null !== $path) {
+        if ($path !== null) {
             $this->path = $path;
         }
 
         /* windows workaround */
-        if (!defined('LC_MESSAGES')) {
+        if (! defined('LC_MESSAGES')) {
             define('LC_MESSAGES', 5);
         }
 
@@ -106,7 +92,7 @@ class Gettext
 
     public function setLang($lang = 'de')
     {
-        if (!array_key_exists($lang, $this->allowed)) {
+        if (! array_key_exists($lang, $this->allowed)) {
             throw new \OutOfRangeException('The selected language is not available.');
         }
 
@@ -123,7 +109,6 @@ class Gettext
 
     /**
      * Sets the active textdomain.
-     *
      * @param string $textdomain the textdomain (name of translation file sans .po)
      * @param string $path       optional path for the language files (sans locale and category)
      * @param string $charset    optional character set
@@ -132,11 +117,11 @@ class Gettext
     {
         $this->logger->debug('Gettext: Set text domain', [$textdomain, $path, $charset]);
 
-        if (null !== $path) {
+        if ($path !== null) {
             $this->setPath($path);
         }
 
-        if (null !== $charset) {
+        if ($charset !== null) {
             $this->setCharset($charset);
         }
 
@@ -152,7 +137,6 @@ class Gettext
         // read textdomain from e.g: $path/de_DE/LC_MESSAGES/$textdomain.mo
         $result = textdomain($this->getTextdomain());
         $this->logger->debug('Gettext: Set textdomain', [$result]);
-
         return $this;
     }
 
@@ -167,31 +151,27 @@ class Gettext
     }
 
     /**
-     * sets up the gettext locales.
-     *
-     * @param array $locales locales to try for the language
-     *
+     * sets up the gettext locales
+     * @param  array $locales locales to try for the language
      * @return self
      */
     protected function setupGettext($locales)
     {
         foreach ($locales as $locale) {
-            $result = putenv('LANGUAGE='.$locale);
+            $result = putenv("LANGUAGE=".$locale);
             if (false !== setlocale(LC_MESSAGES, $locale)) {
                 // set the active locale
                 $this->activeLocale = $locale;
-                $this->logger->debug('Locale is: '.$locale);
+                $this->logger->debug('Locale is: ' . $locale);
                 break;
             }
         }
-
         return $this;
     }
 
     /**
      * destroy the textdomain cache.
      * this can be used for debugging and needs to be called before self::loadTextDomain().
-     *
      * @return self
      */
     public function destroyCache()
@@ -227,9 +207,9 @@ class Gettext
     }
 
     /**
-     * Gets the the category.
+     * Gets the the category
      *
-     * @return int
+     * @return integer
      */
     public function getCategory()
     {
@@ -239,7 +219,7 @@ class Gettext
     /**
      * Sets the category.
      *
-     * @param int $category the category
+     * @param integer $category the category
      *
      * @return self
      */

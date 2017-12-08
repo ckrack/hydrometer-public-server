@@ -1,15 +1,9 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\TokenResource")
@@ -23,24 +17,20 @@ class Token extends Entity
     }
 
     /**
-     * One of api, login, register.
-     *
+     * One of api, login, register
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $type;
 
     /**
      * @ORM\Column(name="value", type="string", length=190, nullable=true)
-     *
      * @var string
      */
     protected $value;
 
     /**
      * @ORM\Column(name="was_used", type="integer", length=1, nullable=true)
-     *
      * @var string
      */
     protected $wasUsed;
@@ -58,7 +48,6 @@ class Token extends Entity
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"value", "type", "user", "wasUsed"})
-     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -66,8 +55,7 @@ class Token extends Entity
     /**
      * Setter for Id.
      * This is the only Id we allow to be set manually, as we use the one from the ESP board.
-     *
-     * @param int $id the id of the ESP-Board
+     * @param integer $id the id of the ESP-Board.
      */
     public function setId($id)
     {
@@ -105,7 +93,7 @@ class Token extends Entity
     }
 
     /**
-     * @return int
+     * @return Integer
      */
     public function getId()
     {

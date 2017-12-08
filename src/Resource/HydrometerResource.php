@@ -1,29 +1,20 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Resource;
 
+use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
-use Doctrine\ORM\EntityRepository;
 use Exception;
 
 /**
- * Class Resource.
+ * Class Resource
  */
 class HydrometerResource extends EntityRepository
 {
     /**
-     * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Get the latest values from a hydrometer
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function getData(Hydrometer $hydrometer, $hours = null, $since = null)
     {
@@ -44,12 +35,12 @@ class HydrometerResource extends EntityRepository
                 ->setParameter('hydrometer', $hydrometer);
 
             if ($hours) {
-                $qb->andWhere('d.created >= DATE_SUB(NOW(), '.$hours.", 'HOUR')");
+                $qb->andWhere("d.created >= DATE_SUB(NOW(), ".$hours.", 'HOUR')");
                 $qb->andWhere('d.created <= NOW()');
             }
 
             if ($since) {
-                $qb->andWhere('d.created >= :since');
+                $qb->andWhere("d.created >= :since");
                 $qb->setParameter('since', $since);
             }
 
@@ -64,11 +55,9 @@ class HydrometerResource extends EntityRepository
     }
 
     /**
-     * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Get the latest values from a hydrometer
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function getLatestData(Hydrometer $hydrometer)
     {
@@ -99,11 +88,9 @@ class HydrometerResource extends EntityRepository
     }
 
     /**
-     * Get list of hydrometers including their last activity.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Get list of hydrometers including their last activity
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function findAllWithLastActivity(User $user)
     {
@@ -134,11 +121,9 @@ class HydrometerResource extends EntityRepository
     }
 
     /**
-     * Get list of hydrometers including their last activity.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Get list of hydrometers including their last activity
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function findAllByUser(User $user)
     {
@@ -156,16 +141,13 @@ class HydrometerResource extends EntityRepository
         foreach ($hydrometers as $hydrometer) {
             $options[$hydrometer->getId()] = $hydrometer->getName();
         }
-
         return $options;
     }
 
     /**
      * Get the latest active hydrometer, optionally by given user.
-     *
-     * @param User $user [description]
-     *
-     * @return [type] [description]
+     * @param  User $user [description]
+     * @return [type]           [description]
      */
     public function getLastActive(User $user = null)
     {
@@ -197,7 +179,7 @@ class HydrometerResource extends EntityRepository
         try {
             return $this->findOneBy([
                 'user' => $user,
-                'id' => $hydrometer,
+                'id' => $hydrometer
             ]);
         } catch (Exception $e) {
             return null;
@@ -220,7 +202,7 @@ class HydrometerResource extends EntityRepository
             }
 
             // we create an un-identified hydrometer
-            $hydrometer = new Hydrometer();
+            $hydrometer = new Hydrometer;
             $hydrometer->setId($id);
 
             return $hydrometer;

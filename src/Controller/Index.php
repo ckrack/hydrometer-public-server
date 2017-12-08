@@ -1,22 +1,14 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Controller;
 
-use Exception;
-use Projek\Slim\Plates;
 use Psr\Log\LoggerInterface;
+use Projek\Slim\Plates;
+use Exception;
 
 class Index
 {
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
+     * Use League\Container for auto-wiring dependencies into the controller
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -29,13 +21,11 @@ class Index
     }
 
     /**
-     * List of available hydrometers.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * List of available hydrometers
+     * @param  [type] $request  [description]
+     * @param  [type] $response [description]
+     * @param  [type] $args     [description]
+     * @return [type]           [description]
      */
     public function display($request, $response, $args)
     {
@@ -47,7 +37,7 @@ class Index
             return $this->view->render(
                 $args['site'].'.php',
                 [
-                    'user' => $request->getAttribute('user'),
+                    'user' => $request->getAttribute('user')
                 ]
             );
         } catch (Exception $e) {

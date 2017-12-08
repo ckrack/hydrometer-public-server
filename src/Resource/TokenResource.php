@@ -1,28 +1,20 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Resource;
 
-use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityRepository;
+use App\Entity\Hydrometer;
+use App\Entity\User;
 use Exception;
 
 /**
- * Class Resource.
+ * Class Resource
  */
 class TokenResource extends EntityRepository
 {
     /**
-     * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
+     * Get the latest values from a hydrometer
+     * @param  Hydrometer $hydrometer [description]
+     * @return [type]           [description]
      */
     public function findByValue($token)
     {

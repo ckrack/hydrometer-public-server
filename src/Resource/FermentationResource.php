@@ -1,29 +1,20 @@
 <?php
-
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Resource;
 
+use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
-use Doctrine\ORM\EntityRepository;
 use Exception;
 
 /**
- * Class Resource.
+ * Class Resource
  */
 class FermentationResource extends EntityRepository
 {
     /**
-     * Get the latest values from a hydrometer.
-     *
-     * @param User $user [description]
-     *
-     * @return [type] [description]
+     * Get the latest values from a hydrometer
+     * @param  User $user [description]
+     * @return [type]           [description]
      */
     public function findAllByUser(User $user, $limit = 500, $offset = 0)
     {
@@ -60,7 +51,6 @@ class FermentationResource extends EntityRepository
             ->setMaxResults($limit);
 
             $q = $qb->getQuery();
-
             return $q->getArrayResult();
         } catch (Exception $e) {
             return null;
@@ -72,7 +62,7 @@ class FermentationResource extends EntityRepository
         try {
             return $this->findOneBy([
                 'user' => $user,
-                'id' => $fermentation,
+                'id' => $fermentation
             ]);
         } catch (Exception $e) {
             return null;
