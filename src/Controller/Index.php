@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
 use Projek\Slim\Plates;
+use Exception;
 
 class Index
 {
@@ -28,15 +29,21 @@ class Index
      */
     public function display($request, $response, $args)
     {
-        if (empty($args)) {
-            $args['site'] = 'index';
+        try {
+            if (empty($args)) {
+                $args['site'] = 'index';
+            }
+            // render template
+            return $this->view->render(
+                $args['site'].'.php',
+                [
+                    'user' => $request->getAttribute('user')
+                ]
+            );
+        } catch (Exception $e) {
+            return $this->view->render(
+                'ui/exception.php'
+            );
         }
-        // render template
-        return $this->view->render(
-            $args['site'].'.php',
-            [
-                'user' => $request->getAttribute('user')
-            ]
-        );
     }
 }
