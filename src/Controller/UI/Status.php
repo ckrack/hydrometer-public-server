@@ -62,7 +62,9 @@ class Status
             return $this->view->render(
                 '/ui/status.php',
                 array_merge(
-                    ['name' => $hydrometer->getName()],
+                    [
+                    'hydrometer' => $hydrometer
+                    ],
                     (array) $latestData,
                     ['user' => $user]
                 )
