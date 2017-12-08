@@ -7,6 +7,7 @@ use Slim\Csrf\Guard;
 use AdamWathan\BootForms\BootForm;
 use Doctrine\ORM\EntityManager;
 use Jenssegers\Optimus\Optimus;
+use Exception;
 
 class DataPoints
 {
@@ -40,26 +41,34 @@ class DataPoints
      */
     public function display($request, $response, $args)
     {
-        $user = $request->getAttribute('user');
-        $hydrometer = null;
-        if (isset($args['hydrometer'])) {
-            $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
-            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
+        try {
+            $user = $request->getAttribute('user');
+            $hydrometer = null;
+            if (isset($args['hydrometer'])) {
+                $args['hydrometer'] = $this->optimus->decode($args['hydrometer']);
+                $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->findOneByUser($args['hydrometer'], $user);
+            }
+
+            $data = $this->em->getRepository('App\Entity\DataPoint')->findAllByUser($user, $hydrometer);
+
+            // render template
+            return $this->view->render(
+                '/ui/datapoints/index.php',
+                [
+                    'data' => $data,
+                    'hydrometer' => $hydrometer,
+                    'optimus' => $this->optimus,
+                    'user' => $user,
+                    'logger' => $this->logger
+                ]
+            );
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
         }
-
-        $data = $this->em->getRepository('App\Entity\DataPoint')->findAllByUser($user, $hydrometer);
-
-        // render template
-        return $this->view->render(
-            '/ui/datapoints/index.php',
-            [
-                'data' => $data,
-                'hydrometer' => $hydrometer,
-                'optimus' => $this->optimus,
-                'user' => $user,
-                'logger' => $this->logger
-            ]
-        );
     }
 
 
@@ -113,7 +122,7 @@ class DataPoints
             $this->em->flush();
 
             return $response->withRedirect('/ui/data');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->view->render(
                 'ui/exception.php',
