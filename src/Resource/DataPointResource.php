@@ -1,22 +1,31 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Resource;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
 use App\Entity\User;
-use App\Entity\Fermentation;
 use DateTime;
+use Doctrine\ORM\EntityRepository;
 use Exception;
 
 /**
- * Class Resource
+ * Class Resource.
  */
 class DataPointResource extends EntityRepository
 {
     /**
-     * Get the latest values from a hydrometer
-     * @param  Hydrometer $hydrometer [description]
-     * @return [type]           [description]
+     * Get the latest values from a hydrometer.
+     *
+     * @param Hydrometer $hydrometer [description]
+     *
+     * @return [type] [description]
      */
     public function findInColumns(Hydrometer $hydrometer = null)
     {
@@ -39,7 +48,6 @@ class DataPointResource extends EntityRepository
                 ->orderBy('d.created', 'ASC')
                 ->groupBy('groupTime');
 
-
             if ($hydrometer) {
                 $qb->andWhere('d.hydrometer = :hydrometer');
                 $qb->setParameter('hydrometer', $hydrometer->getId());
@@ -48,6 +56,7 @@ class DataPointResource extends EntityRepository
             $qb->setMaxResults(500);
 
             $q = $qb->getQuery();
+
             return $q->getArrayResult();
         } catch (Exception $e) {
             return null;
@@ -55,9 +64,11 @@ class DataPointResource extends EntityRepository
     }
 
     /**
-     * Get the latest values from a fermentation
-     * @param  Fermentation $fermentation [description]
-     * @return [type]           [description]
+     * Get the latest values from a fermentation.
+     *
+     * @param Fermentation $fermentation [description]
+     *
+     * @return [type] [description]
      */
     public function findByFermentation(Fermentation $fermentation)
     {
@@ -89,9 +100,11 @@ class DataPointResource extends EntityRepository
     }
 
     /**
-     * Get the latest values from a hydrometer
-     * @param  User $user [description]
-     * @return [type]           [description]
+     * Get the latest values from a hydrometer.
+     *
+     * @param User $user [description]
+     *
+     * @return [type] [description]
      */
     public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0)
     {
@@ -118,6 +131,7 @@ class DataPointResource extends EntityRepository
             }
 
             $q = $qb->getQuery();
+
             return $q->getArrayResult();
         } catch (Exception $e) {
             return null;
@@ -127,8 +141,9 @@ class DataPointResource extends EntityRepository
     /**
      * Add all un-assigned datapoints that match a fermentations timerange and
      * the defined hydrometer to a (new) fermentation.
+     *
      * @param Fermentation $fermentation [description]
-     * @param Hydrometer      $hydrometer      [description]
+     * @param Hydrometer   $hydrometer   [description]
      */
     public function addToFermentation(Fermentation $fermentation, Hydrometer $hydrometer)
     {
@@ -161,11 +176,13 @@ class DataPointResource extends EntityRepository
 
     /**
      * Remove datapoints from fermentation.
-     * If the before and after parameters are supplied, only datapoints
-     * @param  Fermentation  $fermentation [description]
-     * @param  DateTime|null $before       [description]
-     * @param  DateTime|null $after        [description]
-     * @return [type]                      [description]
+     * If the before and after parameters are supplied, only datapoints.
+     *
+     * @param Fermentation  $fermentation [description]
+     * @param DateTime|null $before       [description]
+     * @param DateTime|null $after        [description]
+     *
+     * @return [type] [description]
      */
     public function removeFromFermentation(Fermentation $fermentation, DateTime $before = null, DateTime $after = null)
     {

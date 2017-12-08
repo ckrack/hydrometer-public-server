@@ -1,22 +1,29 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\Forms;
 
 class ErrorStore implements \AdamWathan\Form\ErrorStore\ErrorStoreInterface
 {
     public function hasError($key)
     {
-        if (! $this->hasErrors()) {
+        if (!$this->hasErrors()) {
             return false;
         }
 
         $key = $this->transformKey($key);
 
-        return (! empty($_SESSION['errors'][$key]));
+        return !empty($_SESSION['errors'][$key]);
     }
 
     public function getError($key)
     {
-        if (! $this->hasError($key)) {
+        if (!$this->hasError($key)) {
             return null;
         }
 
@@ -27,7 +34,7 @@ class ErrorStore implements \AdamWathan\Form\ErrorStore\ErrorStoreInterface
 
     protected function hasErrors()
     {
-        return (! empty($_SESSION['errors']));
+        return !empty($_SESSION['errors']);
     }
 
     protected function getErrors()

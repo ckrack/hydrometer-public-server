@@ -1,13 +1,17 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Controller\OAuth;
 
-use Psr\Log\LoggerInterface;
-use Projek\Slim\Plates;
-use App\Modules\OAuth\Manager;
 use App\Modules\OAuth\Handler;
-use Doctrine\ORM\EntityManager;
-use League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Provider\Google;
+use App\Modules\OAuth\Manager;
+use Projek\Slim\Plates;
+use Psr\Log\LoggerInterface;
 
 class OAuth
 {
@@ -17,7 +21,8 @@ class OAuth
     protected $manager;
 
     /**
-     * Use League\Container for auto-wiring dependencies into the controller
+     * Use League\Container for auto-wiring dependencies into the controller.
+     *
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -34,11 +39,13 @@ class OAuth
     }
 
     /**
-     * Start authentication by showing the form to enter an email
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Start authentication by showing the form to enter an email.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function init($request, $response, $args)
     {
@@ -57,22 +64,24 @@ class OAuth
     }
 
     /**
-     * Send email and show form to enter token or reloading wait screen
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Send email and show form to enter token or reloading wait screen.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function confirm($request, $response, $args)
     {
         // If we don't have an authorization code then get one
-        if (! $request->getQueryParam('code', false)) {
+        if (!$request->getQueryParam('code', false)) {
             return $this->init($request, $response, $args);
         }
 
-        if (! $request->getQueryParam('state', false) || ($request->getQueryParam('state') !== $_SESSION['oauth2state'])) {
+        if (!$request->getQueryParam('state', false) || ($request->getQueryParam('state') !== $_SESSION['oauth2state'])) {
             unset($_SESSION['oauth2state']);
-            throw new \InvalidArgumentException("Invalid state");
+            throw new \InvalidArgumentException('Invalid state');
         }
 
         try {
@@ -80,7 +89,7 @@ class OAuth
 
             // Try to get an access token using the authorization code grant.
             $accessToken = $this->provider->getAccessToken('authorization_code', [
-                'code' => $request->getQueryParam('code', false)
+                'code' => $request->getQueryParam('code', false),
             ]);
 
             // Using the access token, we may look up details about the
@@ -107,7 +116,6 @@ class OAuth
             }
 
             var_dump($resourceOwner->toArray(), $resourceOwner);
-
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
             // Failed to get the access token or user details.
             // render template
@@ -119,11 +127,13 @@ class OAuth
     }
 
     /**
-     * Confirm successful login
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Confirm successful login.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function success($request, $response, $args)
     {
@@ -138,15 +148,18 @@ class OAuth
         if ($user instanceof \App\Entity\User) {
             return $this->view->render($template, ['user' => $user]);
         }
+
         return $this->view->render('oauth/login/error.php');
     }
 
     /**
-     * Logout
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Logout.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function logout($request, $response, $args)
     {
@@ -154,8 +167,10 @@ class OAuth
 
         if ($user instanceof \App\Entity\User) {
             $response = $this->manager->logout($response, $user);
+
             return $response->withRedirect('/');
         }
+
         return $this->view->render('auth/login/error.php');
     }
 }

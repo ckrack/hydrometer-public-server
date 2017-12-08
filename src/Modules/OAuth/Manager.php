@@ -1,10 +1,17 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\OAuth;
 
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use App\Entity\User;
-use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Http\Response;
 
 /**
@@ -21,9 +28,11 @@ class Manager
     }
 
     /**
-     * Try logging in an oauth-user
-     * @param  ResourceOwnerInterface $resourceOwner [description]
-     * @return User|bool                [description]
+     * Try logging in an oauth-user.
+     *
+     * @param ResourceOwnerInterface $resourceOwner [description]
+     *
+     * @return User|bool [description]
      */
     public function login(ResourceOwnerInterface $resourceOwner)
     {
@@ -38,13 +47,15 @@ class Manager
     }
 
     /**
-     * Register a new user
-     * @param  ResourceOwnerInterface $resourceOwner [description]
-     * @return User                [description]
+     * Register a new user.
+     *
+     * @param ResourceOwnerInterface $resourceOwner [description]
+     *
+     * @return User [description]
      */
     public function register(ResourceOwnerInterface $resourceOwner)
     {
-        $user = new User;
+        $user = new User();
         // @TODO check if all return results on these methods or use custom ones in a switch
         $user->setUsername($resourceOwner->getName());
 
@@ -58,10 +69,12 @@ class Manager
     }
 
     /**
-     * Logout
-     * @param  ResponseInterface $response [description]
-     * @param  User              $user     [description]
-     * @return [type]                      [description]
+     * Logout.
+     *
+     * @param ResponseInterface $response [description]
+     * @param User              $user     [description]
+     *
+     * @return [type] [description]
      */
     public function logout(Response $response, User $user)
     {

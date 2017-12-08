@@ -1,12 +1,18 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\OAuth;
 
-use Psr\Log\LoggerInterface;
 use League\Container\Container;
-use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 
 /**
- * Handler class for OAuth
+ * Handler class for OAuth.
  */
 class Handler
 {
@@ -21,14 +27,16 @@ class Handler
     }
 
     /**
-     * Get the provider class for a named oauth server
-     * @param  [type] $providerName [description]
-     * @return [type]               [description]
+     * Get the provider class for a named oauth server.
+     *
+     * @param [type] $providerName [description]
+     *
+     * @return [type] [description]
      */
     public function getProvider($providerName)
     {
-        if (! array_key_exists($providerName, $this->settings)) {
-            throw new \Exception("Provider not available");
+        if (!array_key_exists($providerName, $this->settings)) {
+            throw new \Exception('Provider not available');
         }
 
         $this->logger->debug('Creating new OAuth provider', $this->settings[$providerName]);
@@ -37,7 +45,8 @@ class Handler
     }
 
     /**
-     * get list of available providers
+     * get list of available providers.
+     *
      * @return array [description]
      */
     public function getAvailable()

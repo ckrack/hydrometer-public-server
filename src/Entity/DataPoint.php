@@ -1,9 +1,15 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\DataPointResource")
@@ -33,6 +39,7 @@ class DataPoint extends Entity
     /**
      * @ORM\Column(name="changed", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="change", field={"angle", "temperature", "battery", "gravity", "trubidity"})
+     *
      * @var \DateTime
      */
     protected $contentChanged;
@@ -43,7 +50,8 @@ class DataPoint extends Entity
     protected $deleted;
 
     /**
-     * [getContentChanged description]
+     * [getContentChanged description].
+     *
      * @return \DateTime
      */
     public function getContentChanged()
@@ -53,30 +61,35 @@ class DataPoint extends Entity
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
      * @var string
      */
     protected $angle;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
      * @var string
      */
     protected $temperature;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
      * @var string
      */
     protected $battery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
      * @var string
      */
     protected $gravity;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
      * @var string
      */
     protected $trubidity;

@@ -1,13 +1,17 @@
 <?php
-/**
- * This library is a PSR-7 Middleware to authenticate a user via a userId that is in the session
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
  */
+
 namespace App\Modules\Auth\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Valitron\Validator;
 
 /**
@@ -16,13 +20,13 @@ use Valitron\Validator;
 class Session
 {
     /**
-     * PSR-3 logger
+     * PSR-3 logger.
+     *
      * @var [type]
      */
     protected $logger;
 
     /**
-     *
      * @param EntityManager   $em     [description]
      * @param LoggerInterface $logger [description]
      */
@@ -35,11 +39,11 @@ class Session
     }
 
     /**
-     * Act as an invokable class
+     * Act as an invokable class.
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR-7 request
-     * @param  \Psr\Http\Message\ResponseInterface      $response PSR-7 response
-     * @param  callable                                 $next     Next middleware
+     * @param \Psr\Http\Message\ServerRequestInterface $request  PSR-7 request
+     * @param \Psr\Http\Message\ResponseInterface      $response PSR-7 response
+     * @param callable                                 $next     Next middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -56,8 +60,9 @@ class Session
                 // validate userId
                 $validator = new Validator($_SESSION);
                 $validator->rule('integer', 'userId');
-                if (! $validator->validate()) {
+                if (!$validator->validate()) {
                     $response = $next($request, $response);
+
                     return $response;
                 }
 
@@ -71,11 +76,13 @@ class Session
             }
 
             $response = $next($request, $response);
+
             return $response;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), [$e->getMessage()]);
             $response = $response->withStatus(500);
             $response = $next($request, $response);
+
             return $response;
         }
     }

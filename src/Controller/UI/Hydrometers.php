@@ -1,23 +1,31 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Controller\UI;
 
-use Psr\Log\LoggerInterface;
-use Projek\Slim\Plates;
-use Slim\Csrf\Guard;
-use Doctrine\ORM\EntityManager;
-use Jenssegers\Optimus\Optimus;
 use AdamWathan\BootForms\BootForm;
-use Valitron\Validator;
-use App\Entity\User;
-use App\Entity\Token;
-use App\Entity\Hydrometer;
 use App\Entity\DataPoint;
+use App\Entity\Hydrometer;
+use App\Entity\Token;
+use App\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Exception;
+use Jenssegers\Optimus\Optimus;
+use Projek\Slim\Plates;
+use Psr\Log\LoggerInterface;
+use Slim\Csrf\Guard;
+use Valitron\Validator;
 
 class Hydrometers
 {
     /**
-     * Use League\Container for auto-wiring dependencies into the controller
+     * Use League\Container for auto-wiring dependencies into the controller.
+     *
      * @param Plates          $view   [description]
      * @param LoggerInterface $logger [description]
      */
@@ -38,11 +46,13 @@ class Hydrometers
     }
 
     /**
-     * List of available hydrometers
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * List of available hydrometers.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function display($request, $response, $args)
     {
@@ -59,7 +69,7 @@ class Hydrometers
                 [
                     'hydrometers' => $hydrometers,
                     'optimus' => $this->optimus,
-                    'user' => $user
+                    'user' => $user,
                 ]
             );
         } catch (Exception $e) {
@@ -71,9 +81,11 @@ class Hydrometers
     }
 
     /**
-     * Find the last activity for every hydrometer
-     * @param  [type] $hydrometers [description]
-     * @return [type]              [description]
+     * Find the last activity for every hydrometer.
+     *
+     * @param [type] $hydrometers [description]
+     *
+     * @return [type] [description]
      */
     protected function findLastActivity($hydrometers)
     {
@@ -83,15 +95,18 @@ class Hydrometers
                 $hydrometers[$key] = array_merge($hydrometer, (array) $activity);
             }
         }
+
         return $hydrometers;
     }
 
     /**
-     * Add new Hydrometer
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Add new Hydrometer.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function add($request, $response, $args)
     {
@@ -104,7 +119,7 @@ class Hydrometers
             $validator->rule('required', 'metric_temp');
             $validator->rule('required', 'metric_gravity');
 
-            if (! $request->isPost() || ! $validator->validate()) {
+            if (!$request->isPost() || !$validator->validate()) {
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
@@ -119,13 +134,13 @@ class Hydrometers
                     [
                         'form' => $this->form,
                         'csrf' => $csrf,
-                        'user' => $user
+                        'user' => $user,
                     ]
                 );
             }
             $_SESSION['_old_input'] = $post;
 
-            $token = new Token;
+            $token = new Token();
             $token
                 ->setType('device')
                 ->setValue(bin2hex(random_bytes(getenv('TOKEN_SIZE'))))
@@ -133,7 +148,7 @@ class Hydrometers
 
             $this->em->persist($token);
 
-            $hydrometer = new Hydrometer;
+            $hydrometer = new Hydrometer();
             $hydrometer
                 ->setName($post['name'])
                 ->setMetricTemperature($post['metric_temp'])
@@ -147,6 +162,7 @@ class Hydrometers
             return $response->withRedirect('/ui/hydrometers/help/'.$this->optimus->encode($hydrometer->getId()));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
+
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -155,11 +171,13 @@ class Hydrometers
     }
 
     /**
-     * Edit Hydrometer
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * Edit Hydrometer.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function edit($request, $response, $args)
     {
@@ -178,7 +196,7 @@ class Hydrometers
             $validator->rule('required', 'metric_temp');
             $validator->rule('required', 'metric_gravity');
 
-            if (! $request->isPost() || ! $validator->validate()) {
+            if (!$request->isPost() || !$validator->validate()) {
                 $_SESSION['_old_input'] = $post;
                 $this->setErrors($validator->errors());
 
@@ -194,7 +212,7 @@ class Hydrometers
                         'form' => $this->form,
                         'csrf' => $this->csrf,
                         'hydrometer' => $hydrometer,
-                        'user' => $user
+                        'user' => $user,
                     ]
                 );
             }
@@ -211,6 +229,7 @@ class Hydrometers
             return $response->withRedirect('/ui/');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
+
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -226,11 +245,13 @@ class Hydrometers
     }
 
     /**
-     * issue a new device token and display it, pinging for a new hydrometer
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
+     * issue a new device token and display it, pinging for a new hydrometer.
+     *
+     * @param [type] $request  [description]
+     * @param [type] $response [description]
+     * @param [type] $args     [description]
+     *
+     * @return [type] [description]
      */
     public function help($request, $response, $args)
     {
@@ -252,7 +273,7 @@ class Hydrometers
                     'token' => $token,
                     'hydrometer' => $hydrometer,
                     'optimus' => $this->optimus,
-                    'user' => $user
+                    'user' => $user,
                 ]
             );
         } catch (Exception $e) {
