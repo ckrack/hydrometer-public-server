@@ -22,9 +22,8 @@ $app->group('/api', function () {
 ->add($app->getContainer()->get('App\Modules\Auth\Middleware\RequireLogin'));
 
 // this allows posting without auth, as the auth is in the token
-$app->post('/api/spindle/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
-$app->post('/api/ispindle/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
 $app->post('/api/ispindel/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-spindle');
+
 $app->post('/api/tilt/{token}', 'App\Controller\Api\DataPoint:post')->setName('api-post-tilt');
 
 //####### oauth

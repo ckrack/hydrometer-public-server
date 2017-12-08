@@ -13,8 +13,8 @@
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?=_('iSpindle')?></a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" data-toggle="tab" role="tab" href="#ispindle-tcp" aria-expanded="true" aria-controls="#ispindle-tcp"><?=_('TCP')?></a>
-          <a class="dropdown-item" data-toggle="tab" role="tab" href="#ispindle-http" aria-expanded="true" aria-controls="#ispindle-http"><?=_('HTTP')?></a>
+          <a class="dropdown-item" data-toggle="tab" role="tab" href="#ispindel-tcp" aria-expanded="true" aria-controls="#ispindel-tcp"><?=_('TCP')?></a>
+          <a class="dropdown-item" data-toggle="tab" role="tab" href="#ispindel-http" aria-expanded="true" aria-controls="#ispindel-http"><?=_('HTTP')?></a>
         </div>
   </li>
   <li class="nav-item">
@@ -46,7 +46,7 @@
         </div>
     </div>
   </div>
-  <div class="tab-pane" id="ispindle-tcp" role="tabpanel">
+  <div class="tab-pane" id="ispindel-tcp" role="tabpanel">
     <div class="card">
         <div class="card-header">
             <?=_('iSpindle TCP')?>
@@ -74,7 +74,7 @@
         </div>
     </div>
   </div>
-  <div class="tab-pane" id="ispindle-http" role="tabpanel">
+  <div class="tab-pane" id="ispindel-http" role="tabpanel">
     <div class="card">
         <div class="card-header">
             <?=_('iSpindle HTTP')?>
