@@ -11,6 +11,7 @@ use Valitron\Validator;
 use App\Entity\User;
 use App\Entity\Token;
 use App\Entity\Hydrometer;
+use Exception;
 
 class Hydrometers
 {
@@ -58,7 +59,7 @@ class Hydrometers
                     'user' => $user
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -125,7 +126,7 @@ class Hydrometers
             $this->em->flush();
 
             return $response->withRedirect('/ui/hydrometers/help/'.$this->optimus->encode($hydrometer->getId()));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->view->render(
                 'ui/exception.php',
@@ -189,7 +190,7 @@ class Hydrometers
             $this->em->flush();
 
             return $response->withRedirect('/ui/');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->view->render(
                 'ui/exception.php',
@@ -235,7 +236,7 @@ class Hydrometers
                     'user' => $user
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
