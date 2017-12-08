@@ -13,6 +13,7 @@ use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Modules\Stats;
 use DateTime;
+use Exception;
 
 class Fermentations
 {
@@ -48,19 +49,27 @@ class Fermentations
      */
     public function display($request, $response, $args)
     {
-        $user = $request->getAttribute('user');
+        try {
+            $user = $request->getAttribute('user');
 
-        $data = $this->em->getRepository('App\Entity\Fermentation')->findAllByUser($user);
+            $data = $this->em->getRepository('App\Entity\Fermentation')->findAllByUser($user);
 
-        // render template
-        return $this->view->render(
-            '/ui/fermentations/list.php',
-            [
-                'data' => $data,
-                'optimus' => $this->optimus,
-                'user' => $user
-            ]
-        );
+            // render template
+            return $this->view->render(
+                '/ui/fermentations/list.php',
+                [
+                    'data' => $data,
+                    'optimus' => $this->optimus,
+                    'user' => $user
+                ]
+            );
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+            return $this->view->render(
+                'ui/exception.php',
+                ['user' => $user]
+            );
+        }
     }
 
     /**
@@ -98,7 +107,7 @@ class Fermentations
                     ]
                 )
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->view->render(
                 'ui/exception.php',
                 ['user' => $user]
@@ -118,6 +127,8 @@ class Fermentations
     {
         try {
             $fermentation = null;
+            $user = $request->getAttribute('user');
+
             if (isset($args['fermentation'])) {
                 $args['fermentation'] = $this->optimus->decode($args['fermentation']);
                 $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($args['fermentation']);
@@ -144,9 +155,10 @@ class Fermentations
                     ]
                 )
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->view->render(
-                'ui/exception.php'
+                'ui/exception.php',
+                ['user' => $user]
             );
         }
     }
@@ -216,7 +228,7 @@ class Fermentations
             $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $hydrometer);
 
             return $response->withRedirect('/ui/fermentations');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->view->render(
                 'ui/exception.php',
@@ -304,7 +316,7 @@ class Fermentations
             $this->em->getRepository('App\Entity\DataPoint')->addToFermentation($fermentation, $hydrometer);
 
             return $response->withRedirect('/ui/fermentations');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
             return $this->view->render(
@@ -362,7 +374,7 @@ class Fermentations
             $this->em->flush();
 
             return $response->withRedirect('/ui/fermentations');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->view->render(
                 'ui/exception.php',
