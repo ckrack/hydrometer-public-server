@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\Stats;
 
 use Psr\Log\LoggerInterface;
@@ -6,7 +13,8 @@ use Psr\Log\LoggerInterface;
 class Anomaly
 {
     /**
-     * our sample size
+     * our sample size.
+     *
      * @var array
      */
     protected $sample = [];
@@ -37,6 +45,7 @@ class Anomaly
 
         if ($count <= 2) {
             $this->logger->debug('Anomaly: sample too small');
+
             return false;
         }
 
@@ -54,6 +63,7 @@ class Anomaly
         // if the value is bigger than the outlier, we have an anomaly
         if (abs($value - $mean) > $outlier) {
             $this->logger->debug('Anomaly: check', [$mean, $outlier, abs($value - $mean), (abs($value - $mean) - $outlier)]);
+
             return true;
         }
 
@@ -69,29 +79,33 @@ if (!function_exists('stats_standard_deviation')) {
      * the extension does (although as an E_USER_WARNING, not E_WARNING).
      *
      * @param array $a
-     * @param bool $sample [optional] Defaults to false
-     * @return float|bool The standard deviation or false on error.
+     * @param bool  $sample [optional] Defaults to false
+     *
+     * @return float|bool the standard deviation or false on error
      */
     function stats_standard_deviation(array $a, $sample = false)
     {
         $n = count($a);
-        if ($n === 0) {
-            trigger_error("The array has zero elements", E_USER_WARNING);
+        if (0 === $n) {
+            trigger_error('The array has zero elements', E_USER_WARNING);
+
             return false;
         }
-        if ($sample && $n === 1) {
-            trigger_error("The array has only 1 element", E_USER_WARNING);
+        if ($sample && 1 === $n) {
+            trigger_error('The array has only 1 element', E_USER_WARNING);
+
             return false;
         }
         $mean = array_sum($a) / $n;
         $carry = 0.0;
         foreach ($a as $val) {
-            $d = ((double) $val) - $mean;
+            $d = ((float) $val) - $mean;
             $carry += $d * $d;
-        };
+        }
         if ($sample) {
             --$n;
         }
+
         return sqrt($carry / $n);
     }
 }

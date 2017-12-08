@@ -1,8 +1,15 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JsonSerializable;
 
 /**
@@ -15,13 +22,15 @@ abstract class Entity implements JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var Integer
+     *
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
+     *
      * @var \DateTime
      */
     protected $created;
@@ -29,6 +38,7 @@ abstract class Entity implements JsonSerializable
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
+     *
      * @var \DateTime
      */
     protected $updated;
@@ -41,23 +51,26 @@ abstract class Entity implements JsonSerializable
     }
 
     /**
-     * setter for arrays
+     * setter for arrays.
+     *
      * @param array $options [description]
      */
     public function import(array $options)
     {
         $_classMethods = get_class_methods($this);
         foreach ($options as $key => $value) {
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $_classMethods)) {
+            $method = 'set'.ucfirst($key);
+            if (in_array($method, $_classMethods, true)) {
                 $this->$method($value);
             }
         }
+
         return $this;
     }
 
     /**
-     * [getCreated description]
+     * [getCreated description].
+     *
      * @return \DateTime
      */
     public function getCreated()
@@ -66,7 +79,8 @@ abstract class Entity implements JsonSerializable
     }
 
     /**
-     * [getUpdated description]
+     * [getUpdated description].
+     *
      * @return \DateTime
      */
     public function getUpdated()
@@ -75,7 +89,8 @@ abstract class Entity implements JsonSerializable
     }
 
     /**
-     * [jsonSerialize description]
+     * [jsonSerialize description].
+     *
      * @return [type] [description]
      */
     public function jsonSerialize()
@@ -84,18 +99,18 @@ abstract class Entity implements JsonSerializable
         $methods = get_class_methods(get_class($this));
         foreach ($methods as $method) {
             if (preg_match('/get([A-Z][a-z]+)/', $method, $match)) {
-                $prop = strtolower($match[1]);
+                $prop = mb_strtolower($match[1]);
                 if (isset($this->{$prop})) {
                     $entity[$prop] = $this->{$method}();
                 }
-
             }
         }
+
         return $entity;
     }
 
     /**
-     * @return Integer
+     * @return int
      */
     public function getId()
     {

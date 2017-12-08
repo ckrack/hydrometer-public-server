@@ -1,6 +1,11 @@
 <?php
 
-// load .env
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 if (file_exists(__DIR__.'/../.env')) {
     $dotenv = new Dotenv\Dotenv(__DIR__.'/../');
     $dotenv->load();
@@ -55,65 +60,65 @@ return [
         'doctrine' => [
             'meta' => [
                 'entity_path' => ['src/Entity'],
-                'proxy_dir' =>  __DIR__.'/Proxies',
+                'proxy_dir' => __DIR__.'/Proxies',
                 'proxy_namespace' => 'App\Proxies',
             ],
             'connection' => [
-                'driver'   => getenv('DB_DRIVER'),
-                'host'     => getenv('DB_HOST'),
-                'dbname'   => getenv('DB_DATABASE'),
-                'user'     => getenv('DB_USER'),
+                'driver' => getenv('DB_DRIVER'),
+                'host' => getenv('DB_HOST'),
+                'dbname' => getenv('DB_DATABASE'),
+                'user' => getenv('DB_USER'),
                 'password' => getenv('DB_PASS'),
-                'charset'  => 'utf8mb4',
+                'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
                 'port' => getenv('DB_PORT'),
             ],
         ],
         'languages' => [
-            'path'  => getenv('LANGUAGE_PATH'),
+            'path' => getenv('LANGUAGE_PATH'),
             'list' => [
                 'en' => [
                     // the name in it's language
                     'name' => 'English',
                     // a list of valid locales
-                    'locales' => ['en_EN', 'en_GB', 'en_GB.UTF8', 'en_US', 'en_US.UTF8', 'English_Australia.1252']
+                    'locales' => ['en_EN', 'en_GB', 'en_GB.UTF8', 'en_US', 'en_US.UTF8', 'English_Australia.1252'],
                     // it is a good idea to symlink all locales to the main one.
                 ],
                 'de' => [
                     'name' => 'Deutsch',
-                    'locales' => ['de_DE', 'de_DE.UTF8', 'German_Germany.1252', 'de_CH', 'de_AT']
+                    'locales' => ['de_DE', 'de_DE.UTF8', 'German_Germany.1252', 'de_CH', 'de_AT'],
                 ],
-            ]
+            ],
         ],
         'oauth' => [
             'google' => [
                 'description' => 'Use your Google account to authenticate',
                 'className' => 'League\OAuth2\Client\Provider\Google',
                 'helpUrl' => 'https://console.developers.google.com/apis/credentials',
-                'clientId'     => getenv('OAUTH_GOOGLE_ID'),
+                'clientId' => getenv('OAUTH_GOOGLE_ID'),
                 'clientSecret' => getenv('OAUTH_GOOGLE_SECRET'),
-                'redirectUri'  => getenv('URL_DOMAIN') . '/auth/confirm/google',
+                'redirectUri' => getenv('URL_DOMAIN').'/auth/confirm/google',
                 'hostedDomain' => getenv('URL_DOMAIN'),
                 'scope' => 'profile email',
-                'accessType'   => 'offline',
+                'accessType' => 'offline',
             ],
             'facebook' => [
                 'description' => 'Use your Facebook account to sign in',
-                'className'    => 'League\OAuth2\Client\Provider\Facebook',
-                'helpUrl'      => 'https://developers.facebook.com/apps/',
-                'clientId'     => getenv('OAUTH_FACEBOOK_ID'),
+                'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'helpUrl' => 'https://developers.facebook.com/apps/',
+                'clientId' => getenv('OAUTH_FACEBOOK_ID'),
                 'clientSecret' => getenv('OAUTH_FACEBOOK_SECRET'),
-                'redirectUri'  => getenv('URL_DOMAIN') . '/auth/confirm/facebook',
+                'redirectUri' => getenv('URL_DOMAIN').'/auth/confirm/facebook',
                 'hostedDomain' => getenv('URL_DOMAIN'),
                 'graphApiVersion' => 'v2.10',
                 'options' => [
-                    'scope' => 'email'
-                ]
+                    'scope' => 'email',
+                ],
             ],
-            /**
+            /*
              * You can add any other provider here, as long as it returns an email.
              * http://oauth2-client.thephpleague.com/providers/thirdparty/
              */
-        ]
+        ],
     ],
 ];
