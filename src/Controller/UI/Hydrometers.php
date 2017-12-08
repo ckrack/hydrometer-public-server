@@ -108,7 +108,7 @@ class Hydrometers
             $token = new Token;
             $token
                 ->setType('device')
-                ->setValue(bin2hex(random_bytes(10)))
+                ->setValue(bin2hex(random_bytes(getenv('TOKEN_SIZE'))))
                 ->setUser($user);
 
             $this->em->persist($token);
