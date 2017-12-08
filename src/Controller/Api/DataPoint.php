@@ -6,12 +6,14 @@ use Doctrine\ORM\EntityManager;
 use App\Modules\Auth\Token;
 use App\Modules\Formula\Tilt\Timepoint;
 use App\Entity;
+use Exception;
+use InvalidArgumentException;
 
 class DataPoint
 {
     protected $logger;
     protected $em;
-    protected $passwordLess;
+    protected $tokenAuth;
 
     /**
      * Use League\Container for auto-wiring dependencies into the controller
@@ -43,18 +45,18 @@ class DataPoint
 
             if (empty($data)) {
                 $this->logger->debug('api::post: no data passed', [$args, $data]);
-                throw new \InvalidArgumentException('Api::post: No data passed');
+                throw new InvalidArgumentException('Api::post: No data passed');
             }
 
             if (! isset($args['token']) && ! (isset($data['ID'])) && isset($data['token'])) {
                 $this->logger->debug('api::post: missing identifier', [$args, $data]);
-                throw new \InvalidArgumentException('Api::post: Data missing (ID or token)');
+                throw new InvalidArgumentException('Api::post: Data missing (ID or token)');
             }
 
             // confirm existance of the token @throws
             $authData = $this->tokenAuth->authenticate(empty($args['token']) ? $data['token'] : $args['token']);
 
-            $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->find($authData['hydrometer_id']);
+            $hydrometer = $this->em->getRepository(Entity\Hydrometer::class)->find($authData['hydrometer_id']);
 
             $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
 
@@ -78,13 +80,18 @@ class DataPoint
 
             return $response
                 ->withStatus(200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return $response
                 ->withStatus(500);
         }
     }
 
+    /**
+     * Prepare data for the import into Entity
+     * @param  array $data [description]
+     * @return array       [description]
+     */
     protected function prepareData($data)
     {
         switch (true) {
@@ -97,42 +104,6 @@ class DataPoint
                 return $transformedData;
             default:
                 return $data;
-        }
-    }
-
-    /**
-     * Get datapoints
-     * @param  [type] $request  [description]
-     * @param  [type] $response [description]
-     * @param  [type] $args     [description]
-     * @return [type]           [description]
-     */
-    public function get($request, $response, $args)
-    {
-        try {
-            $hydrometer = null;
-            if (isset($args['hydrometer'])) {
-                $hydrometer = $this->em->find('App\Entity\Hydrometer', $args['hydrometer']);
-            }
-            $this->logger->debug('Api:Data: Find data', [$hydrometer, $args]);
-
-            $dataPoints = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($hydrometer);
-
-            // add first row
-            $keys = array_keys(array_pop($dataPoints));
-
-            $dataJson = new \stdClass;
-            foreach ($dataPoints as $value) {
-                foreach ($value as $unit => $v) {
-                    $dataJson->{$unit}[] = $v;
-                }
-            }
-
-            return $response->withJson($dataJson);
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            return $response
-                ->withStatus(500);
         }
     }
 }
