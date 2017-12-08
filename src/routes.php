@@ -14,7 +14,6 @@ $app->group('/auth', function () {
     $this->any('/init/{provider}', 'App\Controller\OAuth\OAuth:init');
     $this->any('/confirm/{provider}', 'App\Controller\OAuth\OAuth:confirm');
     $this->any('[/]', 'App\Controller\OAuth\Choices:display');
-
 });
 
 // these require a logged in user
@@ -53,10 +52,3 @@ $app->get('/[{site}]', 'App\Controller\Index:display');
 
 // Public fermentations
 $app->get('/fermentations/public/{fermentation:[0-9]+}', 'App\Controller\UI\Fermentations:show')->setName('fermentations-show');
-
-
-// try to translate for user
-$app->add($app->getContainer()->get('App\Modules\Lang\UserLangMiddleware'));
-
-// all requests check for session login
-$app->add($app->getContainer()->get('App\Modules\Auth\Middleware\Session'));
