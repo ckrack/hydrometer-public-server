@@ -6,6 +6,7 @@ use App\Entity\Hydrometer;
 use App\Entity\User;
 use App\Entity\Fermentation;
 use DateTime;
+use Exception;
 
 /**
  * Class Resource
@@ -48,7 +49,7 @@ class DataPointResource extends EntityRepository
 
             $q = $qb->getQuery();
             return $q->getArrayResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -82,7 +83,7 @@ class DataPointResource extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getArrayResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -118,7 +119,7 @@ class DataPointResource extends EntityRepository
 
             $q = $qb->getQuery();
             return $q->getArrayResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -131,27 +132,31 @@ class DataPointResource extends EntityRepository
      */
     public function addToFermentation(Fermentation $fermentation, Hydrometer $hydrometer)
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
+        try {
+            $em = $this->getEntityManager();
+            $qb = $em->createQueryBuilder();
 
-        $qb->update('App\Entity\DataPoint', 'd')
-           ->andWhere('d.fermentation IS NULL')
-           ->andWhere('d.hydrometer = :hydrometer')
-           ->setParameter('hydrometer', $hydrometer)
-           ->andWhere('d.created >= :begin')
-           ->setParameter('begin', $fermentation->getBegin())
-           ->set('d.fermentation', ':fermentation')
-           ->setParameter('fermentation', $fermentation);
+            $qb->update('App\Entity\DataPoint', 'd')
+               ->andWhere('d.fermentation IS NULL')
+               ->andWhere('d.hydrometer = :hydrometer')
+               ->setParameter('hydrometer', $hydrometer)
+               ->andWhere('d.created >= :begin')
+               ->setParameter('begin', $fermentation->getBegin())
+               ->set('d.fermentation', ':fermentation')
+               ->setParameter('fermentation', $fermentation);
 
-        // use end if supplied
-        if ($fermentation->getEnd() != null) {
-            $qb->andWhere('d.created < :end')
-            ->setParameter('end', $fermentation->getEnd());
+            // use end if supplied
+            if (null !== $fermentation->getEnd()) {
+                $qb->andWhere('d.created < :end')
+                ->setParameter('end', $fermentation->getEnd());
+            }
+
+            $q = $qb->getQuery();
+
+            return $q->execute();
+        } catch (Exception $e) {
+            return null;
         }
-
-        $q = $qb->getQuery();
-
-        return $q->execute();
     }
 
     /**
@@ -164,31 +169,35 @@ class DataPointResource extends EntityRepository
      */
     public function removeFromFermentation(Fermentation $fermentation, DateTime $before = null, DateTime $after = null)
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
+        try {
+            $em = $this->getEntityManager();
+            $qb = $em->createQueryBuilder();
 
-        $qb->update('App\Entity\DataPoint', 'd')
-           ->andWhere('d.fermentation = :fermentation')
-           ->set('d.fermentation', 'NULL')
-           ->setParameter('fermentation', $fermentation);
+            $qb->update('App\Entity\DataPoint', 'd')
+               ->andWhere('d.fermentation = :fermentation')
+               ->set('d.fermentation', 'NULL')
+               ->setParameter('fermentation', $fermentation);
 
-        $orX = $qb->expr()->orX();
+            $orX = $qb->expr()->orX();
 
-        if ($before instanceof \DateTime) {
-            $orX->add($qb->expr()->lt('d.created', ':before'));
-            $qb->setParameter('before', $before);
+            if ($before instanceof \DateTime) {
+                $orX->add($qb->expr()->lt('d.created', ':before'));
+                $qb->setParameter('before', $before);
+            }
+
+            if ($after instanceof \DateTime) {
+                $orX->add($qb->expr()->gte('d.created', ':after'));
+                $qb->setParameter('after', $after);
+            }
+
+            $qb->andWhere($orX);
+
+            $q = $qb->getQuery();
+
+            return $q->execute();
+        } catch (Exception $e) {
+            return null;
         }
-
-        if ($after instanceof \DateTime) {
-            $orX->add($qb->expr()->gte('d.created', ':after'));
-            $qb->setParameter('after', $after);
-        }
-
-        $qb->andWhere($orX);
-
-        $q = $qb->getQuery();
-
-        return $q->execute();
     }
 
     public function findActivity($activity_id)
@@ -209,7 +218,7 @@ class DataPointResource extends EntityRepository
                 ->getQuery();
 
             return $q->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

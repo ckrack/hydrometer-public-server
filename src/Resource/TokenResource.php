@@ -4,6 +4,7 @@ namespace App\Resource;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
+use Exception;
 
 /**
  * Class Resource
@@ -19,8 +20,7 @@ class TokenResource extends EntityRepository
     {
         try {
             return $this->findOneBy(['value' => $token]);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        } catch (Exception $e) {
             return null;
         }
     }

@@ -4,6 +4,7 @@ namespace App\Resource;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
+use Exception;
 
 /**
  * Class Resource
@@ -51,7 +52,7 @@ class FermentationResource extends EntityRepository
 
             $q = $qb->getQuery();
             return $q->getArrayResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -63,7 +64,7 @@ class FermentationResource extends EntityRepository
                 'user' => $user,
                 'id' => $fermentation
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

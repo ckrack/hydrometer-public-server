@@ -4,6 +4,7 @@ namespace App\Resource;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\Hydrometer;
 use App\Entity\User;
+use Exception;
 
 /**
  * Class Resource
@@ -48,8 +49,7 @@ class HydrometerResource extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getResult();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -82,7 +82,7 @@ class HydrometerResource extends EntityRepository
                 ->getQuery();
 
             return $q->getSingleResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -115,7 +115,7 @@ class HydrometerResource extends EntityRepository
                 ->getQuery();
 
             return $q->getArrayResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -129,7 +129,7 @@ class HydrometerResource extends EntityRepository
     {
         try {
             return $this->findBy(['user' => $user]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -169,7 +169,7 @@ class HydrometerResource extends EntityRepository
             }
 
             return $q->getSingleResult();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -181,7 +181,7 @@ class HydrometerResource extends EntityRepository
                 'user' => $user,
                 'id' => $hydrometer
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -206,8 +206,8 @@ class HydrometerResource extends EntityRepository
             $hydrometer->setId($id);
 
             return $hydrometer;
-        } catch (\Exception $e) {
-            throw new \Exception('Can not create hydrometer');
+        } catch (Exception $e) {
+            throw new Exception('Can not create hydrometer');
         }
     }
 }
