@@ -210,7 +210,7 @@ class Hydrometers
                     'ui/hydrometers/editForm.php',
                     [
                         'form' => $this->form,
-                        'csrf' => $this->csrf,
+                        'csrf' => $csrf,
                         'hydrometer' => $hydrometer,
                         'user' => $user,
                     ]
