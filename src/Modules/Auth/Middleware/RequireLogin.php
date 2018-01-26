@@ -51,7 +51,6 @@ class RequireLogin
                 $this->logger->debug('Auth::require: user not authenticated', [$request->getAttribute('user')]);
                 // return 401 on missing user
                 return $response
-                    ->withStatus(401)
                     ->withRedirect('/auth');
             }
         } catch (\Exception $e) {
