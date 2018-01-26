@@ -108,7 +108,7 @@ class DataPoint
     protected function prepareData($data)
     {
         switch (true) {
-            // Tilt
+            // TILT
             case isset($data['Timepoint']):
                 $transformedData = [
                     'temperature' => $data['Temp'],

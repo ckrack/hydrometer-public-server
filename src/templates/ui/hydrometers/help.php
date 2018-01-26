@@ -18,7 +18,7 @@
         </div>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#tilt" role="tab"><?=_('Tilt')?></a>
+    <a class="nav-link" data-toggle="tab" href="#tilt" role="tab"><?=_('TILT')?></a>
   </li>
   <li class="nav-item">
     <a class="nav-link" data-toggle="tab" href="#plaato" role="tab"><?=_('Plaato')?></a>

@@ -9,7 +9,7 @@
 namespace App\Modules\Formula\Tilt;
 
 /**
- * Formula to convert the slightly weird timepoint format by Tilt into a Unix timestamp.
+ * Formula to convert the slightly weird timepoint format by TILT into a Unix timestamp.
  */
 class Timepoint
 {

@@ -1,6 +1,6 @@
 # Electronic Hydrometer Public Server
 
-This is a public server for electronic hydrometers like [Tilt Hydrometer](https://tilthydrometer.com/) or [iSpindel](https://github.com/universam1/iSpindel), that are commonly used to measure fermentation process in homebrewing.
+This is a public server for electronic hydrometers like [TILT Hydrometer](https://tilthydrometer.com/) or [iSpindel](https://github.com/universam1/iSpindel), that are commonly used to measure fermentation process in homebrewing.
 The server allows homebrewers to keep a log of the data and visualize it via charts.
 
 ## Approach

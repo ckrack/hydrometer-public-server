@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hydrometer\n"
-"POT-Creation-Date: 2017-11-12 20:01+0100\n"
-"PO-Revision-Date: 2017-11-12 20:02+0100\n"
+"POT-Creation-Date: 2018-01-26 14:14+0100\n"
+"PO-Revision-Date: 2018-01-26 14:16+0100\n"
 "Last-Translator: Clemens Krack <ckrack@gmail.com>\n"
 "Language-Team: Clemens Krack <ckrack@gmail.com>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-Basepath: ../../../src\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: js\n"
 "X-Poedit-SearchPathExcluded-1: scss\n"
 
-#: Modules/Stats/Data.php:48
+#: Modules/Stats/Data.php:56
 msgid "Not yet"
 msgstr "Noch nicht"
 
@@ -27,10 +27,10 @@ msgstr "Über"
 
 #: templates/about.php:9 templates/index.php:9
 msgid ""
-"You own an electronic hydrometer, such as Tilt or the open-source iSpindle?"
+"You own an electronic hydrometer, such as TILT or the open-source iSpindle?"
 msgstr ""
-"Du hast ein elektronisches Hydrometer wie den Tilt Hydrometer oder die open-"
-"source iSpindle?"
+"Du besitzt ein elektronisches Hydrometer wie den TILT Hydrometer oder die "
+"open-source iSpindle?"
 
 #: templates/about.php:10 templates/index.php:10
 msgid "Monitor your fermentations in an easy to use online interface!"
@@ -100,12 +100,12 @@ msgstr "Zu deinen Hydrometern"
 msgid "Hydrometers"
 msgstr "Hydrometer"
 
-#: templates/partials/nav/logged_in.php:9 templates/ui/fermentations/list.php:4
+#: templates/partials/nav/logged_in.php:9 templates/ui/fermentations/list.php:7
 msgid "Fermentations"
 msgstr "Gärungen"
 
-#: templates/partials/nav/logged_in.php:12 templates/ui/datapoints/index.php:13
-#: templates/ui/hydrometers/index.php:33
+#: templates/partials/nav/logged_in.php:12 templates/ui/datapoints/index.php:14
+#: templates/ui/hydrometers/index.php:210
 msgid "Datapoints"
 msgstr "Datenpunkte"
 
@@ -121,30 +121,12 @@ msgstr "Einstellungen"
 msgid "Logout"
 msgstr "Abmelden"
 
-#: templates/ui/angle.php:3 templates/ui/datapoints/index.php:31
-#: templates/ui/fermentations/list.php:16 templates/ui/hydrometers/index.php:31
-msgid "Angle"
-msgstr "Winkel"
-
-#: templates/ui/angle.php:48 templates/ui/plato.php:57
-msgid "Temperature (°C)"
-msgstr "Temperatur (°C)"
-
-#: templates/ui/angle.php:55
-msgid "Angle (°)"
-msgstr "Neigung (°)"
-
-#: templates/ui/battery.php:4 templates/ui/datapoints/index.php:32
-#: templates/ui/hydrometers/index.php:32
-msgid "Battery"
-msgstr "Batterie"
-
 #: templates/ui/datapoints/deleteForm.php:6
 msgid "Delete datapoint"
 msgstr "Datenpunkt löschen"
 
 #: templates/ui/datapoints/deleteForm.php:10
-#: templates/ui/datapoints/index.php:28
+#: templates/ui/datapoints/index.php:29
 #: templates/ui/fermentations/editForm.php:11
 #: templates/ui/fermentations/form.php:11
 msgid "Hydrometer"
@@ -159,38 +141,55 @@ msgstr "Werte"
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/ui/datapoints/index.php:26
+#: templates/ui/datapoints/index.php:27
 msgid "Date"
 msgstr "Datum"
 
-#: templates/ui/datapoints/index.php:30
+#: templates/ui/datapoints/index.php:31
 #: templates/ui/fermentations/details.php:71
-#: templates/ui/fermentations/list.php:15
+#: templates/ui/fermentations/list.php:18
 #: templates/ui/fermentations/public.php:67
+#: templates/ui/hydrometers/index.php:177
 msgid "Temperature"
 msgstr "Temperatur"
 
-#: templates/ui/datapoints/index.php:33 templates/ui/fermentations/list.php:17
+#: templates/ui/datapoints/index.php:32 templates/ui/fermentations/list.php:19
+#: templates/ui/hydrometers/index.php:103
+msgid "Angle"
+msgstr "Winkel"
+
+#: templates/ui/datapoints/index.php:33
+msgid "Battery"
+msgstr "Batterie"
+
+#: templates/ui/datapoints/index.php:34 templates/ui/fermentations/list.php:20
+#: templates/ui/hydrometers/index.php:140
 msgid "Gravity"
 msgstr "Dichte"
 
-#: templates/ui/datapoints/index.php:34 templates/ui/fermentations/list.php:18
+#: templates/ui/datapoints/index.php:35 templates/ui/fermentations/list.php:21
 msgid "Trubidity"
 msgstr "Trübung"
 
-#: templates/ui/datapoints/index.php:35 templates/ui/fermentations/list.php:19
+#: templates/ui/datapoints/index.php:36 templates/ui/fermentations/list.php:22
 msgid "Actions"
 msgstr "Aktionen"
 
-#: templates/ui/datapoints/index.php:75
+#: templates/ui/datapoints/index.php:80
 msgid "Once your hydrometers start transfering data, it will appear here."
 msgstr ""
 "Sobald deine Hydrometer beginnen Daten zu übertragen werden diese hier "
 "erscheinen."
 
-#: templates/ui/datapoints/index.php:78 templates/ui/hydrometers/index.php:50
+#: templates/ui/datapoints/index.php:83 templates/ui/hydrometers/index.php:224
 msgid "Add a hydrometer"
 msgstr "Hydrometer hinzufügen"
+
+#: templates/ui/exception.php:6
+msgid "Sorry, an error occured during your request."
+msgstr ""
+"Es tut uns leid, ein Fehler ist beim bearbeiten deiner Server-Anfrage "
+"aufgetreten."
 
 #: templates/ui/fermentations/deleteForm.php:6
 msgid "Delete fermentation"
@@ -199,7 +198,7 @@ msgstr "Gärung löschen"
 #: templates/ui/fermentations/deleteForm.php:10
 #: templates/ui/fermentations/editForm.php:10
 #: templates/ui/fermentations/form.php:10
-#: templates/ui/fermentations/list.php:14
+#: templates/ui/fermentations/list.php:17
 #: templates/ui/hydrometers/editForm.php:10
 #: templates/ui/hydrometers/form.php:10
 msgid "Name"
@@ -220,7 +219,7 @@ msgid "Fermentation seems to be stable since"
 msgstr "Die Gärung scheint stabil zu sein seit"
 
 #: templates/ui/fermentations/details.php:78
-#: templates/ui/fermentations/public.php:74 templates/ui/plato.php:4
+#: templates/ui/fermentations/public.php:74
 msgid "Extract"
 msgstr "Extrakt"
 
@@ -265,27 +264,27 @@ msgid "Public"
 msgstr "Öffentlich"
 
 #: templates/ui/fermentations/editForm.php:23
-#: templates/ui/hydrometers/editForm.php:13
+#: templates/ui/hydrometers/editForm.php:19
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: templates/ui/fermentations/form.php:6 templates/ui/fermentations/list.php:5
+#: templates/ui/fermentations/form.php:6 templates/ui/fermentations/list.php:8
 msgid "Add fermentation"
 msgstr "Gärung hinzufügen"
 
-#: templates/ui/fermentations/form.php:23 templates/ui/hydrometers/form.php:13
+#: templates/ui/fermentations/form.php:23 templates/ui/hydrometers/form.php:19
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: templates/ui/fermentations/list.php:31
+#: templates/ui/fermentations/list.php:34
 msgid "Last activity"
 msgstr "Zuletzt aktiv"
 
-#: templates/ui/fermentations/list.php:78 templates/ui/hydrometers/index.php:20
+#: templates/ui/fermentations/list.php:87 templates/ui/hydrometers/index.php:23
 msgid "edit"
 msgstr "bearbeiten"
 
-#: templates/ui/fermentations/list.php:92
+#: templates/ui/fermentations/list.php:101
 msgid ""
 "Group your data into fermentations. This allows to archive past beers in "
 "order to keep a detailled log."
@@ -293,7 +292,7 @@ msgstr ""
 "Gruppiere deine Daten in Gärungen. Dies erlaubt es abgelaufene Gärungen zu "
 "archivieren und eine detaillierte Historie zu haben."
 
-#: templates/ui/fermentations/list.php:95
+#: templates/ui/fermentations/list.php:104
 msgid "Add your first fermentation"
 msgstr "Erste Gärung hinzufügen"
 
@@ -327,7 +326,7 @@ msgid "Gravity metric"
 msgstr "Einheit der Dichte"
 
 #: templates/ui/hydrometers/editForm.php:12
-#: templates/ui/hydrometers/form.php:12 templates/ui/hydrometers/index.php:30
+#: templates/ui/hydrometers/form.php:12
 msgid "Plato"
 msgstr "Plato"
 
@@ -336,7 +335,7 @@ msgstr "Plato"
 msgid "Specific gravity (SG)"
 msgstr "Spezifische Dichte"
 
-#: templates/ui/hydrometers/form.php:6 templates/ui/hydrometers/index.php:8
+#: templates/ui/hydrometers/form.php:6 templates/ui/hydrometers/index.php:11
 msgid "Add hydrometer"
 msgstr "Hydrometer hinzufügen"
 
@@ -361,8 +360,8 @@ msgid "HTTP"
 msgstr "HTTP"
 
 #: templates/ui/hydrometers/help.php:21
-msgid "Tilt"
-msgstr "Tilt"
+msgid "TILT"
+msgstr "TILT"
 
 #: templates/ui/hydrometers/help.php:24 templates/ui/hydrometers/help.php:124
 msgid "Plaato"
@@ -442,33 +441,33 @@ msgstr "Leider wird das Plaato noch nicht unterstützt."
 msgid "Apparently the Beerbug device is not yet supported."
 msgstr "Leider wird der Beerbug noch nicht unterstützt."
 
-#: templates/ui/hydrometers/index.php:7
+#: templates/ui/hydrometers/index.php:10
 msgid "Available hydrometers"
 msgstr "Verfügbare Hydrometer"
 
-#: templates/ui/hydrometers/index.php:19
+#: templates/ui/hydrometers/index.php:22
 msgid "setup"
 msgstr "einrichten"
 
-#: templates/ui/hydrometers/index.php:26
-msgid "Last activity:"
-msgstr "Zuletzt aktiv:"
+#: templates/ui/hydrometers/index.php:66
+msgid "Voltage"
+msgstr "Spannung"
 
-#: templates/ui/hydrometers/index.php:29 templates/ui/status.php:4
-msgid "Status"
-msgstr "Status"
-
-#: templates/ui/hydrometers/index.php:35
+#: templates/ui/hydrometers/index.php:200
 msgid "No data yet"
 msgstr "Noch keine Daten vorhanden"
 
-#: templates/ui/hydrometers/index.php:44
+#: templates/ui/hydrometers/index.php:206
+msgid "Last activity:"
+msgstr "Zuletzt aktiv:"
+
+#: templates/ui/hydrometers/index.php:218
 msgid ""
 "To start collecting fermentation data, you need to add and setup your first "
 "device."
 msgstr "Um Gärungsdaten zu erheben musst du zunächst einen Hydrometer anlegen."
 
-#: templates/ui/hydrometers/index.php:47
+#: templates/ui/hydrometers/index.php:221
 msgid ""
 "Start by adding it here, then set it up with the token generated by the "
 "system."
@@ -476,9 +475,20 @@ msgstr ""
 "Beginne damit das Gerät hier anzulegen und richte es dann mit dem hier "
 "generierten Token ein."
 
-#: templates/ui/plato.php:66
-msgid "Extract (°P)"
-msgstr "Dichte"
+#~ msgid "Temperature (°C)"
+#~ msgstr "Temperatur (°C)"
+
+#~ msgid "Angle (°)"
+#~ msgstr "Neigung (°)"
+
+#~ msgid "Tilt"
+#~ msgstr "Tilt"
+
+#~ msgid "Status"
+#~ msgstr "Status"
+
+#~ msgid "Extract (°P)"
+#~ msgstr "Dichte"
 
 #~ msgid "Register"
 #~ msgstr "Anmelden"

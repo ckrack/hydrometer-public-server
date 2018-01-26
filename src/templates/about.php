@@ -6,7 +6,7 @@
         <?=_('About')?>
     </h1>
     <p class="lead">
-        <?=_('You own an electronic hydrometer, such as Tilt or the open-source iSpindle?')?><br>
+        <?=_('You own an electronic hydrometer, such as TILT or the open-source iSpindle?')?><br>
         <?=_('Monitor your fermentations in an easy to use online interface!')?>
     </p>
     <hr class="my-4">
