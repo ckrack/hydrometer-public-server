@@ -51,7 +51,7 @@ class DataPoint
     {
         try {
             $data = $request->getParsedBody();
-            $this->logger->debug('iHydrometer: Receive data', [$data, $args]);
+            $this->logger->debug('Spindle: Receive data', [$data, $args]);
 
             if (empty($data)) {
                 $this->logger->debug('api::post: no data passed', [$args, $data]);
@@ -68,7 +68,7 @@ class DataPoint
 
             $hydrometer = $this->em->getRepository(Entity\Hydrometer::class)->find($authData['hydrometer_id']);
 
-            $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
+            $this->logger->debug('Spindle: Receive data for Hydrometer', [$hydrometer, $data]);
 
             // data needs to be changed possibly?
             $data = $this->prepareData($data);

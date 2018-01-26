@@ -87,7 +87,7 @@ class TCP
             $hydrometer->setEspId($data['ID']);
         }
 
-        $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
+        $this->logger->debug('Spindel: Receive data for Hydrometer', [$hydrometer, $data, $fermentation]);
 
         $dataPoint = new DataPoint();
 
