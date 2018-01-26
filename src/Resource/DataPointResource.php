@@ -89,7 +89,7 @@ class DataPointResource extends EntityRepository
                 ->andWhere('d.fermentation = :fermentation')
                 ->setParameter('fermentation', $fermentation->getId());
 
-            $qb->setMaxResults(500);
+            $qb->setMaxResults(3000);
 
             $q = $qb->getQuery();
 
