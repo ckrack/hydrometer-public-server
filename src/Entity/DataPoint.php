@@ -62,39 +62,52 @@ class DataPoint extends Entity
     /**
      * @ORM\Column(type="float", nullable=true)
      *
-     * @var string
+     * @var float
      */
     protected $angle;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      *
-     * @var string
+     * @var float
      */
     protected $temperature;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      *
-     * @var string
+     * @var float
      */
     protected $battery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      *
-     * @var string
+     * @var float
      */
     protected $gravity;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     *
-     * @var string
+     * Trubidity for a trubidity sensor
+     * @var float
      */
     protected $trubidity;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     * Wifi strength
+     * @var float
+     */
+    protected $RSSI;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * Update interval
+     * @var int
+     */
+    protected $interval;
+
      * @return mixed
      */
     public function getHydrometer()
@@ -230,6 +243,46 @@ class DataPoint extends Entity
     public function setTrubidity($trubidity)
     {
         $this->trubidity = $trubidity;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRSSI()
+    {
+        return $this->RSSI;
+    }
+
+    /**
+     * @param float $RSSI
+     *
+     * @return self
+     */
+    public function setRSSI($RSSI)
+    {
+        $this->RSSI = $RSSI;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInterval()
+    {
+        return $this->interval;
+    }
+
+    /**
+     * @param int $interval
+     *
+     * @return self
+     */
+    public function setInterval($interval)
+    {
+        $this->interval = $interval;
 
         return $this;
     }
