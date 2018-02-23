@@ -37,21 +37,21 @@ class Calibration extends Entity
     /**
      * @ORM\Column(type="float")
      *
-     * @var string
+     * @var float
      */
     protected $const1;
 
     /**
      * @ORM\Column(type="float")
      *
-     * @var string
+     * @var float
      */
     protected $const2;
 
     /**
      * @ORM\Column(type="float")
      *
-     * @var string
+     * @var float
      */
     protected $const3;
 
