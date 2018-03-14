@@ -19,6 +19,7 @@ RUN \
     docker-php-ext-configure gettext &&\
     docker-php-ext-install gettext
 
+RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Enable mod rewrite
 RUN \
