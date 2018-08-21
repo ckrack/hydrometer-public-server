@@ -26,6 +26,7 @@ class Formatter
 
     public static function format($value, $metric = null)
     {
+        $value = (float) $value;
         switch ($metric) {
             case 'V':
                 return number_format($value, 2).' V';
@@ -94,7 +95,7 @@ class Formatter
                 return [0, 5, 10, 15, 20, 40];
 
             default:
-                break;
+                return [0];
         }
     }
 }
