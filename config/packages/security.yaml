@@ -1,0 +1,26 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        oauth:
+            id: App\Security\Provider\FacebookConnectProvider
+    encoders:
+        App\Entity\User: bcrypt
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            logout: ~
+
+            guard:
+                authenticators:
+                    - App\Security\Authenticator\FacebookConnectAuthenticator
+                    - App\Security\Authenticator\GoogleConnectAuthenticator
+                entry_point: App\Security\Authenticator\GoogleConnectAuthenticator
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/ui, roles: ROLE_USER }

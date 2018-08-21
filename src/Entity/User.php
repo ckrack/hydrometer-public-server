@@ -11,6 +11,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\UserResource")
@@ -29,7 +31,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     }
  * )
  */
-class User extends Entity
+class User extends Entity implements UserInterface, \Serializable, EquatableInterface
 {
     public function __construct()
     {
@@ -40,25 +42,21 @@ class User extends Entity
     }
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, nullable=true)
      *
      * @var string
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=190)
-     *
-     * @var string
+     * @ORM\Column(type="string", name="facebook_id", nullable=true)
      */
-    protected $username;
+    protected $facebookId;
 
     /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     *
-     * @var string
+     * @ORM\Column(type="string", name="google_id", nullable=true)
      */
-    protected $apiToken;
+    protected $googleId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -117,7 +115,7 @@ class User extends Entity
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->getEmail();
     }
 
     /**
@@ -127,7 +125,7 @@ class User extends Entity
      */
     public function setUsername($username)
     {
-        $this->username = $username;
+        $this->setEmail($username);
 
         return $this;
     }
@@ -150,12 +148,9 @@ class User extends Entity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword()
     {
-        return $this->password;
+        // no password is used
     }
 
     /**
@@ -163,45 +158,17 @@ class User extends Entity
      */
     public function setPassword($password)
     {
-        $this->password = md5($password);
-
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHydrometers()
     {
         return $this->hydrometers;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentations()
     {
         return $this->fermentations;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiToken()
-    {
-        return $this->apiToken;
-    }
-
-    /**
-     * @param string $apiToken
-     *
-     * @return self
-     */
-    public function setApiToken($apiToken)
-    {
-        $this->apiToken = $apiToken;
-
-        return $this;
     }
 
     /**
@@ -222,5 +189,103 @@ class User extends Entity
         $this->language = $language;
 
         return $this;
+    }
+
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @return self
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * @return self
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        return $this->timeZone;
+    }
+
+    /**
+     * @param string $timeZone
+     *
+     * @return self
+     */
+    public function setTimeZone($timeZone)
+    {
+        $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        // no password is used
+    }
+
+    public function getSalt()
+    {
+        // no password is used
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+        ]);
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list($this->id) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($this->id !== $user->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

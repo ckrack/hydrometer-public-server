@@ -1,20 +1,22 @@
-<?php $this->layout('layouts/index.php') ?>
+{% extends "layouts/public.html.twig" %}
+{% block content %}
 
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <div class="alert alert-danger" role="alert">
         <h1 class="display-3 alert-heading">
-            <?=_('There was a problem')?>
+            There was a problem
         </h1>
-    <?php if (isset($msg)) : ?>
+    {% if defined msg %}
         <p class="lead">
-            <?=$this->e($msg)?>
+            {{ msg }}
         </p>
-    <?php else : ?>
+    {% else %}
         <p class="lead">
-            <?=_('We could not complete your login.')?>
+            We could not complete your login.
         </p>
-    <?php endif; ?>
+    {% endif %}
     </div>
   </div>
 </div>
+{% endblock %}
