@@ -1,0 +1,256 @@
+{% extends "layouts/index.html.twig" %}
+{% block title %}
+    {% trans %}Hydrometers{% endtrans %}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mt-4 mb-3">
+    {% trans %}Available hydrometers{% endtrans %}
+    <a href="{{ path('ui_hydrometers_add') }}" class="btn btn-success float-md-right">
+        {% trans %}Add hydrometer{% endtrans %}
+    </a>
+</h1>
+<hr class="mb-3">
+
+{% if hydrometers %}
+{% for hydrometer in hydrometers %}
+    <div class="card mb-3">
+        <h5 class="card-header">
+            {{ hydrometer.name }}
+            <div class="float-right">
+                    <div class="btn-group">
+                        <a class="btn btn-secondary btn-sm" href="{{ path('ui_hydrometers_help', {'hydrometer': hydrometer.id|optimus}) }}">{% trans %}setup{% endtrans %}</a>
+                        <a class="btn btn-secondary btn-sm" href="{{ path('ui_hydrometers_edit', {'hydrometer': hydrometer.id|optimus}) }}">{% trans %}edit{% endtrans %}</a>
+                    </div>
+                    &nbsp;
+                    {{ form_start(form, {
+                        'method': 'DELETE',
+                        'action': path('ui_hydrometers_delete', {'hydrometer': hydrometer.id|optimus}),
+                        'attr': {'class': 'form-delete float-right'}
+                    })}}
+                    <button class="close" type="submit" onclick="if (!confirm('Are you sure?')) {
+                        return false;
+                    }"><span aria-hidden="true">&times;</span></button>
+                    {{ form_end(form) }}
+            </div>
+
+        </h5>
+        <div class="card-body">
+            {% if hydrometer.activity %}
+            <div class="row">
+            {% if hydrometer.battery %}
+                <div class="col-sm">
+                    <div id="battery{{ hydrometer.id }}"></div>
+                </div>
+            {% endif %}
+
+            {% if hydrometer.angle %}
+                <div class="col-sm">
+                    <div id="angle{{ hydrometer.id }}"></div>
+                </div>
+            {% endif %}
+
+            {% if hydrometer.gravity %}
+                <div class="col-sm">
+                    <div id="gravity{{ hydrometer.id }}"></div>
+                </div>
+            {% endif %}
+
+            {% if hydrometer.temperature %}
+                <div class="col-sm">
+                    <div id="temperature{{ hydrometer.id }}"></div>
+                </div>
+            {% endif %}
+            </div>
+
+            <script>
+                var battery = c3.generate({
+                    bindto: '#battery'+'{{ hydrometer.id }}',
+                    data: {
+                        columns: [
+                            ['voltage', {{ hydrometer.battery }}],
+                        ],
+                        type: 'gauge'
+                    },
+                    legend: {
+                        show: false
+                    },
+                    gauge: {
+                        min: {{ min('V'|treshold) }},
+                        max:  {{ max('V'|treshold) }},
+                        units: '{% trans %}Voltage{% endtrans %}'
+                    },
+                    color: {
+                        pattern: ['#DF5353', '#DF5353', '#DDDF0D', '#55BF3B'], // the color levels for the percentage values.
+                        threshold: {
+                            unit: 'value', // percentage is default
+                            values: {{ 'V'|treshold|json_encode()|raw }}
+                        }
+                    },
+                    tooltip: {
+                        format: {
+                            value: function(value) {
+                                return d3.format(',.{{ 'V'|roundto }}f')(value)+'V';
+                            }
+                        }
+                    },
+                    size: {
+                        height: 180
+                    }
+                });
+
+                var angle = c3.generate({
+                    bindto: '#angle'+'{{ hydrometer.id }}',
+                    data: {
+                        columns: [
+                            ['angle', {{ hydrometer.angle }}],
+                        ],
+                        type: 'gauge'
+                    },
+                    legend: {
+                        show: false
+                    },
+                    gauge: {
+                        label: {
+                            format: function(value, ratio) {
+                                return Math.round(value)+'°';
+                            },
+                       },
+                        min: 0,
+                        max: 90,
+                        units: '{% trans %}Angle{% endtrans %}'
+                    },
+                    color: {
+                        pattern: ['#DF5353', '#DF5353', '#DDDF0D', '55BF3B', '#DDDF0D', '#55BF3B'], // the color levels for the percentage values.
+                        threshold: {
+                            unit: 'value', // percentage is default
+                            values: [0, 15, 25, 70, 80, 90]
+                        }
+                    },
+                    tooltip: {
+                        format: {
+                            value: function(value) {
+                                return d3.format(',.2f')(value)+'°';
+                            }
+                        }
+                    },
+                    size: {
+                        height: 180
+                    }
+                });
+
+                var gravity = c3.generate({
+                    bindto: '#gravity'+'{{ hydrometer.id }}',
+                    data: {
+                        columns: [
+                            ['gravity', {{ hydrometer.gravity }}],
+                        ],
+                        type: 'gauge'
+                    },
+                    legend: {
+                        show: false
+                    },
+                    gauge: {
+                        label: {
+                            format: function(value, ratio) {
+                                return value.toFixed({{ hydrometer.metricGravity|roundto }})+'{{ hydrometer.metricGravity }}';
+                            }
+                        },
+                        min: {{ min(hydrometer.metricGravity|treshold) }},
+                        max: {{ hydrometer.max_gravity|round(hydrometer.metricGravity|roundto) }},
+                        units: '{% trans %}Gravity{% endtrans %}'
+                    },
+                    color: {
+                        pattern: ['#55BF3B', '#55BF3B', '#DDDF0D', '#DDDF0D', '#DF5353', '#DF5353'], // the color levels for the percentage values.
+                        threshold: {
+                            unit: 'value', // percentage is default
+                            values: {{ hydrometer.metricGravity|treshold|json_encode() }},
+                        }
+                    },
+                    tooltip: {
+                        format: {
+                            value: function(value) {
+                                return d3.format(',.{{ hydrometer.metricGravity|roundto }}f')(value)+'{{ hydrometer.metricGravity }}';
+                            }
+                        }
+                    },
+                    size: {
+                        height: 180
+                    }
+                });
+
+                var temperature = c3.generate({
+                    bindto: '#temperature'+'{{ hydrometer.id }}',
+                    data: {
+                        columns: [
+                            ['temperature', {{ hydrometer.temperature }}],
+                        ],
+                        type: 'gauge'
+                    },
+                    legend: {
+                        show: false
+                    },
+                    gauge: {
+                        label: {
+                            format: function(value, ratio) {
+                                return value.toFixed({{ hydrometer.metricTemperature|roundto }})+'{{ hydrometer.metricTemperature }}';
+                            },
+                        },
+                        min: {{ min(hydrometer.metricTemperature|treshold) }},
+                        max: {{ max(hydrometer.metricTemperature|treshold) }},
+                        units: '{% trans %}Temperature{% endtrans %}'
+                    },
+                    color: {
+                        pattern: ['#DF5353', '#DF5353', '#DDDF0D', '#55BF3B', '#DDDF0D', '#DF5353'], // the color levels for the percentage values.
+                        threshold: {
+                            unit: 'value', // percentage is default
+                            values: {{ hydrometer.metricTemperature|treshold|json_encode() }}
+                        }
+                    },
+                    tooltip: {
+                        format: {
+                            value: function(value) {
+                                return d3.format(',.{{ hydrometer.metricTemperature|roundto }}f')(value)+'{{ hydrometer.metricTemperature }}';
+                            }
+                        }
+                    },
+                    size: {
+                        height: 180
+                    }
+                });
+
+            </script>
+        {% else %}
+            {% trans %}No data yet{% endtrans %}
+        {% endif %}
+        </div>
+        <div class="card-footer">
+            {% if hydrometer.activity %}
+                <small class="card-subtitle text-muted">
+                    {% trans %}Last activity{% endtrans %}:
+                        {{ hydrometer.activity }}
+                </small>
+            {% endif %}
+
+            <a class="card-link float-right" href="{{ path('ui_datapoints_list_hydrometer', {'hydrometer': hydrometer.id|optimus }) }}">
+                {% trans %}Datapoints{% endtrans %}
+            </a>
+        </div>
+    </div>
+{% endfor %}
+{% else %}
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <p class="lead">
+            {% trans %}To start collecting fermentation data, you need to add and setup your first device.{% endtrans %}
+        </p>
+        <p>
+            {% trans %}Start by adding it here, then set it up with the token generated by the system.{% endtrans %}
+        </p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg ml-auto mr-0" href="{{ path('ui_hydrometers_add') }}" role="button">{% trans %}Add a hydrometer{% endtrans %}</a>
+      </div>
+    </div>
+{% endif %}
+{% endblock %}
