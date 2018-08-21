@@ -46,7 +46,7 @@ class Token extends Entity
     protected $wasUsed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="token")
      * ORM\JoinColumn(
      *     name="user_id",
      *     referencedColumnName="id",
@@ -76,17 +76,12 @@ class Token extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
-     *
      * @return self
      */
     public function setUser($user)
@@ -153,8 +148,6 @@ class Token extends Entity
     }
 
     /**
-     * @param \DateTime $contentChanged
-     *
      * @return self
      */
     public function setContentChanged(\DateTime $contentChanged)

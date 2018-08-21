@@ -73,7 +73,7 @@ class Hydrometer extends Entity
     protected $metricGravity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="hydrometers")
      * ORM\JoinColumn(
      *     name="user_id",
      *     referencedColumnName="id",
@@ -159,17 +159,12 @@ class Hydrometer extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
-     *
      * @return self
      */
     public function setUser($user)
@@ -179,9 +174,6 @@ class Hydrometer extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentations()
     {
         return $this->fermentations;

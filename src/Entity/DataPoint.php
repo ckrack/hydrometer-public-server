@@ -28,7 +28,7 @@ class DataPoint extends Entity
     protected $hydrometer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Fermentation")
+     * @ORM\ManyToOne(targetEntity="Fermentation", inversedBy="data")
      * ORM\JoinColumn(
      *     name="fermentation_id",
      *     referencedColumnName="id"
@@ -90,6 +90,7 @@ class DataPoint extends Entity
     /**
      * @ORM\Column(type="float", nullable=true)
      * Trubidity for a trubidity sensor
+     *
      * @var float
      */
     protected $trubidity;
@@ -97,6 +98,7 @@ class DataPoint extends Entity
     /**
      * @ORM\Column(type="float", nullable=true)
      * Wifi strength
+     *
      * @var float
      */
     protected $RSSI;
@@ -104,20 +106,17 @@ class DataPoint extends Entity
     /**
      * @ORM\Column(type="integer", nullable=true)
      * Update interval
+     *
      * @var int
      */
     protected $interval;
 
-     * @return mixed
-     */
     public function getHydrometer()
     {
         return $this->hydrometer;
     }
 
     /**
-     * @param mixed $hydrometer
-     *
      * @return self
      */
     public function setHydrometer($hydrometer)
@@ -127,17 +126,12 @@ class DataPoint extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentation()
     {
         return $this->fermentation;
     }
 
     /**
-     * @param mixed $fermentation
-     *
      * @return self
      */
     public function setFermentation($fermentation)

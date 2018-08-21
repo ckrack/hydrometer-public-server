@@ -28,15 +28,15 @@ abstract class Entity implements JsonSerializable
     protected $id;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
     protected $created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime

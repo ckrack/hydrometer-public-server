@@ -42,7 +42,7 @@ class Fermentation extends Entity
     protected $hydrometer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="fermentations")
      * ORM\JoinColumn(
      *     name="user_id",
      *     referencedColumnName="id"
@@ -129,17 +129,12 @@ class Fermentation extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHydrometer()
     {
         return $this->hydrometer;
     }
 
     /**
-     * @param mixed $hydrometer
-     *
      * @return self
      */
     public function setHydrometer($hydrometer)
@@ -149,17 +144,12 @@ class Fermentation extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
-     *
      * @return self
      */
     public function setUser($user)
@@ -169,17 +159,12 @@ class Fermentation extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCalibration()
     {
         return $this->calibration;
     }
 
     /**
-     * @param mixed $calibration
-     *
      * @return self
      */
     public function setCalibration($calibration)
@@ -189,17 +174,12 @@ class Fermentation extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getData()
     {
         return $this->data;
     }
 
     /**
-     * @param mixed $data
-     *
      * @return self
      */
     public function setData($data)
