@@ -48,8 +48,7 @@ class ListController extends Controller
             $this->logger->error($e->getMessage());
 
             return $this->render(
-                'ui/exception.php',
-                ['user' => $user]
+                'ui/exception.html.twig'
             );
         }
     }
