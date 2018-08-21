@@ -132,7 +132,7 @@ class Data
      */
     protected function getCalibrationValues(Hydrometer $hydrometer)
     {
-        $calibration = $this->em->getRepository('App\Entity\Calibration')->findOneBy(['hydrometer' => $hydrometer]);
+        $calibration = $this->em->getRepository(Calibration::class)->findOneBy(['hydrometer' => $hydrometer]);
 
         $values = [0, 0, 0, false];
 
@@ -157,7 +157,7 @@ class Data
      */
     public function angle(Hydrometer $hydrometer)
     {
-        $latestData = $this->em->getRepository('App\Entity\DataPoint')->findInColumns($hydrometer);
+        $latestData = $this->em->getRepository(DataPoint::class)->findInColumns($hydrometer);
 
         $data = [];
         foreach ($latestData as $value) {

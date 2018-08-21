@@ -76,7 +76,7 @@ class TCP
 
     public function saveData($data, $hydrometer, $fermentation)
     {
-        $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->find($hydrometer);
+        $hydrometer = $this->em->getRepository(Hydrometer::class)->find($hydrometer);
 
         // set the hydrometer name if specified
         if (isset($data['name'])) {
@@ -96,7 +96,7 @@ class TCP
         $dataPoint->import($data);
 
         if ($fermentation) {
-            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($fermentation);
+            $fermentation = $this->em->getRepository(Fermentation::class)->find($fermentation);
             $dataPoint->setFermentation($fermentation);
         }
 
