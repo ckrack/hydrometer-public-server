@@ -33,3 +33,9 @@ services:
             $prime: '%env(OPTIMUS_PRIME)%'
             $inverse: '%env(OPTIMUS_INVERSE)%'
             $xor: '%env(OPTIMUS_RANDOM)%'
+
+    # translations file
+    translation.loader.po:
+        class: Symfony\Component\Translation\Loader\PoFileLoader
+        tags:
+            - { name: translation.loader, alias: po }
