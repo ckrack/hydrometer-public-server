@@ -1,0 +1,91 @@
+{% extends "layouts/index.html.twig" %}
+
+{% block title %}
+    {% trans %}Datapoints{% endtrans %}
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4 mb-3">
+    {% trans %}Datapoints{% endtrans %}
+</h1>
+<hr class="mb-3">
+
+{% if data %}
+
+    {% if hydrometer %}
+        <h2 class="mt-2 mb-3">
+            {{ hydrometer.getName }}
+        </h2>
+    {% endif %}
+
+<table class="table table-striped table-hover table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                {% trans %}Date{% endtrans %}
+            </th>
+            {% if hydrometer is empty %}
+                <th>{% trans %}Hydrometer{% endtrans %}</th>
+            {% endif %}
+            <th class="text-right">{% trans %}Temperature{% endtrans %}</th>
+            <th class="text-right">{% trans %}Angle{% endtrans %}</th>
+            <th class="text-right">{% trans %}Battery{% endtrans %}</th>
+            <th class="text-right">{% trans %}Gravity{% endtrans %}</th>
+            <th class="text-right">{% trans %}Trubidity{% endtrans %}</th>
+            <th class="text-right">{% trans %}Actions{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for point in data %}
+        <tr class="">
+            <td>
+                {{ point.time }}
+            </td>
+            {% if hydrometer is empty %}
+                <td>
+                    {{ point.hydrometer }}
+                </td>
+            {% endif %}
+
+            <td class="text-right">
+                {{ point.temperature|format(point.metricTemperature) }}
+            </td>
+            <td class="text-right">
+{{ point.angle|format('°') }}
+            </td>
+            <td class="text-right">
+                {{ point.battery|format('V') }}
+            </td>
+            <td class="text-right">
+                {{ point.gravity|format(point.metricGravity) }}
+            </td>
+            <td class="text-right">
+                {{ point.trubidity|format }}
+            </td>
+            <td class="text-right">
+                <a href="{{ path('ui_datapoints_delete', {'datapoint': point.id|optimus}) }}" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </td>
+        </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <p class="lead">
+            {% trans %}
+                Once your hydrometers start transfering data, it will appear here.
+            {% endtrans %}
+        </p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg ml-auto mr-0" href="{{ path('ui_hydrometer_add') }}" role="button">
+            {% trans %}
+                Add a hydrometer
+            {% endtrans %}
+        </a>
+      </div>
+    </div>
+{% endif %}
+{% endblock %}

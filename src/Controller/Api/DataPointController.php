@@ -1,35 +1,27 @@
 <?php
 
-/*
- * This file is part of the hydrometer public server project.
- *
- * @author Clemens Krack <info@clemenskrack.com>
- */
-
 namespace App\Controller\Api;
 
-use App\Entity;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Modules\Auth\Token;
+use App\Entity;
 use App\Modules\Formula\Tilt\Timepoint;
-use Doctrine\ORM\EntityManager;
 use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
-class DataPoint
+class DataPointController extends Controller
 {
-    protected $logger;
     protected $em;
-    protected $tokenAuth;
 
     /**
-     * Use League\Container for auto-wiring dependencies into the controller.
      *
-     * @param Plates          $view   [description]
-     * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Token $tokenAuth,
         LoggerInterface $logger
     ) {
@@ -40,17 +32,16 @@ class DataPoint
 
     /**
      * Receive datapoint for hydrometer via HTTP POST.
-     *
-     * @param [type] $request  [description]
-     * @param [type] $response [description]
-     * @param [type] $args     [description]
-     *
-     * @return [type] [description]
+     * @Route("/api/ispindel/{token}", name="api-post-spindle")
+     * @Route("/api/tilt/{token}", name="api-post-tilt")
      */
-    public function post($request, $response, $args)
+    public function __invoke()
     {
         try {
-            $data = $request->getParsedBody();
+            $data = $request->getContent();
+            if ($data) {
+                $data = json_decode($data);
+            }
             $this->logger->debug('Spindle: Receive data', [$data, $args]);
 
             if (empty($data)) {
@@ -75,11 +66,6 @@ class DataPoint
 
             $dataPoint = new Entity\DataPoint();
 
-            // prevent overwriting the ID by unsetting the espId
-            if (isset($data['id'])) {
-                unset($data['id']);
-            }
-
             $dataPoint->import($data);
             $dataPoint->setHydrometer($hydrometer);
 
@@ -88,13 +74,11 @@ class DataPoint
 
             $this->em->flush();
 
-            return $response
-                ->withStatus(200);
+            return new Response('', 200);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
-            return $response
-                ->withStatus(500);
+            return new Response('', 500);
         }
     }
 
@@ -105,8 +89,13 @@ class DataPoint
      *
      * @return array [description]
      */
-    protected function prepareData($data)
+    protected function prepareData(array $data): array
     {
+        // prevent overwriting the ID by unsetting the espId
+        if (isset($data['id'])) {
+            unset($data['id']);
+        }
+
         switch (true) {
             // TILT
             case isset($data['Timepoint']):
