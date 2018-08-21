@@ -9,7 +9,7 @@
 namespace App\Modules\Auth;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -36,7 +36,7 @@ class Token
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         LoggerInterface $logger
     ) {
         $this->em = $em;
