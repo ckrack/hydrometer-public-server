@@ -1,0 +1,13 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~include-media/dist/_include-media";
+@import "~c3/c3.min.css";
+
+.display-3 {
+    @include media("<=phone") {
+        font-size: 3rem;
+    }
+}
+
+.form-delete {
+    display: inline;
+}

@@ -1,0 +1,8 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        SITE_TITLE: '%env(SITE_TITLE)%'
+        TCP_API_HOST: '%env(TCP_API_HOST)%'
+        TCP_API_PORT: '%env(TCP_API_PORT)%'

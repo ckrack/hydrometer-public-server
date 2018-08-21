@@ -21,7 +21,8 @@ services:
         - ServerName=localhost
     volumes:
         - .:/var/www
-        - ./logs/app.log:/var/log/app.log
+        - ./public:/var/www/html
+        - ./var/log/app.log:/var/log/app.log
     links:
         - db
     ports:
