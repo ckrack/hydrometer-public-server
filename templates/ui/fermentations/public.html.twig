@@ -1,28 +1,35 @@
-<?php $this->layout('layouts/index.php', ['user' => (isset($user) ? $user : null)]) ?>
+{% extends "layouts/public.html.twig" %}
 
+{% block title %}
+    {{ fermentation.getName }}
+    -
+    {% trans %}Fermentation{% endtrans %}
+{% endblock %}
+
+{% block content %}
 <h1 class="mt-4 mb-3">
-    <?=_('Fermentation')?>
+    {% trans %}Fermentation{% endtrans %}
 </h1>
 <hr class="mb-3">
 <h2 class="mt-4 mb-3">
-    <?=$this->e($fermentation->getName())?>
+    {{ fermentation.getName|e }}
     <small class="text-muted float-md-right">
-        <?=$fermentation->getBegin()->format('Y-m-d')?>
+        {{ fermentation.getBegin|date('Y-m-d') }}
         &ndash;
-        <?=($fermentation->getEnd()) ? $fermentation->getEnd()->format('Y-m-d') : $data['time'][0]?>
+        {{ fermentation.getEnd|date('Y-m-d') }}
     </small>
 </h2>
 <hr class="mb-3">
 
 <div class="card">
     <div class="card-header">
-        <?=$this->e($name)?>
+        {{ name|e }}
     </div>
     <div class="card-body">
         <div id="chart"></div>
     </div>
     <div class="card-body">
-        <?=_('Fermentation seems to be stable since')?>: <?=$this->e($stable)?>.
+        {% trans %}Fermentation seems to be stable since{% endtrans %}: {{ stable }}.
     </div>
 </div>
 <script>
@@ -32,10 +39,11 @@
           x: 'time',
           xFormat: '%Y-%m-%d %H:%M',
           columns: [
-<?php foreach ($data as $key => $value):
-array_unshift($value, $key);
-echo json_encode($value).',';
-endforeach;?>
+{% for key, value in  data %}
+{% set identifier = [key] %}
+{% set row = identifier|merge(value) %}
+{{ row|json_encode()|raw }},
+{% endfor %}
           ],
             axes: {
               temperature: 'y',
@@ -57,25 +65,21 @@ endforeach;?>
                 },
                 type : 'timeseries',
                 tick: {
-                    format: window.innerWidth > 500 ? '%Y-%m-%d %H:%M' : '%Y-%m-%d',
-                    count: 10,
-                    fit: true,
-                    culling: true,
-                    culling: {
-                        max: window.innerWidth > 500 ? 8 : 3
-                    }
+                    format: '%Y-%m-%d %H:%M',
+                    count: 100,
+                    fit: true
                 }
             },
             y: {
                 label: {
-                    text: '<?=_('Temperature')?> (<?=$this->e($fermentation->getHydrometer()->getMetricTemperature())?>)',
+                    text: 'Temperature ({{ fermentation.getHydrometer.getMetricTemperature|e }} )',
                     position: 'outer-middle',
                     fit: true
                 }
             },
             y2: {
                 label: {
-                    text: '<?=_('Extract')?> (<?=$this->e($fermentation->getHydrometer()->getMetricGravity())?>)',
+                    text: 'Extract ({{ fermentation.getHydrometer.getMetricGravity|e }})',
                     position: 'outer-middle',
                     fit: false
                 },
@@ -92,3 +96,4 @@ endforeach;?>
         }
     });
 </script>
+{% endblock %}

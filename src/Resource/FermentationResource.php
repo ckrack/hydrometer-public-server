@@ -50,8 +50,8 @@ class FermentationResource extends EntityRepository
                 h.metricGravity
             ")
             ->from('App\Entity\Fermentation', 'f')
-            ->join('App\Entity\DataPoint', 'd', 'WITH', 'd.fermentation = f')
-            ->join('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
+            ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.fermentation = f')
+            ->join('App\Entity\Hydrometer', 'h', 'WITH', 'f.hydrometer = h')
             ->orderBy('begin', 'DESC')
             ->groupBy('f')
             ->andWhere('f.user = :user')
