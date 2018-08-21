@@ -9,8 +9,9 @@
 namespace App\Modules\Stats;
 
 use App\Entity\Calibration;
+use App\Entity\DataPoint;
 use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Jenssegers\Date\Date;
 use Projek\Slim\Plates;
 use Psr\Log\LoggerInterface;
@@ -28,8 +29,8 @@ class Data
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        EntityManager $em,
-        Plates $view,
+        EntityManagerInterface $em,
+        \Twig\Environment $view,
         LoggerInterface $logger
     ) {
         $this->em = $em;

@@ -9,8 +9,9 @@
 namespace App\Modules\Ispindle;
 
 use App\Entity\DataPoint;
+use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class TCP
@@ -24,7 +25,7 @@ class TCP
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         LoggerInterface $logger
     ) {
         $this->em = $em;
