@@ -1,25 +1,29 @@
 <?php
 
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Controller\Api;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\DataPoint;
+use App\Entity\Hydrometer;
 use App\Modules\Auth\Token;
-use App\Entity;
-use App\Modules\Formula\Tilt\Timepoint;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DataPointController extends Controller
 {
     protected $em;
 
-    /**
-     *
-     */
     public function __construct(
         EntityManagerInterface $em,
         Token $tokenAuth,
@@ -32,39 +36,40 @@ class DataPointController extends Controller
 
     /**
      * Receive datapoint for hydrometer via HTTP POST.
+     *
      * @Route("/api/ispindel/{token}", name="api-post-spindle")
      * @Route("/api/tilt/{token}", name="api-post-tilt")
      */
-    public function __invoke()
+    public function __invoke($token, Request $request)
     {
         try {
             $data = $request->getContent();
             if ($data) {
-                $data = json_decode($data);
+                $data = json_decode($data, true);
             }
-            $this->logger->debug('Spindle: Receive data', [$data, $args]);
+            $this->logger->debug('Spindle: Receive data', [$data, $token]);
 
             if (empty($data)) {
-                $this->logger->debug('api::post: no data passed', [$args, $data]);
+                $this->logger->debug('api::post: no data passed', [$token, $data]);
                 throw new InvalidArgumentException('Api::post: No data passed');
             }
 
-            if (!isset($args['token']) && !(isset($data['ID'])) && isset($data['token'])) {
-                $this->logger->debug('api::post: missing identifier', [$args, $data]);
+            if (!isset($token) && !(isset($data['ID'])) && isset($data['token'])) {
+                $this->logger->debug('api::post: missing identifier', [$token, $data]);
                 throw new InvalidArgumentException('Api::post: Data missing (ID or token)');
             }
 
             // confirm existance of the token @throws
-            $authData = $this->tokenAuth->authenticate(empty($args['token']) ? $data['token'] : $args['token']);
+            $authData = $this->tokenAuth->authenticate(empty($token) ? $data['token'] : $token);
 
-            $hydrometer = $this->em->getRepository(Entity\Hydrometer::class)->find($authData['hydrometer_id']);
+            $hydrometer = $this->em->getRepository(Hydrometer::class)->find($authData['hydrometer_id']);
 
             $this->logger->debug('Spindle: Receive data for Hydrometer', [$hydrometer, $data]);
 
             // data needs to be changed possibly?
             $data = $this->prepareData($data);
 
-            $dataPoint = new Entity\DataPoint();
+            $dataPoint = new DataPoint();
 
             $dataPoint->import($data);
             $dataPoint->setHydrometer($hydrometer);

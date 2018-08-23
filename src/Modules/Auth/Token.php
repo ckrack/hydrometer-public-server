@@ -60,7 +60,7 @@ class Token
 
             return $q->getSingleResult();
         } catch (\Exception $e) {
-            $this->logger->error($e);
+            $this->logger->error($e, [$q->getSql()]);
             throw new \InvalidArgumentException('Authentication failed');
         }
     }
