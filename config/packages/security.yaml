@@ -19,6 +19,15 @@ security:
                     - App\Security\Authenticator\GoogleConnectAuthenticator
                 entry_point: App\Security\Authenticator\GoogleConnectAuthenticator
 
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+                # by default, the feature is enabled by checking a
+                # checkbox in the login form (see below), uncomment the
+                # following line to always enable it.
+                always_remember_me: true
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:

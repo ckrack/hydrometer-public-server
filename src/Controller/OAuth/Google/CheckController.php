@@ -36,11 +36,6 @@ class CheckController extends Controller
     public function __invoke(Request $request)
     {
         // we use guard for the auth. if we reach this, we are logged in.
-        // add a welcome flash message
-        $this->addFlash(
-            'success',
-            'Welcome!'
-        );
 
         return $this->redirect($this->generateUrl('ui_hydrometers_list'));
     }

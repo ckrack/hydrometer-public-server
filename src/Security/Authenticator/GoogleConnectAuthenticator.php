@@ -70,8 +70,7 @@ class GoogleConnectAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // on success, let the request continue
-        return null;
+        return new RedirectResponse('/ui/');
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
