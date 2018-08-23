@@ -104,7 +104,7 @@ class DataPoint extends Entity
     protected $RSSI;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="`interval`", type="integer", nullable=true)
      * Update interval
      *
      * @var int
