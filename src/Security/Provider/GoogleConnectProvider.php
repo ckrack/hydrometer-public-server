@@ -138,7 +138,7 @@ class GoogleConnectProvider implements UserProviderInterface
      *
      * @param string $class
      */
-    public function supportsClass($class): boolean
+    public function supportsClass($class)
     {
         return User::class === $class;
     }
