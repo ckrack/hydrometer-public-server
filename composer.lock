@@ -1868,16 +1868,16 @@
         },
         {
             "name": "knpuniversity/oauth2-client-bundle",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knpuniversity/oauth2-client-bundle.git",
-                "reference": "71642a344617bf227aabdb64d7554e36b79d8a1b"
+                "reference": "a7faba0303b55ec2a3b7387d434704e866162aa7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knpuniversity/oauth2-client-bundle/zipball/71642a344617bf227aabdb64d7554e36b79d8a1b",
-                "reference": "71642a344617bf227aabdb64d7554e36b79d8a1b",
+                "url": "https://api.github.com/repos/knpuniversity/oauth2-client-bundle/zipball/a7faba0303b55ec2a3b7387d434704e866162aa7",
+                "reference": "a7faba0303b55ec2a3b7387d434704e866162aa7",
                 "shasum": ""
             },
             "require": {
@@ -1890,7 +1890,7 @@
             },
             "require-dev": {
                 "league/oauth2-facebook": "^1.1|^2.0",
-                "phpunit/phpunit": "^4.8",
+                "phpunit/phpunit": "^4.8.36",
                 "symfony/security-guard": "^2.8|^3.0"
             },
             "suggest": {
@@ -1918,7 +1918,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2018-06-27T02:29:56+00:00"
+            "time": "2018-09-10T16:37:37+00:00"
         },
         {
             "name": "league/oauth2-client",
