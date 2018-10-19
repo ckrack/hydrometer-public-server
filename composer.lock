@@ -5314,16 +5314,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v4.1.4",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "64c830b4dddbcbeacfe678b0b98e28d6c2870e42"
+                "reference": "5393c2d277bf53fb3d91f083b067f8ce41033fcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/64c830b4dddbcbeacfe678b0b98e28d6c2870e42",
-                "reference": "64c830b4dddbcbeacfe678b0b98e28d6c2870e42",
+                "url": "https://api.github.com/repos/symfony/security/zipball/5393c2d277bf53fb3d91f083b067f8ce41033fcd",
+                "reference": "5393c2d277bf53fb3d91f083b067f8ce41033fcd",
                 "shasum": ""
             },
             "require": {
@@ -5387,20 +5387,20 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2018-08-19T08:16:41+00:00"
+            "time": "2018-10-02T12:40:59+00:00"
         },
         {
             "name": "symfony/security-bundle",
-            "version": "v4.1.4",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-bundle.git",
-                "reference": "03f68de271c2a5fdddf9f41b25ef80bc1ddf303b"
+                "reference": "be4456eb61bb142342a7c9a41e4127783b077a86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/03f68de271c2a5fdddf9f41b25ef80bc1ddf303b",
-                "reference": "03f68de271c2a5fdddf9f41b25ef80bc1ddf303b",
+                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/be4456eb61bb142342a7c9a41e4127783b077a86",
+                "reference": "be4456eb61bb142342a7c9a41e4127783b077a86",
                 "shasum": ""
             },
             "require": {
@@ -5467,7 +5467,7 @@
             ],
             "description": "Symfony SecurityBundle",
             "homepage": "https://symfony.com",
-            "time": "2018-08-18T16:52:46+00:00"
+            "time": "2018-10-02T12:40:59+00:00"
         },
         {
             "name": "symfony/stopwatch",
