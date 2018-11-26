@@ -2688,16 +2688,16 @@
         },
         {
             "name": "php-http/httplug-bundle",
-            "version": "1.12.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/HttplugBundle.git",
-                "reference": "210b384ded3d0f32dfd8fa80075abdb2c00ee01f"
+                "reference": "e05501862a604811108e47af9b4931256988a037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/210b384ded3d0f32dfd8fa80075abdb2c00ee01f",
-                "reference": "210b384ded3d0f32dfd8fa80075abdb2c00ee01f",
+                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/e05501862a604811108e47af9b4931256988a037",
+                "reference": "e05501862a604811108e47af9b4931256988a037",
                 "shasum": ""
             },
             "require": {
@@ -2784,7 +2784,7 @@
                 "message",
                 "php-http"
             ],
-            "time": "2018-10-26T07:15:01+00:00"
+            "time": "2018-11-13T09:47:58+00:00"
         },
         {
             "name": "php-http/logger-plugin",
@@ -2843,16 +2843,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.7.0",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "741f2266a202d59c4ed75436671e1b8e6f475ea3"
+                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/741f2266a202d59c4ed75436671e1b8e6f475ea3",
-                "reference": "741f2266a202d59c4ed75436671e1b8e6f475ea3",
+                "url": "https://api.github.com/repos/php-http/message/zipball/b159ffe570dffd335e22ef0b91a946eacb182fa1",
+                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1",
                 "shasum": ""
             },
             "require": {
@@ -2911,7 +2911,7 @@
                 "message",
                 "psr-7"
             ],
-            "time": "2018-08-15T06:37:30+00:00"
+            "time": "2018-11-01T09:32:41+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -3305,16 +3305,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -3348,7 +3348,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -5476,7 +5476,7 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v4.1.6",
+            "version": "v4.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
