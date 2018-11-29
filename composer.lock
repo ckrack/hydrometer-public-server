@@ -2684,16 +2684,16 @@
         },
         {
             "name": "php-http/httplug-bundle",
-            "version": "1.13.0",
+            "version": "1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/HttplugBundle.git",
-                "reference": "e05501862a604811108e47af9b4931256988a037"
+                "reference": "7dff65a21c324389a0c37064319e309cbc11357b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/e05501862a604811108e47af9b4931256988a037",
-                "reference": "e05501862a604811108e47af9b4931256988a037",
+                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/7dff65a21c324389a0c37064319e309cbc11357b",
+                "reference": "7dff65a21c324389a0c37064319e309cbc11357b",
                 "shasum": ""
             },
             "require": {
@@ -2780,7 +2780,7 @@
                 "message",
                 "php-http"
             ],
-            "time": "2018-11-13T09:47:58+00:00"
+            "time": "2018-11-28T16:17:38+00:00"
         },
         {
             "name": "php-http/logger-plugin",
@@ -5472,16 +5472,16 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "5bfc064125b73ff81229e19381ce1c34d3416f4b"
+                "reference": "87a801786adb053576dc025892e01fedde9b4fc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/5bfc064125b73ff81229e19381ce1c34d3416f4b",
-                "reference": "5bfc064125b73ff81229e19381ce1c34d3416f4b",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/87a801786adb053576dc025892e01fedde9b4fc7",
+                "reference": "87a801786adb053576dc025892e01fedde9b4fc7",
                 "shasum": ""
             },
             "require": {
@@ -5517,7 +5517,7 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "time": "2018-10-02T12:40:59+00:00"
+            "time": "2018-11-11T19:51:29+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
