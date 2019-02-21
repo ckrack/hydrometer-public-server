@@ -9,6 +9,7 @@
 namespace App\Controller\UI\Hydrometers;
 
 use App\Entity\Hydrometer;
+use App\Entity\Token;
 use App\Form\HydrometerType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,12 +34,21 @@ class AddController extends Controller
         $hydrometer = new Hydrometer();
         $hydrometer->setUser($this->getUser());
 
+        $token = new Token();
+        $token
+            ->setType('device')
+            ->setValue(bin2hex(random_bytes(10)))
+            ->setUser($this->getUser());
+        $hydrometer->setToken($token);
+
         $form = $this->createForm(HydrometerType::class, $hydrometer);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($hydrometer);
+            $this->em->persist($token);
+
             $this->em->flush();
 
             $this->addFlash(
