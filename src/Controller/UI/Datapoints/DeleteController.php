@@ -10,7 +10,6 @@ namespace App\Controller\UI\Datapoints;
 
 use App\Entity\DataPoint;
 use Doctrine\ORM\EntityManagerInterface;
-use Jenssegers\Optimus\Optimus;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,11 +22,9 @@ class DeleteController extends Controller
 
     public function __construct(
         EntityManagerInterface $em,
-        Optimus $optimus,
         LoggerInterface $logger
     ) {
         $this->em = $em;
-        $this->optimus = $optimus;
         $this->logger = $logger;
     }
 
