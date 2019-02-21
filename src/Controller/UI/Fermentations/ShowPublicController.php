@@ -40,10 +40,6 @@ class ShowPublicController extends Controller
         $this->denyAccessUnlessGranted('view', $fermentation);
 
         try {
-            if (!$fermentation->isPublic()) {
-                throw new \Exception('Fermentation is not public');
-            }
-
             $latestData = $this->em->getRepository(DataPoint::class)->findByFermentation($fermentation);
             $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 
@@ -51,7 +47,7 @@ class ShowPublicController extends Controller
 
             // render template
             return $this->render(
-                '/ui/fermentations/public.php',
+                '/ui/fermentations/public.html.twig',
                 array_merge(
                     $platoData,
                     [
