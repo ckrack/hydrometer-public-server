@@ -32,6 +32,29 @@ class TCP
         $this->logger = $logger;
     }
 
+    /**
+     * Wake db connection up.
+     */
+    public function wakeupDb()
+    {
+        $connection = $this->em->getConnection();
+        if (false === $connection->ping()) {
+            $connection->close();
+            $connection->connect();
+        }
+    }
+
+    /**
+     * Put the dbal connection to sleep.
+     */
+    public function sleepDb()
+    {
+        $connection = $this->em->getConnection();
+        if (!$connection->isConnected()) {
+            $connection->close();
+        }
+    }
+
     public function authenticate($token)
     {
         try {

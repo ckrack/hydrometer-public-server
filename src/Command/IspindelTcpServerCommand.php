@@ -9,7 +9,6 @@
 namespace App\Command;
 
 use App\Modules\Ispindle\TCP;
-use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,11 +23,9 @@ class IspindelTcpServerCommand extends Command
 
     public function __construct(
         TCP $tcp,
-        Connection $dbal,
         LoggerInterface $logger
     ) {
         $this->tcp = $tcp;
-        $this->dbal = $dbal;
         $this->logger = $logger;
 
         parent::__construct();
@@ -41,26 +38,6 @@ class IspindelTcpServerCommand extends Command
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
-    }
-
-    /**
-     * Wake db connection up.
-     */
-    protected function wakeupDb()
-    {
-        if (!$this->dbal->isConnected()) {
-            $this->dbal->connect();
-        }
-    }
-
-    /**
-     * Put the dbal connection to sleep.
-     */
-    protected function sleepDb()
-    {
-        if (!$this->dbal->isConnected()) {
-            $this->dbal->close();
-        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -129,14 +106,14 @@ class IspindelTcpServerCommand extends Command
                     $this->logger->debug('Spindle data', [$jsonDecoded]);
 
                     // wake the database connection
-                    $this->wakeupDb();
+                    $this->tcp->wakeupDb();
 
                     // confirm existance of the token @throws
                     $authData = $this->tcp->authenticate($jsonDecoded['token']);
                     $this->tcp->saveData($jsonDecoded, $authData['hydrometer_id'], $authData['fermentation_id']);
 
                     // sleep the database connection
-                    $this->sleepDb();
+                    $this->tcp->sleepDb();
                 } catch (\Exception $e) {
                     $this->logger->error('Exception: '.$e->getMessage());
                 }
