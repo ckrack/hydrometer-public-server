@@ -18,11 +18,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Jenssegers\Optimus\Optimus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ThrowAwayFermentationController extends Controller
+class ThrowAwayFermentationController extends AbstractController
 {
     protected $em;
     protected $statsModule;

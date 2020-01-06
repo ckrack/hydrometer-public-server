@@ -12,11 +12,11 @@ use App\Entity\Hydrometer;
 use App\Form\HydrometerType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EditController extends Controller
+class EditController extends AbstractController
 {
     protected $em;
 

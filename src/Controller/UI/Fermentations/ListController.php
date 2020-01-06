@@ -12,10 +12,10 @@ use App\Entity\Fermentation;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ListController extends Controller
+class ListController extends AbstractController
 {
     protected $em;
     protected $logger;

@@ -11,10 +11,10 @@ namespace App\Controller\OAuth\Facebook;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class InitController extends Controller
+class InitController extends AbstractController
 {
     protected $logger;
     protected $em;

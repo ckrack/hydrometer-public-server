@@ -12,11 +12,11 @@ use App\Entity\Hydrometer;
 use App\Entity\Token;
 use App\Form\HydrometerType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AddController extends Controller
+class AddController extends AbstractController
 {
     protected $em;
 

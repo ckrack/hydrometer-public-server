@@ -11,10 +11,10 @@ namespace App\Controller\UI\Hydrometers;
 use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HelpController extends Controller
+class HelpController extends AbstractController
 {
     protected $em;
 

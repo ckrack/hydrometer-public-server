@@ -11,11 +11,11 @@ namespace App\Controller\OAuth\Google;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CheckController extends Controller
+class CheckController extends AbstractController
 {
     protected $oauthRegistry;
     protected $logger;

@@ -11,11 +11,11 @@ namespace App\Controller\UI\Fermentations;
 use App\Entity\Fermentation;
 use App\Form\FermentationType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AddController extends Controller
+class AddController extends AbstractController
 {
     protected $em;
 

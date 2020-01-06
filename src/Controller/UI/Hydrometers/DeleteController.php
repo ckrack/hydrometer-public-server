@@ -11,11 +11,11 @@ namespace App\Controller\UI\Hydrometers;
 use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DeleteController extends Controller
+class DeleteController extends AbstractController
 {
     protected $em;
 
