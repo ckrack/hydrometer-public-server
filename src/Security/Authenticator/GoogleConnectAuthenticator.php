@@ -70,7 +70,7 @@ class GoogleConnectAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new RedirectResponse('/ui/');
+        return new RedirectResponse($this->router->generate('ui_hydrometers_list'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
