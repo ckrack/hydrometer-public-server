@@ -1,15 +1,23 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Twig;
 
+use Jenssegers\Optimus\Optimus;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Jenssegers\Optimus\Optimus;
 
 class OptimusExtension extends AbstractExtension
 {
+    protected $optimus;
+
     /**
-     * Autowire optimus
-     * @param Optimus $optimus
+     * Autowire optimus.
      */
     public function __construct(Optimus $optimus)
     {
@@ -18,15 +26,17 @@ class OptimusExtension extends AbstractExtension
 
     public function getFilters()
     {
-        return array(
-            new TwigFilter('optimus', array($this, 'optimusFilter')),
-        );
+        return [
+            new TwigFilter('optimus', [$this, 'optimusFilter']),
+        ];
     }
 
     /**
-     * Returns number encoded by Optimus
-     * @param  string $number [description]
-     * @return string         [description]
+     * Returns number encoded by Optimus.
+     *
+     * @param string $number [description]
+     *
+     * @return string [description]
      */
     public function optimusFilter($number)
     {

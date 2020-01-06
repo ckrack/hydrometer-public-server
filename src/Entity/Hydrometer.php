@@ -33,13 +33,6 @@ class Hydrometer extends Entity implements TimestampableInterface
 {
     use TimestampableTrait;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->items = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
-
     /**
      * This is the ESP8266 Arduino ChipId.
      * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis.

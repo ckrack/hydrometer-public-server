@@ -19,8 +19,6 @@ class UserRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      *
-     * @param Hydrometer $hydrometer [description]
-     *
      * @return [type] [description]
      */
     public function findByEmail($email)

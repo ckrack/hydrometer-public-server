@@ -28,7 +28,6 @@ class FacebookConnectProvider implements UserProviderInterface
     /**
      * Loads the user for the given facebookId.
      *
-     *
      * @throws UsernameNotFoundException if the user is not found
      *
      * @return UserInterface

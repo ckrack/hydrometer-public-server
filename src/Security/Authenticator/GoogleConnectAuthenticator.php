@@ -23,6 +23,7 @@ class GoogleConnectAuthenticator extends SocialAuthenticator
 {
     private $clientRegistry;
     private $router;
+    private $userProvider;
 
     public function __construct(
         ClientRegistry $clientRegistry,

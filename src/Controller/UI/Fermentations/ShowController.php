@@ -12,6 +12,7 @@ use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Modules\Stats;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;

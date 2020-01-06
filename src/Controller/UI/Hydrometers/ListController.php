@@ -11,17 +11,20 @@ namespace App\Controller\UI\Hydrometers;
 use App\Entity\DataPoint;
 use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListController extends Controller
 {
     protected $em;
+    protected $logger;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         // add your dependencies
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     /**
@@ -33,7 +36,6 @@ class ListController extends Controller
     {
         try {
             $user = $this->getUser();
-
             $hydrometers = $this->em->getRepository(Hydrometer::class)->findAllWithLastActivity($user);
 
             $hydrometers = $this->findLastActivity($hydrometers);
@@ -47,7 +49,7 @@ class ListController extends Controller
                     'form' => $this->createDeleteForm()->createView(),
                 ]
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
 
             return $this->render(

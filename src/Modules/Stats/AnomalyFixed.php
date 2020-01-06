@@ -20,6 +20,8 @@ class AnomalyFixed
     protected $outlier;
     protected $mean;
     protected $previous = null;
+    protected $std;
+    protected $logger;
 
     public function __construct(
         $std,

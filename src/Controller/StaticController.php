@@ -1,18 +1,21 @@
 <?php
 
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 
 class StaticController extends Controller
 {
     protected $logger;
 
-    /**
-     *
-     */
     public function __construct(LoggerInterface $logger)
     {
         // add your dependencies
@@ -25,7 +28,7 @@ class StaticController extends Controller
     public function __invoke($static)
     {
         return $this->render($static.'.html.twig', [
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
         ]);
     }
 }

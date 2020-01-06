@@ -11,6 +11,7 @@ namespace App\Controller\UI\Datapoints;
 use App\Entity\DataPoint;
 use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListController extends Controller
 {
     protected $em;
+    protected $logger;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -41,7 +43,7 @@ class ListController extends Controller
             $user = $this->getUser();
 
             if ($hydrometer && $hydrometer->getUser()->getId() !== $user->getId()) {
-                throw new \Exception('No access');
+                throw new Exception('No access');
             }
 
             $data = $this->em->getRepository(DataPoint::class)->findAllByUser($user, $hydrometer);

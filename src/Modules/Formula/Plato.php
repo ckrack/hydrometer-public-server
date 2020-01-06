@@ -8,8 +8,6 @@
 
 namespace App\Modules\Formula;
 
-use SpecificGravity;
-
 /**
  * Formulas for specific gravity.
  */

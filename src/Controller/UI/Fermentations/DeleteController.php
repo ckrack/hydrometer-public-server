@@ -10,6 +10,7 @@ namespace App\Controller\UI\Fermentations;
 
 use App\Entity\Fermentation;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteController extends Controller
 {
     protected $em;
+    protected $logger;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         // add your dependencies
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     /**

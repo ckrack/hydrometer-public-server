@@ -15,6 +15,7 @@ use App\Entity\Token;
 use App\Form\ThrowawayFermentationType;
 use App\Modules\Stats;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Jenssegers\Optimus\Optimus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +26,7 @@ class ThrowAwayFermentationController extends Controller
 {
     protected $em;
     protected $statsModule;
+    protected $optimus;
 
     public function __construct(
         EntityManagerInterface $em,

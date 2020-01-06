@@ -22,6 +22,7 @@ class Anomaly
     protected $std;
     protected $mean;
     protected $previous = null;
+    protected $logger;
 
     public function __construct(
         $outlierFactor = 3,
@@ -78,8 +79,7 @@ if (!function_exists('stats_standard_deviation')) {
      * raise a warning if you have fewer than 2 values in your array, just like
      * the extension does (although as an E_USER_WARNING, not E_WARNING).
      *
-     * @param array $a
-     * @param bool  $sample [optional] Defaults to false
+     * @param bool $sample [optional] Defaults to false
      *
      * @return float|bool the standard deviation or false on error
      */

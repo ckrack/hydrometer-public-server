@@ -1,25 +1,32 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Twig;
 
+use App\Modules\Formula\Formatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use App\Modules\Formula\Formatter;
 
 class FormatterExtension extends AbstractExtension
 {
     public function getFilters()
     {
-        return array(
-            new TwigFilter('format', array($this, 'formatFilter')),
-            new TwigFilter('roundto', array($this, 'roundToFilter')),
-            new TwigFilter('treshold', array($this, 'tresholdFilter')),
-        );
+        return [
+            new TwigFilter('format', [$this, 'formatFilter']),
+            new TwigFilter('roundto', [$this, 'roundToFilter']),
+            new TwigFilter('treshold', [$this, 'tresholdFilter']),
+        ];
     }
 
     /**
-     * Returns value formatted by metric
-     * @param  string $number [description]
-     * @return string         [description]
+     * Returns value formatted by metric.
+     *
+     * @return string [description]
      */
     public function formatFilter($value, $metric = null)
     {
@@ -27,19 +34,23 @@ class FormatterExtension extends AbstractExtension
     }
 
     /**
-     * Returns value to which we should round by metric
-     * @param  string $metric [description]
-     * @return integer         [description]
+     * Returns value to which we should round by metric.
+     *
+     * @param string $metric [description]
+     *
+     * @return int [description]
      */
-    public function roundToFilter($metric = null) : int
+    public function roundToFilter($metric = null): int
     {
         return Formatter::roundTo($metric);
     }
 
     /**
-     * Returns array with tresholds for metric
-     * @param  string $metric [description]
-     * @return array         [description]
+     * Returns array with tresholds for metric.
+     *
+     * @param string $metric [description]
+     *
+     * @return array [description]
      */
     public function tresholdFilter($metric = null)
     {

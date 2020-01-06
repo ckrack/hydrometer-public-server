@@ -8,9 +8,6 @@
 
 namespace App\Modules\Formula;
 
-use Plato;
-use SpecificGravity;
-
 /**
  * Formulas for Brix.
  */

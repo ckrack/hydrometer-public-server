@@ -20,6 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class IspindelTcpServerCommand extends Command
 {
     protected static $defaultName = 'app:ispindel-tcp-server';
+    protected TCP $tcp;
+    protected LoggerInterface $logger;
 
     public function __construct(
         TCP $tcp,
@@ -120,6 +122,7 @@ class IspindelTcpServerCommand extends Command
                 $this->logger->info('server done', [getenv('TCP_API_HOST'), getenv('TCP_API_PORT')]);
             }
         }
+
         return 0;
     }
 }

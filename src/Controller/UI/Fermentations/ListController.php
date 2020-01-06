@@ -10,17 +10,21 @@ namespace App\Controller\UI\Fermentations;
 
 use App\Entity\Fermentation;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListController extends Controller
 {
     protected $em;
+    protected $logger;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         // add your dependencies
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     /**

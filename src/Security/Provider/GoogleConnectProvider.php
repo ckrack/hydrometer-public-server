@@ -28,7 +28,6 @@ class GoogleConnectProvider implements UserProviderInterface
     /**
      * Loads the user for the given googleId.
      *
-     *
      * @throws UsernameNotFoundException if the user is not found
      *
      * @return UserInterface

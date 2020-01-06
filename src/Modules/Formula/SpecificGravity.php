@@ -8,8 +8,6 @@
 
 namespace App\Modules\Formula;
 
-use Plato;
-
 /**
  * Formulas for specific gravity.
  */
@@ -25,7 +23,7 @@ class SpecificGravity
      *
      * @param float $value value
      */
-    public function __construct(float $value)
+    public function __construct(float $value = null)
     {
         $this->value = $value;
     }

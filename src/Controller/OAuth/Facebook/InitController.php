@@ -16,6 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InitController extends Controller
 {
+    protected $logger;
+    protected $em;
+    protected $oauthRegistry;
+
     public function __construct(
         EntityManagerInterface $em,
         ClientRegistry $oauthRegistry,

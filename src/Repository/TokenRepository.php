@@ -20,8 +20,6 @@ class TokenRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      *
-     * @param Hydrometer $hydrometer [description]
-     *
      * @return [type] [description]
      */
     public function findByValue($token)

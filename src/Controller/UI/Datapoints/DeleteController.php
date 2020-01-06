@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteController extends Controller
 {
     protected $em;
+    protected $logger;
 
     public function __construct(
         EntityManagerInterface $em,

@@ -1,19 +1,27 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
 
 namespace DoctrineMigrations;
 
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
 class Version20180320111733 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE calibrations CHANGE hydrometer_id hydrometer_id INT DEFAULT NULL, CHANGE name name VARCHAR(190) DEFAULT NULL, CHANGE changed changed DATETIME DEFAULT NULL, CHANGE deleted deleted DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE data_points CHANGE hydrometer_id hydrometer_id INT DEFAULT NULL, CHANGE fermentation_id fermentation_id INT DEFAULT NULL, CHANGE changed changed DATETIME DEFAULT NULL, CHANGE deleted deleted DATETIME DEFAULT NULL, CHANGE angle angle DOUBLE PRECISION DEFAULT NULL, CHANGE temperature temperature DOUBLE PRECISION DEFAULT NULL, CHANGE battery battery DOUBLE PRECISION DEFAULT NULL, CHANGE gravity gravity DOUBLE PRECISION DEFAULT NULL, CHANGE trubidity trubidity DOUBLE PRECISION DEFAULT NULL, CHANGE rssi rssi DOUBLE PRECISION DEFAULT NULL, CHANGE `interval` `interval` INT DEFAULT NULL');
@@ -23,10 +31,10 @@ class Version20180320111733 extends AbstractMigration
         $this->addSql('ALTER TABLE users ADD facebook_id VARCHAR(255) DEFAULT NULL, ADD google_id VARCHAR(255) DEFAULT NULL, CHANGE changed changed DATETIME DEFAULT NULL, CHANGE deleted deleted DATETIME DEFAULT NULL, CHANGE language language VARCHAR(255) DEFAULT NULL, CHANGE api_token api_token VARCHAR(64) DEFAULT NULL, CHANGE time_zone time_zone VARCHAR(255) DEFAULT NULL');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE calibrations CHANGE hydrometer_id hydrometer_id INT DEFAULT NULL, CHANGE name name VARCHAR(190) DEFAULT \'NULL\' COLLATE utf8mb4_unicode_ci, CHANGE changed changed DATETIME DEFAULT \'NULL\', CHANGE deleted deleted DATETIME DEFAULT \'NULL\'');
         $this->addSql('ALTER TABLE data_points CHANGE hydrometer_id hydrometer_id INT DEFAULT NULL, CHANGE fermentation_id fermentation_id INT DEFAULT NULL, CHANGE changed changed DATETIME DEFAULT \'NULL\', CHANGE deleted deleted DATETIME DEFAULT \'NULL\', CHANGE angle angle DOUBLE PRECISION DEFAULT \'NULL\', CHANGE temperature temperature DOUBLE PRECISION DEFAULT \'NULL\', CHANGE battery battery DOUBLE PRECISION DEFAULT \'NULL\', CHANGE gravity gravity DOUBLE PRECISION DEFAULT \'NULL\', CHANGE trubidity trubidity DOUBLE PRECISION DEFAULT \'NULL\', CHANGE rssi rssi DOUBLE PRECISION DEFAULT \'NULL\', CHANGE `interval` `interval` INT DEFAULT NULL');

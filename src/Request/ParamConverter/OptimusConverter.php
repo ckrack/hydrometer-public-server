@@ -1,18 +1,29 @@
 <?php
 
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Request\ParamConverter;
 
-use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Jenssegers\Optimus\Optimus;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class OptimusConverter implements ParamConverterInterface
 {
+    protected EntityManagerInterface $em;
+    protected Optimus $optimus;
+    protected LoggerInterface $logger;
+
     /**
-     * Use auto-wiring
+     * Use auto-wiring.
+     *
      * @param EntityManagerInterface $em      [description]
      * @param Optimus                $optimus [description]
      */
@@ -53,6 +64,7 @@ class OptimusConverter implements ParamConverterInterface
         if (null === $configuration->getClass()) {
             return false;
         }
+
         return true;
     }
 }

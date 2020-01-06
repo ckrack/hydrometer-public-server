@@ -178,7 +178,7 @@ class HydrometerRepository extends EntityRepository
                 ->getQuery();
 
             // limit to user
-            if ($user instanceof App\Entity\User) {
+            if ($user instanceof User) {
                 $q->andWhere('s.user = :user')
                     ->setParameter('user', $user->getId());
             }
@@ -210,7 +210,7 @@ class HydrometerRepository extends EntityRepository
             // try to find an existing spindel
             $hydrometer = $this->find($id);
 
-            if ($hydrometer instanceof \App\Entity\Hydrometer) {
+            if ($hydrometer instanceof Hydrometer) {
                 return $hydrometer;
             }
 

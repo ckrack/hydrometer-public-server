@@ -10,13 +10,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
-use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
-use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
-use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -227,11 +226,6 @@ class User extends Entity implements UserInterface, \Serializable, EquatableInte
     public function getToken()
     {
         return $this->token;
-    }
-
-    public function getDeleted()
-    {
-        return $this->deleted;
     }
 
     public function getRoles()

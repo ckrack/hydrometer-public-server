@@ -22,7 +22,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DataPointController extends Controller
 {
-    protected $em;
+    protected EntityManagerInterface$em;
+    protected Token $tokenAuth;
+    protected LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $em,

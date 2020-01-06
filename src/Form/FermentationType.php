@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Form;
 
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
+use DateTime;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use \DateTime;
 
 class FermentationType extends AbstractType
 {
@@ -23,7 +29,7 @@ class FermentationType extends AbstractType
                 [
                     'html5' => false,
                     'widget' => 'single_text',
-                    'empty_data' => new DateTime('now')
+                    'empty_data' => new DateTime('now'),
                 ]
             )
             ->add(
@@ -32,7 +38,7 @@ class FermentationType extends AbstractType
                 [
                     'html5' => false,
                     'widget' => 'single_text',
-                    'empty_data' => new DateTime('3 weeks')
+                    'empty_data' => new DateTime('3 weeks'),
                 ]
             )
             ->add('public')
@@ -43,7 +49,7 @@ class FermentationType extends AbstractType
                     // looks for choices from this entity
                     'class' => Hydrometer::class,
                     // uses the Hydrometer.name property as the visible option string
-                    'choice_label' => 'name'
+                    'choice_label' => 'name',
                 ]
             )
         ;

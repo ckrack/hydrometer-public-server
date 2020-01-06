@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class CheckController extends Controller
 {
     protected $oauthRegistry;
+    protected $logger;
+    protected $em;
 
     public function __construct(
         EntityManagerInterface $em,
