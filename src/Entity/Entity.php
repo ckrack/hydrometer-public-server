@@ -9,15 +9,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JsonSerializable;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */
-abstract class Entity implements JsonSerializable
+abstract class Entity implements JsonSerializable, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -26,22 +29,6 @@ abstract class Entity implements JsonSerializable
      * @var int
      */
     protected $id;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTime
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="update")
-     *
-     * @var \DateTime
-     */
-    protected $updated;
 
     /**
      * we call parent::__construct so we need this here..
@@ -66,26 +53,6 @@ abstract class Entity implements JsonSerializable
         }
 
         return $this;
-    }
-
-    /**
-     * [getCreated description].
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * [getUpdated description].
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
     }
 
     /**

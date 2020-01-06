@@ -9,14 +9,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\TokenResource")
  * @ORM\Table(name="token", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Token extends Entity
+class Token extends Entity implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -56,14 +60,6 @@ class Token extends Entity
     protected $user;
 
     /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"value", "type", "user", "wasUsed"})
-     *
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
      * Setter for Id.
      * This is the only Id we allow to be set manually, as we use the one from the ESP board.
      *
@@ -89,14 +85,6 @@ class Token extends Entity
         $this->user = $user;
 
         return $this;
-    }
-
-    /**
-     * @return \DateTime $contentChanged
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
     }
 
     /**
@@ -143,16 +131,6 @@ class Token extends Entity
     public function setValue($value)
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return self
-     */
-    public function setContentChanged(\DateTime $contentChanged)
-    {
-        $this->contentChanged = $contentChanged;
 
         return $this;
     }

@@ -36,9 +36,3 @@ doctrine:
                 UNIX_TIMESTAMP: DoctrineExtensions\Query\Mysql\UnixTimestamp
                 ROUND: DoctrineExtensions\Query\Mysql\Round
                 NOW: DoctrineExtensions\Query\Mysql\Now
-
-        # enable gedmo softdeletable filter
-        filters:
-            softdeleteable:
-                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
-                enabled: true

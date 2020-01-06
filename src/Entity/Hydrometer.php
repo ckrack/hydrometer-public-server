@@ -10,7 +10,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\HydrometerResource")
@@ -28,8 +29,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     }
  * )
  */
-class Hydrometer extends Entity
+class Hydrometer extends Entity implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -97,14 +100,6 @@ class Hydrometer extends Entity
      * @ORM\OneToMany(targetEntity="Fermentation", mappedBy="user")
      */
     protected $fermentations;
-
-    /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "token", "user", "esp_id"})
-     *
-     * @var \DateTime
-     */
-    protected $contentChanged;
 
     /**
      * Setter for Id.
@@ -177,14 +172,6 @@ class Hydrometer extends Entity
     public function getFermentations()
     {
         return $this->fermentations;
-    }
-
-    /**
-     * @return \DateTime $contentChanged
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
     }
 
     /**

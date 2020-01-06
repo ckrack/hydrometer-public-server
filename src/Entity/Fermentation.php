@@ -10,15 +10,20 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\FermentationResource")
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(name="fermentations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Fermentation extends Entity
+class Fermentation extends Entity implements TimestampableInterface, SoftDeletableInterface
 {
+    use TimestampableTrait;
+    use SoftDeletableTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -85,29 +90,6 @@ class Fermentation extends Entity
      * @var bool
      */
     protected $public;
-
-    /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "calibration", "user"})
-     *
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $deleted;
-
-    /**
-     * [getContentChanged description].
-     *
-     * @return \DateTime
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
 
     /**
      * @return string

@@ -9,6 +9,7 @@ RUN \
   apt-get install -y \
   libicu-dev \
   zlib1g-dev\
+  libzip-dev \
   zip\
   unzip
 

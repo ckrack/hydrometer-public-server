@@ -2,7 +2,7 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180315004810 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
@@ -23,7 +23,7 @@ class Version20180315004810 extends AbstractMigration
         $this->addSql('ALTER TABLE users ADD api_token VARCHAR(64) DEFAULT NULL, ADD time_zone VARCHAR(255) DEFAULT NULL, DROP apiToken, DROP timeZone, CHANGE changed changed DATETIME DEFAULT NULL, CHANGE deleted deleted DATETIME DEFAULT NULL, CHANGE language language VARCHAR(255) DEFAULT NULL');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');

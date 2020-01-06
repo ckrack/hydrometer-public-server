@@ -10,13 +10,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Resource\UserResource")
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(
  *     name="users",
  *     options={
@@ -31,8 +34,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     }
  * )
  */
-class User extends Entity implements UserInterface, \Serializable, EquatableInterface
+class User extends Entity implements UserInterface, \Serializable, EquatableInterface, TimestampableInterface, SoftDeletableInterface
 {
+    use TimestampableTrait;
+    use SoftDeletableTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -86,29 +92,6 @@ class User extends Entity implements UserInterface, \Serializable, EquatableInte
      * @ORM\OneToMany(targetEntity="Token", mappedBy="user")
      */
     protected $token;
-
-    /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"username", "password"})
-     *
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $deleted;
-
-    /**
-     * [getContentChanged description].
-     *
-     * @return \DateTime
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
 
     /**
      * @return string
