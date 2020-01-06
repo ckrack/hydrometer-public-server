@@ -127,7 +127,6 @@ class HydrometerRepository extends EntityRepository
 
             return $q->getArrayResult();
         } catch (Exception $e) {
-            echo $e->getMessage();
             return null;
         }
     }
