@@ -35,7 +35,7 @@ class FermentationRepository extends EntityRepository
                 f.id, f.name,
                 DATE_FORMAT(f.begin, '%Y-%m-%d %H:%i') begin,
                 DATE_FORMAT(f.end, '%m-%d %H:%i') AS ending,
-                DATE_FORMAT(MAX(d.created), '%Y-%m-%d %H:%i') AS activity,
+                DATE_FORMAT(MAX(d.createdAt), '%Y-%m-%d %H:%i') AS activity,
                 AVG(d.temperature) AS temperature,
                 MAX(d.temperature) AS max_temperature,
                 MIN(d.temperature) AS min_temperature,

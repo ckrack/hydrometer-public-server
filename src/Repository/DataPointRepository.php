@@ -33,13 +33,13 @@ class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time,
+            $qb->select("DATE_FORMAT(d.createdAt, '%Y-%m-%d %H:%i') time,
                          AVG(d.temperature) temperature,
                          AVG(d.angle) angle,
                          AVG(d.gravity) gravity,
                          AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
-                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime,
+                         ROUND(UNIX_TIMESTAMP(d.createdAt) / 1800) groupTime,
                          h.name hydrometer,
                          h.metricTemperature,
                          h.metricGravity")
@@ -76,15 +76,15 @@ class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time,
+            $qb->select("DATE_FORMAT(d.createdAt, '%Y-%m-%d %H:%i') time,
                          AVG(d.temperature) temperature,
                          AVG(d.angle) angle,
                          AVG(d.gravity) gravity,
                          AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
-                         ROUND(UNIX_TIMESTAMP(d.created) / 1800) groupTime")
+                         ROUND(UNIX_TIMESTAMP(d.createdAt) / 1800) groupTime")
                 ->from('App\Entity\DataPoint', 'd')
-                ->orderBy('d.created', 'ASC')
+                ->orderBy('d.createdAt', 'ASC')
                 ->groupBy('groupTime')
                 ->andWhere('d.fermentation = :fermentation')
                 ->setParameter('fermentation', $fermentation->getId());
@@ -112,13 +112,13 @@ class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("d.id, DATE_FORMAT(d.created, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery,
+            $qb->select("d.id, DATE_FORMAT(d.createdAt, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery,
                 h.name hydrometer,
                 h.metricTemperature,
                 h.metricGravity")
                 ->from('App\Entity\DataPoint', 'd')
                 ->join('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
-                ->orderBy('d.created', 'DESC')
+                ->orderBy('d.createdAt', 'DESC')
                 ->groupBy('time')
                 ->andWhere('h.user = :user')
                 ->setParameter('user', $user->getId())
@@ -155,14 +155,14 @@ class DataPointRepository extends EntityRepository
                 ->andWhere('d.fermentation IS NULL')
                 ->andWhere('d.hydrometer = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer)
-                ->andWhere('d.created >= :begin')
+                ->andWhere('d.createdAt >= :begin')
                 ->setParameter('begin', $fermentation->getBegin())
                 ->set('d.fermentation', ':fermentation')
                 ->setParameter('fermentation', $fermentation);
 
             // use end if supplied
             if (null !== $fermentation->getEnd()) {
-                $qb->andWhere('d.created < :end')
+                $qb->andWhere('d.createdAt < :end')
                     ->setParameter('end', $fermentation->getEnd());
             }
 
@@ -198,12 +198,12 @@ class DataPointRepository extends EntityRepository
             $orX = $qb->expr()->orX();
 
             if ($before instanceof \DateTime) {
-                $orX->add($qb->expr()->lt('d.created', ':before'));
+                $orX->add($qb->expr()->lt('d.createdAt', ':before'));
                 $qb->setParameter('before', $before);
             }
 
             if ($after instanceof \DateTime) {
-                $orX->add($qb->expr()->gte('d.created', ':after'));
+                $orX->add($qb->expr()->gte('d.createdAt', ':after'));
                 $qb->setParameter('after', $after);
             }
 
