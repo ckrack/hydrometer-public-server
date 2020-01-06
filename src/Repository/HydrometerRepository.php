@@ -32,24 +32,24 @@ class HydrometerRepository extends EntityRepository
             $qb = $em->createQueryBuilder();
 
             $qb->select('
-                UNIX_TIMESTAMP(d.created) unixtime,
+                UNIX_TIMESTAMP(d.createdAt) unixtime,
                 d.temperature,
                 d.angle,
                 d.gravity,
                 d.trubidity')
                 ->from('App\Entity\DataPoint', 'd')
                 ->join('d.hydrometer', 'h')
-                ->orderBy('d.created', 'ASC')
+                ->orderBy('d.createdAt', 'ASC')
                 ->andWhere('h = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer);
 
             if ($hours) {
-                $qb->andWhere('d.created >= DATE_SUB(NOW(), '.$hours.", 'HOUR')");
-                $qb->andWhere('d.created <= NOW()');
+                $qb->andWhere('d.createdAt >= DATE_SUB(NOW(), '.$hours.", 'HOUR')");
+                $qb->andWhere('d.createdAt <= NOW()');
             }
 
             if ($since) {
-                $qb->andWhere('d.created >= :since');
+                $qb->andWhere('d.createdAt >= :since');
                 $qb->setParameter('since', $since);
             }
 
@@ -77,7 +77,7 @@ class HydrometerRepository extends EntityRepository
             $qb = $em->createQueryBuilder();
 
             $q = $qb->select('
-                UNIX_TIMESTAMP(d.created) time,
+                UNIX_TIMESTAMP(d.createdAt) time,
                 d.temperature,
                 d.angle,
                 d.battery,
@@ -86,7 +86,7 @@ class HydrometerRepository extends EntityRepository
                 h.name')
                 ->from('App\Entity\DataPoint', 'd')
                 ->join('d.hydrometer', 'h')
-                ->orderBy('d.created', 'DESC')
+                ->orderBy('d.createdAt', 'DESC')
                 ->setMaxResults(1)
                 ->andWhere('h = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer)
@@ -101,8 +101,6 @@ class HydrometerRepository extends EntityRepository
     /**
      * Get list of hydrometers including their last activity.
      *
-     * @param Hydrometer $hydrometer [description]
-     *
      * @return [type] [description]
      */
     public function findAllWithLastActivity(User $user)
@@ -112,7 +110,7 @@ class HydrometerRepository extends EntityRepository
             $qb = $em->createQueryBuilder();
 
             $q = $qb->select('
-                    MAX(d.created) activity,
+                    MAX(d.createdAt) activity,
                     MAX(d.id) last_datapoint_id,
                     MAX(d.gravity) max_gravity,
                     h.name,
@@ -120,7 +118,7 @@ class HydrometerRepository extends EntityRepository
                     h.metricTemperature,
                     h.metricGravity')
                 ->from('App\Entity\Hydrometer', 'h')
-                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = h AND d.deleted IS NULL')
+                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = h AND d.deletedAt IS NULL')
                 ->orderBy('activity', 'DESC')
                 ->andWhere('h.user = :user')
                 ->setParameter('user', $user->getId())
@@ -129,14 +127,13 @@ class HydrometerRepository extends EntityRepository
 
             return $q->getArrayResult();
         } catch (Exception $e) {
+            echo $e->getMessage();
             return null;
         }
     }
 
     /**
      * Get list of hydrometers including their last activity.
-     *
-     * @param Hydrometer $hydrometer [description]
      *
      * @return [type] [description]
      */
@@ -176,14 +173,14 @@ class HydrometerRepository extends EntityRepository
             $q = $qb->select('s')
                 ->from('App\Entity\Hydrometer', 's')
                 ->join('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = s')
-                ->orderBy('d.created', 'DESC')
+                ->orderBy('d.createdAt', 'DESC')
                 ->setMaxResults(1)
                 ->getQuery();
 
             // limit to user
             if ($user instanceof App\Entity\User) {
                 $q->andWhere('s.user = :user')
-                  ->setParameter('user', $user->getId());
+                    ->setParameter('user', $user->getId());
             }
 
             return $q->getSingleResult();
@@ -205,8 +202,6 @@ class HydrometerRepository extends EntityRepository
     }
 
     /**
-     * @param int|null $iso
-     *
      * @return array
      */
     public function getOrCreate($id)

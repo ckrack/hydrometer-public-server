@@ -45,7 +45,7 @@ class DataPointRepository extends EntityRepository
                          h.metricGravity")
                 ->from('App\Entity\DataPoint', 'd')
                 ->leftJoin('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
-                ->orderBy('d.created', 'ASC')
+                ->orderBy('d.createdAt', 'ASC')
                 ->groupBy('groupTime');
 
             if ($hydrometer) {
@@ -152,18 +152,18 @@ class DataPointRepository extends EntityRepository
             $qb = $em->createQueryBuilder();
 
             $qb->update('App\Entity\DataPoint', 'd')
-               ->andWhere('d.fermentation IS NULL')
-               ->andWhere('d.hydrometer = :hydrometer')
-               ->setParameter('hydrometer', $hydrometer)
-               ->andWhere('d.created >= :begin')
-               ->setParameter('begin', $fermentation->getBegin())
-               ->set('d.fermentation', ':fermentation')
-               ->setParameter('fermentation', $fermentation);
+                ->andWhere('d.fermentation IS NULL')
+                ->andWhere('d.hydrometer = :hydrometer')
+                ->setParameter('hydrometer', $hydrometer)
+                ->andWhere('d.created >= :begin')
+                ->setParameter('begin', $fermentation->getBegin())
+                ->set('d.fermentation', ':fermentation')
+                ->setParameter('fermentation', $fermentation);
 
             // use end if supplied
             if (null !== $fermentation->getEnd()) {
                 $qb->andWhere('d.created < :end')
-                ->setParameter('end', $fermentation->getEnd());
+                    ->setParameter('end', $fermentation->getEnd());
             }
 
             $q = $qb->getQuery();
@@ -191,9 +191,9 @@ class DataPointRepository extends EntityRepository
             $qb = $em->createQueryBuilder();
 
             $qb->update('App\Entity\DataPoint', 'd')
-               ->andWhere('d.fermentation = :fermentation')
-               ->set('d.fermentation', 'NULL')
-               ->setParameter('fermentation', $fermentation);
+                ->andWhere('d.fermentation = :fermentation')
+                ->set('d.fermentation', 'NULL')
+                ->setParameter('fermentation', $fermentation);
 
             $orX = $qb->expr()->orX();
 
