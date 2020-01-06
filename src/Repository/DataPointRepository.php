@@ -6,7 +6,7 @@
  * @author Clemens Krack <info@clemenskrack.com>
  */
 
-namespace App\Resource;
+namespace App\Repository;
 
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
@@ -16,9 +16,9 @@ use Doctrine\ORM\EntityRepository;
 use Exception;
 
 /**
- * Class Resource.
+ * Class Repository.
  */
-class DataPointResource extends EntityRepository
+class DataPointRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.

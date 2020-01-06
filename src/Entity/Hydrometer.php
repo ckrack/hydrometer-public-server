@@ -14,7 +14,7 @@ use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\HydrometerResource")
+ * @ORM\Entity(repositoryClass="App\Repository\HydrometerRepository")
  * @ORM\Table(
  *     name="hydrometers",
  *     options={

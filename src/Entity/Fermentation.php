@@ -16,7 +16,7 @@ use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
 use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\FermentationResource")
+ * @ORM\Entity(repositoryClass="App\Repository\FermentationRepository")
  * @ORM\Table(name="fermentations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
 class Fermentation extends Entity implements TimestampableInterface, SoftDeletableInterface
@@ -56,7 +56,7 @@ class Fermentation extends Entity implements TimestampableInterface, SoftDeletab
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Calibration")
+     * @ORM\ManyToOne(targetEntity="Calibration", inversedBy="fermentations")
      * ORM\JoinColumn(
      *     name="calibration_id",
      *     referencedColumnName="id",

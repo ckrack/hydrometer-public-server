@@ -53,7 +53,7 @@ class Data
         // turn array around (oldest data first)
         rsort($latestData);
 
-        if (count($latestData) <= 1) {
+        if ((is_countable($latestData) ? count($latestData) : 0) <= 1) {
             return _('Not yet');
         }
 
@@ -84,7 +84,7 @@ class Data
     public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
         try {
-            list($const1, $const2, $const3, $isCalibrated) = $this->getCalibrationValues($hydrometer);
+            [$const1, $const2, $const3, $isCalibrated] = $this->getCalibrationValues($hydrometer);
 
             // flag to indicate whether there are gravity values.
             // this indicates that the new firmware is used (>= 4.0)

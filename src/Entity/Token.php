@@ -14,7 +14,7 @@ use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\TokenResource")
+ * @ORM\Entity(repositoryClass="App\Repository\TokenRepository")
  * @ORM\Table(name="token", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
 class Token extends Entity implements TimestampableInterface

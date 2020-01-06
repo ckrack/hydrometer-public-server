@@ -6,15 +6,16 @@
  * @author Clemens Krack <info@clemenskrack.com>
  */
 
-namespace App\Resource;
+namespace App\Repository;
 
 use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 
 /**
- * Class Resource.
+ * Class Repository.
  */
-class UserResource extends EntityRepository
+class TokenRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.
@@ -23,11 +24,11 @@ class UserResource extends EntityRepository
      *
      * @return [type] [description]
      */
-    public function findByEmail($email)
+    public function findByValue($token)
     {
         try {
-            return $this->findOneBy(['email' => $email]);
-        } catch (\Exception $e) {
+            return $this->findOneBy(['value' => $token]);
+        } catch (Exception $e) {
             return null;
         }
     }

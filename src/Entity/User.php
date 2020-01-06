@@ -19,7 +19,7 @@ use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
 use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\UserResource")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(
  *     name="users",
  *     options={
@@ -260,7 +260,7 @@ class User extends Entity implements UserInterface, \Serializable, EquatableInte
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
-        list($this->id) = unserialize($serialized, ['allowed_classes' => false]);
+        [$this->id] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
     public function isEqualTo(UserInterface $user)

@@ -16,7 +16,7 @@ use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
 use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\DataPointResource")
+ * @ORM\Entity(repositoryClass="App\Repository\DataPointRepository")
  * @ORM\Table(name="data_points", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
 class DataPoint extends Entity implements TimestampableInterface, SoftDeletableInterface

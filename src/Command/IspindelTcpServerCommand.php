@@ -40,7 +40,7 @@ class IspindelTcpServerCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Set time limit to indefinite execution
         set_time_limit(0);
@@ -120,5 +120,6 @@ class IspindelTcpServerCommand extends Command
                 $this->logger->info('server done', [getenv('TCP_API_HOST'), getenv('TCP_API_PORT')]);
             }
         }
+        return 0;
     }
 }
