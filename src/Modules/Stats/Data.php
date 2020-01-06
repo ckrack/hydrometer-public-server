@@ -42,9 +42,9 @@ class Data
      * Returns a string representing a timespan since when the value of $fieldname is stable.
      * The stability can be refined using $deviance.
      *
-     * @param [type] $latestData [description]
-     * @param [type] $fieldName  [description]
-     * @param [type] $deviance   [description]
+     * @param array $latestData [description]
+     * @param string $fieldName  [description]
+     * @param float $deviance   [description]
      *
      * @return string [description]
      */
@@ -68,6 +68,10 @@ class Data
                 $stableSince = $k;
                 break;
             }
+        }
+
+        if ($stableSince === null) {
+            return _('Not yet');
         }
 
         return Date::parse($latestData[0]['time'])->timespan(Date::parse($latestData[$stableSince]['time']));
