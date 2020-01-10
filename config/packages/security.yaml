@@ -20,6 +20,7 @@ security:
                 entry_point: App\Security\Authenticator\GoogleConnectAuthenticator
 
             remember_me:
+                name: 'hydrometeroauth'
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds
                 path:     /

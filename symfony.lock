@@ -5,9 +5,6 @@
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
-    "composer/ca-bundle": {
-        "version": "1.1.0"
-    },
     "composer/semver": {
         "version": "1.5.0"
     },
@@ -131,9 +128,6 @@
     "jean85/pretty-package-versions": {
         "version": "1.2"
     },
-    "jenssegers/date": {
-        "version": "v3.3.1"
-    },
     "jenssegers/optimus": {
         "version": "v0.2.3"
     },
@@ -162,7 +156,7 @@
         "version": "1.23.0"
     },
     "nesbot/carbon": {
-        "version": "1.24.2"
+        "version": "2.28.0"
     },
     "nette/application": {
         "version": "v3.0.3"
@@ -260,6 +254,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
+    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -344,9 +341,6 @@
     "symfony/css-selector": {
         "version": "v5.0.2"
     },
-    "symfony/debug": {
-        "version": "v4.0.6"
-    },
     "symfony/debug-bundle": {
         "version": "4.1",
         "recipe": {
@@ -406,6 +400,12 @@
             "version": "3.3",
             "ref": "60ac64d0ec3f8e92bda67567eff5a313a359c94b"
         }
+    },
+    "symfony/http-client": {
+        "version": "v5.0.2"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.0.1"
     },
     "symfony/http-foundation": {
         "version": "v4.0.6"

@@ -11,9 +11,8 @@ namespace App\Modules\Stats;
 use App\Entity\Calibration;
 use App\Entity\DataPoint;
 use App\Entity\Hydrometer;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
-use Jenssegers\Date\Date;
-use Projek\Slim\Plates;
 use Psr\Log\LoggerInterface;
 
 class Data
@@ -22,12 +21,6 @@ class Data
     protected $logger;
     protected $em;
 
-    /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
-     * @param Plates          $view   [description]
-     * @param LoggerInterface $logger [description]
-     */
     public function __construct(
         EntityManagerInterface $em,
         \Twig\Environment $view,
@@ -74,7 +67,7 @@ class Data
             return _('Not yet');
         }
 
-        return Date::parse($latestData[0]['time'])->timespan(Date::parse($latestData[$stableSince]['time']));
+        return Carbon::parse($latestData[0]['time'])->diffForHumans($latestData[$stableSince]['time'], Carbon::DIFF_ABSOLUTE);
     }
 
     /**
