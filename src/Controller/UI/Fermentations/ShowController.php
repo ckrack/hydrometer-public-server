@@ -13,6 +13,7 @@ use App\Entity\Fermentation;
 use App\Modules\Stats;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,14 +21,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowController extends AbstractController
 {
     protected $em;
+    protected $logger;
     protected $statsModule;
 
     public function __construct(
         EntityManagerInterface $em,
+        LoggerInterface $logger,
         Stats\Data $statsModule
     ) {
         // add your dependencies
         $this->em = $em;
+        $this->logger = $logger;
         $this->statsModule = $statsModule;
     }
 
@@ -44,7 +48,7 @@ class ShowController extends AbstractController
             $user = $this->getUser();
 
             if ($fermentation->getUser()->getId() !== $user->getId()) {
-                throw new \Exception('No access');
+                throw new Exception('No access');
             }
 
             $latestData = $this->em->getRepository(DataPoint::class)->findByFermentation($fermentation);
