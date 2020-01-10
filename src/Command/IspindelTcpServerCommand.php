@@ -37,8 +37,7 @@ class IspindelTcpServerCommand extends Command
     {
         $this
             ->setDescription('Start the TCP server to listen for ispindel input')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addOption('port', 'p', InputOption::VALUE_REQUIRED, 'Port to use')
         ;
     }
 
@@ -48,8 +47,7 @@ class IspindelTcpServerCommand extends Command
         set_time_limit(0);
 
         // open TCP server
-        //$server = stream_socket_server('tcp://'.getenv('TCP_API_HOST').':'.getenv('TCP_API_PORT'), $errno, $errorMessage);
-        $server = stream_socket_server('tcp://0.0.0.0:'.getenv('TCP_API_PORT'), $errno, $errorMessage);
+        $server = stream_socket_server('tcp://0.0.0.0:'.$input->getOption('port'), $errno, $errorMessage);
 
         if (false === $server) {
             $this->logger->error('Could not bind to socket: '.$errorMessage);
@@ -58,9 +56,9 @@ class IspindelTcpServerCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->success('Socket server open.');
-        $io->success('listening on: '.getenv('TCP_API_HOST').':'.getenv('TCP_API_PORT'));
+        $io->success('listening on: '.$input->getOption('port'));
 
-        $this->logger->info('socket server open', [getenv('TCP_API_HOST'), getenv('TCP_API_PORT')]);
+        $this->logger->info('socket server open', [$input->getOption('port')]);
 
         while (true) {
             $client = @stream_socket_accept($server, 5);
@@ -72,12 +70,12 @@ class IspindelTcpServerCommand extends Command
 
                     // read from input until blank line
                     $jsonRaw = '';
-                    while ($input = fread($client, 1024)) {
-                        $this->logger->info('Input: '.$input);
-                        $this->logger->info('Empty?', ['' === $input]);
-                        $jsonRaw .= $input;
+                    while ($tcpInput = fread($client, 1024)) {
+                        $this->logger->info('Input: '.$tcpInput);
+                        $this->logger->info('Empty?', ['' === $tcpInput]);
+                        $jsonRaw .= $tcpInput;
 
-                        if ('' === trim($input)) {
+                        if ('' === trim($tcpInput)) {
                             break;
                         }
                     }
@@ -119,7 +117,7 @@ class IspindelTcpServerCommand extends Command
                 } catch (\Exception $e) {
                     $this->logger->error('Exception: '.$e->getMessage());
                 }
-                $this->logger->info('server done', [getenv('TCP_API_HOST'), getenv('TCP_API_PORT')]);
+                $this->logger->info('server done', [$input->getOption('port')]);
             }
         }
 
