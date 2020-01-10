@@ -43,8 +43,6 @@ class FermentationRepository extends EntityRepository
                 MIN(d.angle) AS min_angle,
                 MAX(d.gravity) AS max_gravity,
                 MIN(d.gravity) AS min_gravity,
-                MAX(d.trubidity) AS max_trubidity,
-                MIN(d.trubidity) AS min_trubidity,
                 h.name hydrometer,
                 h.metricTemperature,
                 h.metricGravity

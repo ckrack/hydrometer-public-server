@@ -28,9 +28,6 @@
         <th class="text-center">
             {% trans %}Gravity{% endtrans %}
         </th>
-        <th class="text-center">
-            {% trans %}Trubidity{% endtrans %}
-        </th>
         <th class="text-right">
             {% trans %}Actions{% endtrans %}
         </th>
@@ -89,17 +86,6 @@
                     {{ ferm.max_gravity|format(ferm.metricGravity)|e }}
                     &rarr;
                     {{ ferm.min_gravity|format(ferm.metricGravity)|e }}
-                </small>
-            {% else %}
-                &hellip;
-            {% endif %}
-        </td>
-        <td class="text-center">
-            {% if ferm.max_trubidity %}
-                <small class="text">
-                    {{ ferm.min_trubidity|format|e }}
-                    &rarr;
-                    {{ ferm.max_trubidity|format|e }}
                 </small>
             {% else %}
                 &hellip;

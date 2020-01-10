@@ -35,8 +35,7 @@ class HydrometerRepository extends EntityRepository
                 UNIX_TIMESTAMP(d.createdAt) unixtime,
                 d.temperature,
                 d.angle,
-                d.gravity,
-                d.trubidity')
+                d.gravity')
                 ->from('App\Entity\DataPoint', 'd')
                 ->join('d.hydrometer', 'h')
                 ->orderBy('d.createdAt', 'ASC')
@@ -82,7 +81,6 @@ class HydrometerRepository extends EntityRepository
                 d.angle,
                 d.battery,
                 d.gravity,
-                d.trubidity,
                 h.name')
                 ->from('App\Entity\DataPoint', 'd')
                 ->join('d.hydrometer', 'h')

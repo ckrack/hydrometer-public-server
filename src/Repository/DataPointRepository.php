@@ -37,7 +37,6 @@ class DataPointRepository extends EntityRepository
                          AVG(d.temperature) temperature,
                          AVG(d.angle) angle,
                          AVG(d.gravity) gravity,
-                         AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
                          ROUND(UNIX_TIMESTAMP(d.createdAt) / 1800) groupTime,
                          h.name hydrometer,
@@ -80,7 +79,6 @@ class DataPointRepository extends EntityRepository
                          AVG(d.temperature) temperature,
                          AVG(d.angle) angle,
                          AVG(d.gravity) gravity,
-                         AVG(d.trubidity) trubidity,
                          AVG(d.battery) battery,
                          ROUND(UNIX_TIMESTAMP(d.createdAt) / 1800) groupTime")
                 ->from('App\Entity\DataPoint', 'd')
@@ -112,7 +110,7 @@ class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->select("d.id, DATE_FORMAT(d.createdAt, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.trubidity, d.battery,
+            $qb->select("d.id, DATE_FORMAT(d.createdAt, '%Y-%m-%d %H:%i') time, d.temperature, d.angle, d.gravity, d.battery,
                 h.name hydrometer,
                 h.metricTemperature,
                 h.metricGravity")
@@ -227,8 +225,7 @@ class DataPointRepository extends EntityRepository
                     d.temperature,
                     d.angle,
                     d.gravity,
-                    d.battery,
-                    d.trubidity')
+                    d.battery')
                 ->from('App\Entity\DataPoint', 'd')
                 ->andWhere('d = :activity')
                 ->setParameter('activity', $activity_id)

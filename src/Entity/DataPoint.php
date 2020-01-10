@@ -71,14 +71,6 @@ class DataPoint extends Entity implements TimestampableInterface, SoftDeletableI
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * Trubidity for a trubidity sensor
-     *
-     * @var float
-     */
-    protected $trubidity;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
      * Wifi strength
      *
      * @var float
@@ -199,26 +191,6 @@ class DataPoint extends Entity implements TimestampableInterface, SoftDeletableI
     public function setGravity($gravity)
     {
         $this->gravity = $gravity;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTrubidity()
-    {
-        return $this->trubidity;
-    }
-
-    /**
-     * @param string $trubidity
-     *
-     * @return self
-     */
-    public function setTrubidity($trubidity)
-    {
-        $this->trubidity = $trubidity;
 
         return $this;
     }
