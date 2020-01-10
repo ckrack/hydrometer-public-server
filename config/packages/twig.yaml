@@ -6,3 +6,4 @@ twig:
         SITE_TITLE: '%env(SITE_TITLE)%'
         TCP_API_HOST: '%env(TCP_API_HOST)%'
         TCP_API_PORT: '%env(TCP_API_PORT)%'
+    exception_controller: null
