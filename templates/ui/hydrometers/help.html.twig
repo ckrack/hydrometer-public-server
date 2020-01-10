@@ -69,7 +69,7 @@
                         <dd>{{ hydrometer.getToken.getValue }}</dd>
 
                         <dt>{% trans %}Server address{% endtrans %}</dt>
-                        <dd>{{ TCP_API_HOST }}</dd>
+                        <dd>{{ app.request.getHttpHost() }}</dd>
 
                         <dt>{% trans %}Server port{% endtrans %}</dt>
                         <dd>{{ TCP_API_PORT }}</dd>
