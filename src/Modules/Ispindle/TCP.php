@@ -11,6 +11,7 @@ namespace App\Modules\Ispindle;
 use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -63,10 +64,11 @@ class TCP
             $q = $qb->select('h.id hydrometer_id, f.id fermentation_id')
                 ->from('App\Entity\Token', 't')
                 ->join('App\Entity\Hydrometer', 'h', 'WITH', 'h.token = t.id')
-                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > NOW())')
+                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
                 ->setMaxResults(1)
                 ->andWhere('t.value = :token')
                 ->setParameter('token', $token)
+                ->setParameter('now', new DateTime())
                 ->getQuery();
 
             return $q->getSingleResult();

@@ -83,7 +83,7 @@ class Data
      * @param array      $latestData [description]
      * @param Hydrometer $hydrometer [description]
      *
-     * @return [type] [description]
+     * @return array [description]
      */
     public function platoCombined(array $latestData, Hydrometer $hydrometer)
     {
