@@ -1,6 +1,6 @@
 {
     "name": "ckrack/hydrometer-public-server",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Public server for electronic hydrometers for homebrewing",
     "type": "project",
     "license": "MIT",
