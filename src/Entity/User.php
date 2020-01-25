@@ -1,13 +1,24 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\UserResource")
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(
  *     name="users",
  *     options={
@@ -22,8 +33,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     }
  * )
  */
-class User extends Entity
+class User extends Entity implements UserInterface, \Serializable, EquatableInterface, TimestampableInterface, SoftDeletableInterface
 {
+    use TimestampableTrait;
+    use SoftDeletableTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -33,28 +47,35 @@ class User extends Entity
     }
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=190)
-     * @var string
+     * @ORM\Column(type="string", name="facebook_id", nullable=true)
      */
-    protected $username;
+    protected $facebookId;
 
     /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @var string
+     * @ORM\Column(type="string", name="google_id", nullable=true)
      */
-    protected $apiToken;
+    protected $googleId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     *
      * @var string
      */
     protected $timeZone;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $language;
 
     /**
      * @ORM\OneToMany(targetEntity="Hydrometer", mappedBy="user")
@@ -72,32 +93,11 @@ class User extends Entity
     protected $token;
 
     /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"username", "password"})
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $deleted;
-
-    /**
-     * [getContentChanged description]
-     * @return \DateTime
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
-
-    /**
      * @return string
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->getEmail();
     }
 
     /**
@@ -107,7 +107,7 @@ class User extends Entity
      */
     public function setUsername($username)
     {
-        $this->username = $username;
+        $this->setEmail($username);
 
         return $this;
     }
@@ -130,12 +130,9 @@ class User extends Entity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword()
     {
-        return $this->password;
+        // no password is used
     }
 
     /**
@@ -143,22 +140,14 @@ class User extends Entity
      */
     public function setPassword($password)
     {
-        $this->password = md5($password);
-
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHydrometers()
     {
         return $this->hydrometers;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentations()
     {
         return $this->fermentations;
@@ -167,20 +156,113 @@ class User extends Entity
     /**
      * @return string
      */
-    public function getApiToken()
+    public function getLanguage()
     {
-        return $this->apiToken;
+        return $this->language;
     }
 
     /**
-     * @param string $apiToken
+     * @param string $language
      *
      * @return self
      */
-    public function setApiToken($apiToken)
+    public function setLanguage($language)
     {
-        $this->apiToken = $apiToken;
+        $this->language = $language;
 
         return $this;
+    }
+
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @return self
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * @return self
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        return $this->timeZone;
+    }
+
+    /**
+     * @param string $timeZone
+     *
+     * @return self
+     */
+    public function setTimeZone($timeZone)
+    {
+        $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        // no password is used
+    }
+
+    public function getSalt()
+    {
+        // no password is used
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+        ]);
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        [$this->id] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($this->id !== $user->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

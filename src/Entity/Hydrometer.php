@@ -1,12 +1,19 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\HydrometerResource")
+ * @ORM\Entity(repositoryClass="App\Repository\HydrometerRepository")
  * @ORM\Table(
  *     name="hydrometers",
  *     options={
@@ -21,45 +28,47 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     }
  * )
  */
-class Hydrometer extends Entity
+class Hydrometer extends Entity implements TimestampableInterface
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->items = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
+    use TimestampableTrait;
 
     /**
      * This is the ESP8266 Arduino ChipId.
-     * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis
+     * http://esp8266.github.io/Arduino/versions/2.0.0/doc/libraries.html#esp-specific-apis.
+     *
      * @ORM\Column(name="esp_id", type="string", nullable=true)
+     *
      * @var string
      */
     protected $esp_id;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * The metric of the temperature units (Celsius / Fahrenheit)
+     * The metric of the temperature units (Celsius / Fahrenheit).
+     *
      * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $metricTemperature;
 
     /**
-     * The metric of the gravity units (SG, Plato, Brix)
+     * The metric of the gravity units (SG, Plato, Brix).
+     *
      * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $metricGravity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="hydrometers")
      * ORM\JoinColumn(
      *     name="user_id",
      *     referencedColumnName="id",
@@ -85,16 +94,10 @@ class Hydrometer extends Entity
     protected $fermentations;
 
     /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "token", "user", "esp_id"})
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
      * Setter for Id.
      * This is the only Id we allow to be set manually, as we use the one from the ESP board.
-     * @param integer $id the id of the ESP-Board.
+     *
+     * @param int $id the id of the ESP-Board
      */
     public function setId($id)
     {
@@ -143,17 +146,12 @@ class Hydrometer extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
-     *
      * @return self
      */
     public function setUser($user)
@@ -163,24 +161,13 @@ class Hydrometer extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentations()
     {
         return $this->fermentations;
     }
 
     /**
-     * @return \DateTime $contentChanged
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
-
-    /**
-     * @return Integer
+     * @return int
      */
     public function getEspId()
     {
@@ -188,7 +175,7 @@ class Hydrometer extends Entity
     }
 
     /**
-     * @param Integer $esp_id
+     * @param int $esp_id
      *
      * @return self
      */

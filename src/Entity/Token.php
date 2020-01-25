@@ -1,42 +1,55 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\TokenResource")
+ * @ORM\Entity(repositoryClass="App\Repository\TokenRepository")
  * @ORM\Table(name="token", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Token extends Entity
+class Token extends Entity implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     public function __construct()
     {
         parent::__construct();
     }
 
     /**
-     * One of api, login, register
+     * One of api, login, register.
+     *
      * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $type;
 
     /**
      * @ORM\Column(name="value", type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $value;
 
     /**
      * @ORM\Column(name="was_used", type="integer", length=1, nullable=true)
+     *
      * @var string
      */
     protected $wasUsed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="token")
      * ORM\JoinColumn(
      *     name="user_id",
      *     referencedColumnName="id",
@@ -46,16 +59,10 @@ class Token extends Entity
     protected $user;
 
     /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"value", "type", "user", "wasUsed"})
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
      * Setter for Id.
      * This is the only Id we allow to be set manually, as we use the one from the ESP board.
-     * @param integer $id the id of the ESP-Board.
+     *
+     * @param int $id the id of the ESP-Board
      */
     public function setId($id)
     {
@@ -64,17 +71,12 @@ class Token extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
     /**
-     * @param mixed $user
-     *
      * @return self
      */
     public function setUser($user)
@@ -85,15 +87,7 @@ class Token extends Entity
     }
 
     /**
-     * @return \DateTime $contentChanged
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
-
-    /**
-     * @return Integer
+     * @return int
      */
     public function getId()
     {
@@ -136,18 +130,6 @@ class Token extends Entity
     public function setValue($value)
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param \DateTime $contentChanged
-     *
-     * @return self
-     */
-    public function setContentChanged(\DateTime $contentChanged)
-    {
-        $this->contentChanged = $contentChanged;
 
         return $this;
     }

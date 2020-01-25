@@ -1,20 +1,21 @@
 {
-  "name": "hydrometer-public-server",
-  "version": "0.1.2",
-  "description": "Public server for electronic hydrometers for homebrewing",
-  "main": "gulpfile.js",
-  "dependencies": {
-    "browser-sync": "^2.18",
-    "gulp": "^3.9",
-    "gulp-autoprefixer": "^3.1",
-    "gulp-concat": "^2.6",
-    "gulp-connect-php": "0.0.8",
-    "gulp-cssnano": "^2.1",
-    "gulp-sass": "^3.1",
-    "gulp-sourcemaps": "^2.4",
-    "gulp-uglifyjs": "^0.6"
-  },
-  "devDependencies": {},
-  "author": "Clemens Krack <info@clemenskrack.com>",
-  "license": "MIT"
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.20.1",
+    "bootstrap": "^4.1.3",
+    "c3": "^0.6.7",
+    "include-media": "^1.4.9",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.9.3",
+    "popper.js": "^1.14.4",
+    "sass-loader": "^7.1.0",
+    "webpack-notifier": "^1.6.0",
+    "autoprefixer": "^9.1.1",
+    "copy-webpack-plugin": "^4.5.2",
+    "stylelint": "^9.4.0",
+    "stylelint-config-sass-guidelines": "^5.0.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-scss": "^3.3.0",
+    "stylelint-selector-bem-pattern": "^2.0.0",
+    "stylelint-webpack-plugin": "^0.10.5"
+  }
 }

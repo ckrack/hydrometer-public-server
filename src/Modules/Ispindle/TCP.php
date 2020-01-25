@@ -1,12 +1,19 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\Ispindle;
 
-use Psr\Log\LoggerInterface;
-use Projek\Slim\Plates;
-use Doctrine\ORM\EntityManager;
-use App\Entity\Hydrometer;
-use App\Entity\Fermentation;
 use App\Entity\DataPoint;
+use App\Entity\Fermentation;
+use App\Entity\Hydrometer;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class TCP
 {
@@ -14,30 +21,54 @@ class TCP
     protected $em;
 
     /**
-     * Use League\Container for auto-wiring dependencies into the controller
+     * Use League\Container for auto-wiring dependencies into the controller.
+     *
      * @param LoggerInterface $logger [description]
      */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->logger = $logger;
     }
 
+    /**
+     * Wake db connection up.
+     */
+    public function wakeupDb()
+    {
+        $connection = $this->em->getConnection();
+        if (false === $connection->ping()) {
+            $connection->close();
+            $connection->connect();
+        }
+    }
+
+    /**
+     * Put the dbal connection to sleep.
+     */
+    public function sleepDb()
+    {
+        $connection = $this->em->getConnection();
+        if (!$connection->isConnected()) {
+            $connection->close();
+        }
+    }
+
     public function authenticate($token)
     {
-        # code...
         try {
             $qb = $this->em->createQueryBuilder();
 
             $q = $qb->select('h.id hydrometer_id, f.id fermentation_id')
                 ->from('App\Entity\Token', 't')
                 ->join('App\Entity\Hydrometer', 'h', 'WITH', 'h.token = t.id')
-                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > NOW())')
+                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
                 ->setMaxResults(1)
                 ->andWhere('t.value = :token')
                 ->setParameter('token', $token)
+                ->setParameter('now', new DateTime())
                 ->getQuery();
 
             return $q->getSingleResult();
@@ -52,14 +83,16 @@ class TCP
         $input = trim($input);
 
         // first sign {
-        if (! strpos($input, "{") == 0) {
+        if (0 === !mb_strpos($input, '{')) {
             $this->logger->error('First sign not {');
+
             return false;
         }
 
         // last sign }
-        if (! strpos($input, "}") == strlen($input)) {
+        if (!mb_strpos($input, '}') === mb_strlen($input)) {
             $this->logger->error('Last sign not }');
+
             return false;
         }
 
@@ -68,7 +101,7 @@ class TCP
 
     public function saveData($data, $hydrometer, $fermentation)
     {
-        $hydrometer = $this->em->getRepository('App\Entity\Hydrometer')->find($hydrometer);
+        $hydrometer = $this->em->getRepository(Hydrometer::class)->find($hydrometer);
 
         // set the hydrometer name if specified
         if (isset($data['name'])) {
@@ -80,17 +113,15 @@ class TCP
             $hydrometer->setEspId($data['ID']);
         }
 
-        $this->logger->debug('iHydrometer: Receive data for Hydrometer', [$hydrometer, $data]);
+        $this->logger->debug('Spindel: Receive data for Hydrometer', [$hydrometer, $data, $fermentation]);
 
-
-        $dataPoint = new DataPoint;
+        $dataPoint = new DataPoint();
 
         unset($data['id'], $data['ID']);
         $dataPoint->import($data);
 
-
         if ($fermentation) {
-            $fermentation = $this->em->getRepository('App\Entity\Fermentation')->find($fermentation);
+            $fermentation = $this->em->getRepository(Fermentation::class)->find($fermentation);
             $dataPoint->setFermentation($fermentation);
         }
 
@@ -102,4 +133,3 @@ class TCP
         $this->em->flush();
     }
 }
-

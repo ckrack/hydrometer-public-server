@@ -3,7 +3,7 @@
 
 # log files
 /logs/*
-!/logs/README.md
+!/logs/.gitkeep
 npm-debug.log*
 
 # config
@@ -12,14 +12,47 @@ npm-debug.log*
 # ---> Node
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
-node_modules
+/node_modules/
 
 # Sass cache
-.sass-cache/
+/.sass-cache/
 
 # public css/js
-public/css/*
-!public/css/vendor/*
-public/js/*
-!public/js/vendor*
-src/Proxies
+/html/css/*
+!/html/css/vendor/*
+/html/js/*
+!/html/js/vendor*
+/src/Proxies
+
+# ignore the database volume
+/database/
+!/database/.gitkeep
+
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

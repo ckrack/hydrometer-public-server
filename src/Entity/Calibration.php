@@ -1,17 +1,28 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\ArrayCollection;
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  * @ORM\Table(name="calibrations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class Calibration extends Entity
+class Calibration extends Entity implements TimestampableInterface, SoftDeletableInterface
 {
+    use TimestampableTrait;
+    use SoftDeletableTrait;
+
     /**
      * @ORM\ManyToOne(targetEntity="Hydrometer")
      * ORM\JoinColumn(
@@ -23,25 +34,29 @@ class Calibration extends Entity
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
+     *
      * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(type="float")
-     * @var string
+     *
+     * @var float
      */
     protected $const1;
 
     /**
      * @ORM\Column(type="float")
-     * @var string
+     *
+     * @var float
      */
     protected $const2;
 
     /**
      * @ORM\Column(type="float")
-     * @var string
+     *
+     * @var float
      */
     protected $const3;
 
@@ -50,38 +65,12 @@ class Calibration extends Entity
      */
     protected $fermentations;
 
-    /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name", "const1", "const2", "const3"})
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $deleted;
-
-    /**
-     * [getContentChanged description]
-     * @return \DateTime
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getHydrometer()
     {
         return $this->hydrometer;
     }
 
     /**
-     * @param mixed $hydrometer
-     *
      * @return self
      */
     public function setHydrometer($hydrometer)
@@ -171,9 +160,6 @@ class Calibration extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentations()
     {
         return $this->fermentations;

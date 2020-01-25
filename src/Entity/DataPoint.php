@@ -1,19 +1,30 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\ArrayCollection;
+use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity(repositoryClass="App\Resource\DataPointResource")
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
+ * @ORM\Entity(repositoryClass="App\Repository\DataPointRepository")
  * @ORM\Table(name="data_points", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  */
-class DataPoint extends Entity
+class DataPoint extends Entity implements TimestampableInterface, SoftDeletableInterface
 {
+    use TimestampableTrait;
+    use SoftDeletableTrait;
+
     /**
-     * @ORM\ManyToOne(targetEntity="Hydrometer")
+     * @ORM\ManyToOne(targetEntity="Hydrometer", fetch="EAGER")
      * ORM\JoinColumn(
      *     name="hydrometer_id",
      *     referencedColumnName="id"
@@ -22,7 +33,7 @@ class DataPoint extends Entity
     protected $hydrometer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Fermentation")
+     * @ORM\ManyToOne(targetEntity="Fermentation", inversedBy="data")
      * ORM\JoinColumn(
      *     name="fermentation_id",
      *     referencedColumnName="id"
@@ -31,67 +42,55 @@ class DataPoint extends Entity
     protected $fermentation;
 
     /**
-     * @ORM\Column(name="changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"angle", "temperature", "battery", "gravity", "trubidity"})
-     * @var \DateTime
-     */
-    protected $contentChanged;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $deleted;
-
-    /**
-     * [getContentChanged description]
-     * @return \DateTime
-     */
-    public function getContentChanged()
-    {
-        return $this->contentChanged;
-    }
-
-    /**
      * @ORM\Column(type="float", nullable=true)
-     * @var string
+     *
+     * @var float
      */
     protected $angle;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @var string
+     *
+     * @var float
      */
     protected $temperature;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @var string
+     *
+     * @var float
      */
     protected $battery;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @var string
+     *
+     * @var float
      */
     protected $gravity;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @var string
+     * Wifi strength
+     *
+     * @var float
      */
-    protected $trubidity;
+    protected $RSSI;
 
     /**
-     * @return mixed
+     * @ORM\Column(name="`interval`", type="integer", nullable=true)
+     * Update interval
+     *
+     * @var int
      */
+    protected $interval;
+
     public function getHydrometer()
     {
         return $this->hydrometer;
     }
 
     /**
-     * @param mixed $hydrometer
-     *
      * @return self
      */
     public function setHydrometer($hydrometer)
@@ -101,17 +100,12 @@ class DataPoint extends Entity
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFermentation()
     {
         return $this->fermentation;
     }
 
     /**
-     * @param mixed $fermentation
-     *
      * @return self
      */
     public function setFermentation($fermentation)
@@ -202,21 +196,41 @@ class DataPoint extends Entity
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getTrubidity()
+    public function getRSSI()
     {
-        return $this->trubidity;
+        return $this->RSSI;
     }
 
     /**
-     * @param string $trubidity
+     * @param float $RSSI
      *
      * @return self
      */
-    public function setTrubidity($trubidity)
+    public function setRSSI($RSSI)
     {
-        $this->trubidity = $trubidity;
+        $this->RSSI = $RSSI;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInterval()
+    {
+        return $this->interval;
+    }
+
+    /**
+     * @param int $interval
+     *
+     * @return self
+     */
+    public function setInterval($interval)
+    {
+        $this->interval = $interval;
 
         return $this;
     }

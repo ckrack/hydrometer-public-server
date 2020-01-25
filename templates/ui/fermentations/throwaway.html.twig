@@ -1,0 +1,32 @@
+{% extends "layouts/public.html.twig" %}
+
+{% block title %}
+    {% trans %}Fermentation{% endtrans %}
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">
+            {% trans %}Start a single-use fermentation{% endtrans %}
+        </h1>
+        <p class="lead">
+            {% trans %}You own an electronic hydrometer, such as TILT or the open-source iSpindle?{% endtrans %}
+            <br>
+            {% trans %}Start tracking a fermentation right now.{% endtrans %}
+        </p>
+        <hr class="my-4">
+
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+        {{ form_start(form, {attr: {class: 'mt-4 mb-3 col-8'} }) }}
+            {{ form_widget(form) }}
+
+            <input type="submit" class="btn btn-primary btn-lg ml-auto mr-0" value="{% trans %}Start anonymously{% endtrans %}" />
+        {{ form_end(form) }}
+
+    </div>
+</div>
+
+{% endblock %}

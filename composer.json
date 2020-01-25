@@ -25,26 +25,44 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "slim/slim": "^3.7",
-        "monolog/monolog": "^1.22",
-        "projek-xyz/slim-plates": "^0.2.2",
-        "vlucas/phpdotenv": "^2.4",
-        "doctrine/orm": "^2.5",
-        "beberlei/DoctrineExtensions": "^1.0",
-        "ckrack/slim-league-container-bridge": "^3.1",
-        "gedmo/doctrine-extensions": "^2.4",
+        "beberlei/doctrineextensions": "^1.0",
         "jenssegers/optimus": "^0.2.3",
-        "phpseclib/phpseclib": "^2.0",
-        "jenssegers/date": "^3.2",
-        "adamwathan/bootforms": "^0.8.5",
-        "vlucas/valitron": "^1.4",
-        "dflydev/fig-cookies": "^1.0",
+        "knplabs/doctrine-behaviors": "^2.0",
+        "knpuniversity/oauth2-client-bundle": "^1.20",
+        "league/oauth2-facebook": "^2.0",
         "league/oauth2-google": "^2.0",
-        "league/oauth2-facebook": "^2.0"
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/httplug-bundle": "^1.9",
+        "php": "^7.4",
+        "phpseclib/phpseclib": "^2.0",
+        "sensio/framework-extra-bundle": "^5.1",
+        "sensiolabs/security-checker": "^6.0",
+        "symfony/flex": "^1.6",
+        "symfony/form": "^5.0",
+        "symfony/monolog-bundle": "^3.5",
+        "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "^5.0",
+        "symfony/swiftmailer-bundle": "^3.4",
+        "symfony/templating": "^5.0",
+        "symfony/translation": "^5.0",
+        "symfony/twig-bundle": "^5.0",
+        "symfony/validator": "^5.0",
+        "symfony/webpack-encore-bundle": "^1.7",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "nesbot/carbon": "^2.28"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=4.8 < 6.0"
+        "symfony/dotenv": "^5.0",
+        "symfony/debug-pack": "^1.0",
+        "rector/rector": "^0.6.6",
+        "symplify/easy-coding-standard": "^7.2",
+        "phpstan/phpstan": "^0.12.4",
+        "symfony/maker-bundle": "^1.14",
+        "symfony/test-pack": "^1.0",
+        "symfony/phpunit-bridge": "^5.0",
+        "liip/test-fixtures-bundle": "^1.6",
+        "symfony/browser-kit": "^5.0",
+        "symfony/css-selector": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -53,16 +71,35 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "src/Tests"
         }
     },
     "scripts": {
         "test": "phpunit",
-        "start": "php -S localhost:8080 -t public/",
         "post-create-project-cmd": [
             "php -r \"copy('src/example.env', 'src/.env');\""
         ],
         "spark": "php vendor/bin/optimus spark && php -r \" echo('Please update these numbers in ./src/.env under # OPTIMUS');\"",
-        "setup-db": "php vendor/bin/doctrine orm:schema-tool:update -f && php vendor/bin/doctrine orm:generate-proxies"
+        "setup-db": "php bin/console doctrine:migrations:migrate",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.0.*"
+        }
     }
 }

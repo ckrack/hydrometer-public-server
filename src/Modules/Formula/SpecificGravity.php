@@ -1,49 +1,63 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\Formula;
 
-use Plato;
-
 /**
- * Formulas for specific gravity
+ * Formulas for specific gravity.
  */
 class SpecificGravity
 {
     /**
-     * the value in specific gravity
+     * the value in specific gravity.
      */
-    protected float $value;
+    protected $value;
 
     /**
-     * You can start calculations by creating an object with the sg value
+     * You can start calculations by creating an object with the sg value.
+     *
      * @param float $value value
      */
-    public function __construct(float $value)
+    public function __construct(float $value = null)
     {
         $this->value = $value;
     }
 
     /**
-     * convert a plato value to plato
-     * @param  float\null $value value. uses objects value if omitted.
-     * @return float        specific gravity
+     * convert a plato value to plato.
+     *
+     * @param float\null $value value. uses objects value if omitted.
+     *
+     * @return float specific gravity
      */
     public function toPlato($value = null)
     {
-        if ($value === null) {
+        if (null === $value) {
             $value = $this->value;
         }
 
         // return invokable from SpecificGravity class
-        return Plato($value);
+        return (new Plato())($value);
     }
 
     /**
-     * calculate Plato to specific gravity
-     * @param  float $plato value in plato
-     * @return float        specific gravity
+     * calculate Plato to specific gravity.
+     *
+     * @param float $plato value in plato
+     *
+     * @return float specific gravity
      */
-    public function __invoke($plato)
+    public function __invoke($plato = null)
     {
-        return 1 + ($plato / (258.6 – (($plato / 258.2) * 227.1)));
+        if (null === $plato) {
+            $plato = $this->value;
+        }
+
+        return 1 + ($plato / (258.6 - (($plato / 258.2) * 227.1)));
     }
 }

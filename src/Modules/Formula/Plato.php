@@ -1,49 +1,63 @@
 <?php
+
+/*
+ * This file is part of the hydrometer public server project.
+ *
+ * @author Clemens Krack <info@clemenskrack.com>
+ */
+
 namespace App\Modules\Formula;
 
-use SpecificGravity;
-
 /**
- * Formulas for specific gravity
+ * Formulas for specific gravity.
  */
 class Plato
 {
     /**
-     * the value in plato
+     * the value in plato.
      */
-    protected float $value;
+    protected $value;
 
     /**
-     * You can start calculations by creating an object with the plato value
+     * You can start calculations by creating an object with the plato value.
+     *
      * @param float $value value in plato
      */
-    public function __construct(float $value)
+    public function __construct(float $value = null)
     {
         $this->value = $value;
     }
 
     /**
-     * convert a plato value to specific gravity
-     * @param  float\null $value value in plato. uses objects value if omitted.
-     * @return float        specific gravity
+     * convert a plato value to specific gravity.
+     *
+     * @param float\null $value value in plato. uses objects value if omitted.
+     *
+     * @return float specific gravity
      */
     public function toSg($value = null)
     {
-        if ($value === null) {
+        if (null === $value) {
             $value = $this->value;
         }
 
         // return invokable from SpecificGravity class
-        return SpecificGravity($value);
+        return (new SpecificGravity())($value);
     }
 
     /**
-     * calculate specific gravity to Plato
-     * @param  float $specificGravity specific gravity value
-     * @return float                  degrees plato value
+     * calculate specific gravity to Plato.
+     *
+     * @param float $specificGravity specific gravity value
+     *
+     * @return float degrees plato value
      */
-    public function __invoke($specificGravity)
+    public function __invoke($specificGravity = null)
     {
-        return (-1 * 616.868) + (1111.14 * $specificGravity) – (630.272 * $specificGravity**2) + (135.997 * $specificGravity**3);
+        if (null === $specificGravity) {
+            $specificGravity = $this->value;
+        }
+
+        return (-1 * 616.868) + (1111.14 * $specificGravity) - (630.272 * $specificGravity ** 2) + (135.997 * $specificGravity ** 3);
     }
 }

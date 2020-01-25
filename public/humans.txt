@@ -3,14 +3,14 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Clemens Krack -- Developer -- @clmnsk
 
 # THANKS
 
-    <name>
+    Stephan Schreiber
 
 # TECHNOLOGY COLOPHON
 
-    Slim3, PHP
+    Symfony4, PHP7
     HTML5, CSS3
     Modernizr

@@ -1,0 +1,25 @@
+{% extends "layouts/index.html.twig" %}
+{% block title %}
+    {% trans %}Delete hydrometer{% endtrans %}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mt-4 mb-3">
+    {% trans %}Delete hydrometer{% endtrans %}
+</h1>
+<hr class="mb-3">
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form, {attr: {class: 'mt-4 mb-3 col-8'} }) }}
+    {{ form_widget(form) }}
+    <p class="form-text text-warning">
+        {% trans %}
+        Datapoints will be deleted, too.
+        {% endtrans %}
+    </p>
+    <input type="submit" class="btn btn-primary" value="Delete" />
+{{ form_end(form) }}
+
+{% endblock %}
