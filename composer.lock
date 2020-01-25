@@ -6920,16 +6920,16 @@
         },
         {
             "name": "symfony/templating",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/templating.git",
-                "reference": "e9da022e51bba6d397acb856b8a29ace60b72654"
+                "reference": "d3ca23c08511eb6496a3818d053499ebaab51a98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/templating/zipball/e9da022e51bba6d397acb856b8a29ace60b72654",
-                "reference": "e9da022e51bba6d397acb856b8a29ace60b72654",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/d3ca23c08511eb6496a3818d053499ebaab51a98",
+                "reference": "d3ca23c08511eb6496a3818d053499ebaab51a98",
                 "shasum": ""
             },
             "require": {
@@ -6972,7 +6972,7 @@
             ],
             "description": "Symfony Templating Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-18T17:27:11+00:00"
+            "time": "2020-01-04T14:08:26+00:00"
         },
         {
             "name": "symfony/translation",
