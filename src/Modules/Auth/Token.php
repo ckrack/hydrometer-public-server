@@ -49,7 +49,7 @@ class Token
         try {
             $qb = $this->em->createQueryBuilder();
 
-            $q = $qb->select('h.id hydrometer_id, f.id fermentation_id, u.id user_id')
+            $q = $qb->select('h.id hydrometer_id, f.id fermentation_id, u.id user_id, h.interval')
                 ->from('App\Entity\Token', 't')
                 ->join('App\Entity\Hydrometer', 'h', 'WITH', 'h.token = t.id')
                 ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
