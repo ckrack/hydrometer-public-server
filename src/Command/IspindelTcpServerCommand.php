@@ -9,6 +9,7 @@
 namespace App\Command;
 
 use App\Modules\Ispindle\TCP;
+use App\Modules\Auth\Token;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,13 +22,16 @@ class IspindelTcpServerCommand extends Command
 {
     protected static $defaultName = 'app:ispindel-tcp-server';
     protected TCP $tcp;
+    protected Token $tokenAuth;
     protected LoggerInterface $logger;
 
     public function __construct(
         TCP $tcp,
+        Token $tokenAuth,
         LoggerInterface $logger
     ) {
         $this->tcp = $tcp;
+        $this->tokenAuth = $tokenAuth;
         $this->logger = $logger;
 
         parent::__construct();
@@ -109,7 +113,7 @@ class IspindelTcpServerCommand extends Command
                     $this->tcp->wakeupDb();
 
                     // confirm existance of the token @throws
-                    $authData = $this->tcp->authenticate($jsonDecoded['token']);
+                    $authData = $this->tokenAuth->authenticate($jsonDecoded['token']);
                     $this->tcp->saveData($jsonDecoded, $authData['hydrometer_id'], $authData['fermentation_id']);
 
                     // sleep the database connection
