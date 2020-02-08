@@ -1,0 +1,25 @@
+{% extends "layouts/public.html.twig" %}
+
+{% block title %}
+    {% trans %}Logout{% endtrans %}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">
+        {% trans %}Logged out{% endtrans %}
+    </h1>
+    <p class="lead">
+       {% trans %}Goodbye, have a nice day!{% endtrans %}
+    </p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth/init/facebook" role="button">
+        {% trans %}Sign back in with facebook{% endtrans %}
+    </a>
+    <a class="btn btn-primary btn-lg ml-auto mr-0" href="/auth/init/google" role="button">
+        {% trans %}Sign back in with google{% endtrans %}
+    </a>
+  </div>
+</div>
+{% endblock %}
