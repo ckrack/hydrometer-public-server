@@ -24,6 +24,7 @@ class StaticController extends AbstractController
 
     /**
      * @Route("/{static}", defaults={"static"="about"}, name="static-page")
+     * @Route("/logout", defaults={"static"="logout"}, name="logout")
      */
     public function __invoke($static)
     {

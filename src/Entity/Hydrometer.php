@@ -68,6 +68,15 @@ class Hydrometer extends Entity implements TimestampableInterface
     protected $metricGravity;
 
     /**
+     * Update interval in ms.
+     *
+     * @ORM\Column(name="`interval`", type="integer", nullable=true)
+     *
+     * @var int
+     */
+    protected $interval;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="hydrometers")
      * ORM\JoinColumn(
      *     name="user_id",
@@ -222,6 +231,30 @@ class Hydrometer extends Entity implements TimestampableInterface
     public function setMetricGravity($metricGravity)
     {
         $this->metricGravity = $metricGravity;
+
+        return $this;
+    }
+
+    /**
+     * Get update interval in ms.
+     *
+     * @return int
+     */
+    public function getInterval()
+    {
+        return $this->interval;
+    }
+
+    /**
+     * Set update interval in ms.
+     *
+     * @param int $interval update interval in ms
+     *
+     * @return self
+     */
+    public function setInterval(?int $interval)
+    {
+        $this->interval = $interval;
 
         return $this;
     }

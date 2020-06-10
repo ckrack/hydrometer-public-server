@@ -56,28 +56,6 @@ class TCP
         }
     }
 
-    public function authenticate($token)
-    {
-        try {
-            $qb = $this->em->createQueryBuilder();
-
-            $q = $qb->select('h.id hydrometer_id, f.id fermentation_id')
-                ->from('App\Entity\Token', 't')
-                ->join('App\Entity\Hydrometer', 'h', 'WITH', 'h.token = t.id')
-                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
-                ->setMaxResults(1)
-                ->andWhere('t.value = :token')
-                ->setParameter('token', $token)
-                ->setParameter('now', new DateTime())
-                ->getQuery();
-
-            return $q->getSingleResult();
-        } catch (\Exception $e) {
-            $this->logger->error($e);
-            throw new \InvalidArgumentException('Authentication failed');
-        }
-    }
-
     public function validateInput($input)
     {
         $input = trim($input);
@@ -117,7 +95,7 @@ class TCP
 
         $dataPoint = new DataPoint();
 
-        unset($data['id'], $data['ID']);
+        unset($data['id'], $data['ID'], $data['token']);
         $dataPoint->import($data);
 
         if ($fermentation) {

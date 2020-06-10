@@ -16,6 +16,7 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,12 +77,17 @@ class DataPointController extends AbstractController
             $dataPoint->import($data);
             $dataPoint->setHydrometer($hydrometer);
 
+            // set interval on hydrometer if it's empty
+            if (!$hydrometer->getInterval()) {
+                $hydrometer->setInterval($dataPoint->getInterval());
+            }
+
             $this->em->persist($hydrometer);
             $this->em->persist($dataPoint);
 
             $this->em->flush();
 
-            return new Response('', 200);
+            return new JsonResponse((object) ['interval' => $authData['interval'] ?? $data['interval']], 200);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
