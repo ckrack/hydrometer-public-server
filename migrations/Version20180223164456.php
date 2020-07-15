@@ -28,7 +28,7 @@ final class Version20180223164456 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users CHANGE apitoken api_token VARCHAR(64) DEFAULT NULL, CHANGE timezone time_zone VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE users CHANGE apiToken api_token VARCHAR(64) DEFAULT NULL, CHANGE timeZone time_zone VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
