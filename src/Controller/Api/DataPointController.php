@@ -87,7 +87,7 @@ class DataPointController extends AbstractController
 
             $this->em->flush();
 
-            return new JsonResponse((object) ['interval' => $authData['interval'] ?? $data['interval']], 200);
+            return new JsonResponse((object) ['interval' => $authData['interval'] ?? $data['interval'] ?? 900], 200);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
 
