@@ -58,7 +58,7 @@ class ISpindelTCPApiTest extends KernelTestCase
         $socket = \socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
         // wait for socket to be open
-        sleep(2);
+        sleep(3);
 
         $this->assertTrue(\socket_connect($socket, 'localhost', '61080'));
 
@@ -99,7 +99,7 @@ class ISpindelTCPApiTest extends KernelTestCase
         $socket = \socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
         // wait for socket to be open
-        sleep(2);
+        sleep(3);
 
         $this->assertTrue(\socket_connect($socket, 'localhost', '61080'));
 
