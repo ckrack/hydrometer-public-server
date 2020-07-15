@@ -7,7 +7,9 @@
 npm-debug.log*
 
 # config
-.env
+.env.local
+.vscode/launch.json
+
 
 # ---> Node
 # Dependency directory
