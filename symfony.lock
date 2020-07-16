@@ -120,6 +120,9 @@
     "egulias/email-validator": {
         "version": "2.1.3"
     },
+    "ergebnis/phpstan-rules": {
+        "version": "0.15.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -287,6 +290,9 @@
     },
     "phpstan/phpstan-phpunit": {
         "version": "0.12.5"
+    },
+    "phpstan/phpstan-strict-rules": {
+        "version": "0.12.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -762,6 +768,9 @@
     },
     "symplify/smart-file-system": {
         "version": "v7.1.3"
+    },
+    "thecodingmachine/phpstan-strict-rules": {
+        "version": "v0.12.0"
     },
     "tracy/tracy": {
         "version": "v2.7.5"

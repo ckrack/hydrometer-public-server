@@ -65,7 +65,11 @@
         "symfony/maker-bundle": "^1.14",
         "liip/test-fixtures-bundle": "^1.6",
         "symfony/browser-kit": "^5.1",
-        "symfony/css-selector": "^5.1"
+        "symfony/css-selector": "^5.1",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "ergebnis/phpstan-rules": "^0.15.0",
+        "phpstan/phpstan-strict-rules": "^0.12.3",
+        "thecodingmachine/phpstan-strict-rules": "^0.12.0"
     },
     "autoload": {
         "psr-4": {
@@ -79,6 +83,9 @@
     },
     "scripts": {
         "test": "php bin/phpunit",
+        "lint:cs": "php-cs-fixer fix -vvv --dry-run --allow-risky=yes",
+        "lint": "php-cs-fixer fix -vvv --dry-run --diff --allow-risky=yes && rector process src --dry-run",
+        "types": "phpstan analyse --ansi --memory-limit=0",
         "post-create-project-cmd": [
             "php -r \"copy('src/example.env', 'src/.env');\""
         ],

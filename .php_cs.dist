@@ -7,47 +7,23 @@ This file is part of the hydrometer public server project.
 COMMENT;
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-    ->exclude('src/Proxies')
-    ->exclude('database')
-    ->exclude('docs')
-    ->exclude('vendor')
-    ->exclude('html')
-    ->exclude('src/templates/')
+    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'tests')
+    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'src')
 ;
 
+$rules = [
+    '@Symfony' => true,
+    '@DoctrineAnnotation' => true,
+    'phpdoc_no_empty_return' => false,
+    'array_syntax' => ['syntax' => 'short'],
+    'ordered_imports' => true,
+    'yoda_style' => false,
+    'declare_strict_types' => true,
+];
+
+$rules['increment_style'] = ['style' => 'post'];
+
 return PhpCsFixer\Config::create()
-    ->setRiskyAllowed(true)
-    ->setRules([
-        '@Symfony' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'header_comment' => [
-        	'header' => $fileHeaderComment,
-        	'separate' => 'both'
-        ],
-        'class_definition' => [
-            'singleItemSingleLine' => true,
-            'multiLineExtendsEachSingleLine' => true
-        ],
-        'method_argument_space' => [
-            'ensure_fully_multiline' => true,
-        ],
-        'method_chaining_indentation' => true,
-        'linebreak_after_opening_tag' => true,
-        'mb_str_functions' => true,
-        'no_php4_constructor' => true,
-        'no_unreachable_default_argument_value' => true,
-        'no_useless_else' => true,
-        'no_useless_return' => true,
-        'ordered_imports' => true,
-        'php_unit_strict' => true,
-        'phpdoc_order' => true,
-        'no_superfluous_phpdoc_tags' => true,
-        'semicolon_after_instruction' => true,
-        'strict_comparison' => true,
-        'strict_param' => true,
-        'phpdoc_types' => false,
-    ])
-    ->setFinder($finder)
-    ->setCacheFile(__DIR__.'/var/.php_cs.cache')
-;
+    ->setUsingCache(true)
+    ->setRules($rules)
+    ->setFinder($finder);
