@@ -103,7 +103,7 @@ if (!function_exists('stats_standard_deviation')) {
             $carry += $d * $d;
         }
         if ($sample) {
-            --$n;
+            $n--;
         }
 
         return sqrt($carry / $n);
