@@ -20,7 +20,7 @@ class FacebookAuthTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Sign in');
 
-    //     $crawler = $client->request('GET', '/auth/init/facebook');
+        //     $crawler = $client->request('GET', '/auth/init/facebook');
     //     dump($client->getRequest()->getUri());
 
     //     $link = $crawler->filter('a');
@@ -37,7 +37,6 @@ class FacebookAuthTest extends WebTestCase
     //     // $form['email']->setValue('open_vwxoxnp_user@tfbnw.net');
     //     // $form['pass']->setValue('nNH@VEvvHj!B6h4');
     //     // $client->submit($form);
-
 
     //     // fb auth
 

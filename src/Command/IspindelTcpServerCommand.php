@@ -12,7 +12,6 @@ use App\Modules\Auth\Token;
 use App\Modules\Ispindle\TCP;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -80,7 +79,7 @@ class IspindelTcpServerCommand extends Command
                         $jsonRaw .= $tcpInput;
 
                         // get input until json closing bracket
-                        if (mb_strpos(trim($tcpInput), '}') ==! false) {
+                        if (mb_strpos(trim($tcpInput), '}') == !false) {
                             $this->logger->info('Breaking');
                             break;
                         }

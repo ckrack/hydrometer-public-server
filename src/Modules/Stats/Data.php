@@ -35,9 +35,9 @@ class Data
      * Returns a string representing a timespan since when the value of $fieldname is stable.
      * The stability can be refined using $deviance.
      *
-     * @param array $latestData [description]
+     * @param array  $latestData [description]
      * @param string $fieldName  [description]
-     * @param float $deviance   [description]
+     * @param float  $deviance   [description]
      *
      * @return string [description]
      */

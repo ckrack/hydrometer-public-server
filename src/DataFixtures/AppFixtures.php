@@ -12,7 +12,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $user = new User;
+        $user = new User();
         $user
             ->setEmail('test@example.com');
 
@@ -26,7 +26,6 @@ class AppFixtures extends Fixture
         $hydrometer->setUser($user);
         $hydrometer->setToken($token);
 
-
         $tokenInterval = new Token();
         $tokenInterval
             ->setType('device')
@@ -37,7 +36,6 @@ class AppFixtures extends Fixture
         $hydrometerInterval->setUser($user);
         $hydrometerInterval->setToken($tokenInterval);
         $hydrometerInterval->setInterval(600);
-
 
         $manager->persist($user);
         $manager->persist($token);

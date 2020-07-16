@@ -11,7 +11,6 @@ namespace App\Modules\Ispindle;
 use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
