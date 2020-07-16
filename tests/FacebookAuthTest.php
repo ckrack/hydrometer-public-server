@@ -8,10 +8,10 @@ class FacebookAuthTest extends WebTestCase
 {
     public function testSomething()
     {
-        $client = static::createClient(array(),
-            array(
+        $client = static::createClient([],
+            [
                 'HTTP_HOST' => 'localhost',
-            )
+            ]
         );
         $client->followRedirects(false);
         $crawler = $client->request('GET', '/auth');
