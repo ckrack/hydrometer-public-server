@@ -47,7 +47,7 @@ abstract class Entity implements JsonSerializable, TimestampableInterface
         $_classMethods = get_class_methods($this);
         foreach ($options as $key => $value) {
             $method = 'set'.ucfirst($key);
-            if (in_array($method, $_classMethods, true)) {
+            if (\in_array($method, $_classMethods, true)) {
                 $this->$method($value);
             }
         }
@@ -63,7 +63,7 @@ abstract class Entity implements JsonSerializable, TimestampableInterface
     public function jsonSerialize()
     {
         $entity = [];
-        $methods = get_class_methods(get_class($this));
+        $methods = get_class_methods(static::class);
         foreach ($methods as $method) {
             if (preg_match('/get([A-Z][a-z]+)/', $method, $match)) {
                 $prop = mb_strtolower($match[1]);

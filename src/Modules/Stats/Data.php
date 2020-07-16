@@ -46,7 +46,7 @@ class Data
         // turn array around (oldest data first)
         rsort($latestData);
 
-        if ((is_countable($latestData) ? count($latestData) : 0) <= 1) {
+        if ((is_countable($latestData) ? \count($latestData) : 0) <= 1) {
             return _('Not yet');
         }
 

@@ -42,7 +42,7 @@ class Anomaly
         // save new value as sample
         array_unshift($this->sample, $value);
 
-        $count = count($this->sample);
+        $count = \count($this->sample);
 
         if ($count <= 2) {
             $this->logger->debug('Anomaly: sample too small');
@@ -72,7 +72,7 @@ class Anomaly
     }
 }
 
-if (!function_exists('stats_standard_deviation')) {
+if (!\function_exists('stats_standard_deviation')) {
     /**
      * This user-land implementation follows the implementation quite strictly;
      * it does not attempt to improve the code or algorithm in any way. It will
@@ -85,7 +85,7 @@ if (!function_exists('stats_standard_deviation')) {
      */
     function stats_standard_deviation(array $a, $sample = false)
     {
-        $n = count($a);
+        $n = \count($a);
         if (0 === $n) {
             trigger_error('The array has zero elements', E_USER_WARNING);
 

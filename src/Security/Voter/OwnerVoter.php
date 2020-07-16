@@ -28,7 +28,7 @@ class OwnerVoter extends Voter
     protected function supports($attribute, $subject)
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, [self::VIEW, self::EDIT], true)) {
+        if (!\in_array($attribute, [self::VIEW, self::EDIT], true)) {
             return false;
         }
 
@@ -39,7 +39,7 @@ class OwnerVoter extends Voter
             Hydrometer::class,
         ];
 
-        if (!in_array(get_class($subject), $subjects, true)) {
+        if (!\in_array(\get_class($subject), $subjects, true)) {
             return false;
         }
 

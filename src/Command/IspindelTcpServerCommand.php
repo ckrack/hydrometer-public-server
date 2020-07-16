@@ -95,7 +95,7 @@ class IspindelTcpServerCommand extends Command
 
                     $jsonDecoded = json_decode($jsonRaw, true);
 
-                    if ((!is_array($jsonDecoded) && !is_object($jsonDecoded)) || json_last_error()) {
+                    if ((!\is_array($jsonDecoded) && !\is_object($jsonDecoded)) || json_last_error()) {
                         $this->logger->info('Spindle data not ok', [$jsonDecoded, json_last_error()]);
                         continue;
                     }
