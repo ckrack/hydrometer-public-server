@@ -17,8 +17,8 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
  * @ORM\Table(
  *     name="hydrometers",
  *     options={
- *         "collate"="utf8mb4_unicode_ci",
- *         "charset"="utf8mb4"
+ *         "collate": "utf8mb4_unicode_ci",
+ *         "charset": "utf8mb4"
  *     },
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(

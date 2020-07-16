@@ -17,7 +17,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FermentationRepository")
- * @ORM\Table(name="fermentations", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
+ * @ORM\Table(name="fermentations", options={"collate": "utf8mb4_unicode_ci", "charset": "utf8mb4"})
  */
 class Fermentation extends Entity implements TimestampableInterface, SoftDeletableInterface
 {

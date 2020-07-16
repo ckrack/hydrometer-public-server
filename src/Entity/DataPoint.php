@@ -16,7 +16,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataPointRepository")
- * @ORM\Table(name="data_points", options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
+ * @ORM\Table(name="data_points", options={"collate": "utf8mb4_unicode_ci", "charset": "utf8mb4"})
  */
 class DataPoint extends Entity implements TimestampableInterface, SoftDeletableInterface
 {

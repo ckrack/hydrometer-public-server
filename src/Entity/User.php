@@ -22,8 +22,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(
  *     name="users",
  *     options={
- *         "collate"="utf8mb4_unicode_ci",
- *         "charset"="utf8mb4"
+ *         "collate": "utf8mb4_unicode_ci",
+ *         "charset": "utf8mb4"
  *     },
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(

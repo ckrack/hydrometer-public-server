@@ -15,7 +15,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\MappedSuperclass
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  */
 abstract class Entity implements JsonSerializable, TimestampableInterface
 {
