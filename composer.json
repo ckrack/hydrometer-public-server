@@ -1,14 +1,10 @@
 {
     "name": "ckrack/hydrometer-public-server",
-    "version": "2.0.0",
     "description": "Public server for electronic hydrometers for homebrewing",
     "type": "project",
     "license": "MIT",
     "keywords": [
-        "slim3",
-        "boilerplate",
-        "quickstart",
-        "framework",
+
         "ispindle",
         "ispindel",
         "craftbeer",
@@ -24,6 +20,11 @@
             "role": "Developer"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "7.4.7"
+        }
+    },
     "require": {
         "beberlei/doctrineextensions": "^1.0",
         "jenssegers/optimus": "^0.2.3",
@@ -38,31 +39,33 @@
         "sensio/framework-extra-bundle": "^5.1",
         "sensiolabs/security-checker": "^6.0",
         "symfony/flex": "^1.6",
-        "symfony/form": "^5.0",
+        "symfony/form": "^5.1",
         "symfony/monolog-bundle": "^3.5",
-        "symfony/orm-pack": "^1.0",
-        "symfony/security-bundle": "^5.0",
+        "symfony/security-bundle": "^5.1",
         "symfony/swiftmailer-bundle": "^3.4",
-        "symfony/templating": "^5.0",
-        "symfony/translation": "^5.0",
-        "symfony/twig-bundle": "^5.0",
-        "symfony/validator": "^5.0",
+        "symfony/templating": "^5.1",
+        "symfony/translation": "^5.1",
+        "symfony/twig-bundle": "^5.1",
+        "symfony/validator": "^5.1",
         "symfony/webpack-encore-bundle": "^1.7",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "nesbot/carbon": "^2.28"
+        "nesbot/carbon": "^2.28",
+        "composer/package-versions-deprecated": "^1.8",
+        "doctrine/doctrine-bundle": "^2.1",
+        "doctrine/doctrine-migrations-bundle": "^2.1",
+        "doctrine/orm": "^2.7",
+        "symfony/phpunit-bridge": "^5.1"
     },
     "require-dev": {
-        "symfony/dotenv": "^5.0",
+        "symfony/dotenv": "^5.1",
         "symfony/debug-pack": "^1.0",
-        "rector/rector": "^0.6.6",
+        "rector/rector": "^0.7",
         "symplify/easy-coding-standard": "^7.2",
-        "phpstan/phpstan": "^0.12.4",
+        "phpstan/phpstan": "^0.12",
         "symfony/maker-bundle": "^1.14",
-        "symfony/test-pack": "^1.0",
-        "symfony/phpunit-bridge": "^5.0",
         "liip/test-fixtures-bundle": "^1.6",
-        "symfony/browser-kit": "^5.0",
-        "symfony/css-selector": "^5.0"
+        "symfony/browser-kit": "^5.1",
+        "symfony/css-selector": "^5.1"
     },
     "autoload": {
         "psr-4": {
@@ -75,7 +78,7 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
+        "test": "php bin/phpunit",
         "post-create-project-cmd": [
             "php -r \"copy('src/example.env', 'src/.env');\""
         ],
@@ -84,7 +87,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "security-checker security:check": "script",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -98,8 +102,8 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "5.0.*"
+            "allow-contrib": true,
+            "require": "5.1.*"
         }
     }
 }

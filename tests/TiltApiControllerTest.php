@@ -10,6 +10,7 @@ namespace App\Tests;
 
 use App\Entity\DataPoint;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TiltApiControllerTest extends WebTestCase
@@ -19,19 +20,25 @@ class TiltApiControllerTest extends WebTestCase
     private $fixtures;
     private $entityManager;
 
+    private static ?KernelBrowser $client = null;
+
+    protected static $kernel = null;
+
     public function setUp(): void
     {
-        $kernel = self::bootKernel();
+        if (null === static::$client) {
+            static::$client = static::createClient();
+        }
 
-        $this->entityManager = $kernel->getContainer()
+        static::$kernel = static::bootKernel();
+
+        $this->entityManager = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
 
         $this->fixtures = $this->loadFixtures([
             'App\DataFixtures\AppFixtures',
         ])->getReferenceRepository();
-
-        self::ensureKernelShutdown();
 
         parent::setUp();
     }
@@ -47,10 +54,8 @@ class TiltApiControllerTest extends WebTestCase
 
     public function testTiltHTTPAPI()
     {
-        $client = static::createClient();
-
         // send raw post request
-        $crawler = $client->request(
+        $crawler = static::$client->request(
             'POST',
             '/api/tilt/'.$this->fixtures->getReference('test-token')->getValue(),
             [],

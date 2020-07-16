@@ -133,6 +133,7 @@ class User extends Entity implements UserInterface, \Serializable, EquatableInte
     public function getPassword()
     {
         // no password is used
+        return null;
     }
 
     /**

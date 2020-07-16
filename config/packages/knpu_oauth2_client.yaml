@@ -11,7 +11,7 @@ knpu_oauth2_client:
             redirect_route: connect_facebook_check
             # route parameters to pass to your route, if needed
             redirect_params: {}
-            graph_api_version: v5.0
+            graph_api_version: v7.0
         google:
             # this will be one of the supported types
             type: google
