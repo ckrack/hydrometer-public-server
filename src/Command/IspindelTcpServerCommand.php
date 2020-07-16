@@ -8,8 +8,8 @@
 
 namespace App\Command;
 
-use App\Modules\Ispindle\TCP;
 use App\Modules\Auth\Token;
+use App\Modules\Ispindle\TCP;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
