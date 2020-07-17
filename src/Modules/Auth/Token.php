@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Authenticate by a token.
  */
-class Token
+final class Token
 {
     /**
      * PSR-3 logger.
@@ -63,7 +63,7 @@ class Token
             return $q->getSingleResult();
         } catch (\Exception $e) {
             $this->logger->error($e, [$q->getSql()]);
-            throw new \InvalidArgumentException('Authentication failed');
+            throw new \InvalidArgumentException('Authentication failed', $e->getCode(), $e);
         }
     }
 

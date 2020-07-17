@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class InitController extends AbstractController
+final class InitController extends AbstractController
 {
     protected $em;
     protected $oauthRegistry;

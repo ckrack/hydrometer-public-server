@@ -11,6 +11,6 @@ namespace App\Modules\Formula;
 /**
  * Alias for SpecificGravity.
  */
-class SG extends SpecificGravity
+final class SG extends SpecificGravity
 {
 }

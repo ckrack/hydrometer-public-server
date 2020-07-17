@@ -12,7 +12,7 @@ use App\Modules\Formula\Formatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class FormatterExtension extends AbstractExtension
+final class FormatterExtension extends AbstractExtension
 {
     public function getFilters()
     {

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Class Repository.
  */
-class UserRepository extends EntityRepository
+final class UserRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.

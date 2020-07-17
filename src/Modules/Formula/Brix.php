@@ -11,7 +11,7 @@ namespace App\Modules\Formula;
 /**
  * Formulas for Brix.
  */
-class Brix
+final class Brix
 {
     /**
      * the value in brix.

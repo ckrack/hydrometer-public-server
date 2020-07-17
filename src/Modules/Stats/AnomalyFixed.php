@@ -10,7 +10,7 @@ namespace App\Modules\Stats;
 
 use Psr\Log\LoggerInterface;
 
-class AnomalyFixed
+final class AnomalyFixed
 {
     /**
      * our sample size.
@@ -42,10 +42,6 @@ class AnomalyFixed
     public function is($value)
     {
         // if the value is bigger than the outlier, we have an anomaly
-        if (abs($value - $this->mean) > $this->outlier) {
-            return true;
-        }
-
-        return false;
+        return abs($value - $this->mean) > $this->outlier;
     }
 }

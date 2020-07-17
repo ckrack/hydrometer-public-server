@@ -16,7 +16,7 @@ use Exception;
 /**
  * Class Repository.
  */
-class HydrometerRepository extends EntityRepository
+final class HydrometerRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.
@@ -217,7 +217,7 @@ class HydrometerRepository extends EntityRepository
 
             return $hydrometer;
         } catch (Exception $e) {
-            throw new Exception('Can not create hydrometer');
+            throw new Exception('Can not create hydrometer', $e->getCode(), $e);
         }
     }
 }

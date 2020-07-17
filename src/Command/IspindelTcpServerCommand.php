@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class IspindelTcpServerCommand extends Command
+final class IspindelTcpServerCommand extends Command
 {
     protected static $defaultName = 'app:ispindel-tcp-server';
     protected TCP $tcp;
@@ -93,7 +93,7 @@ class IspindelTcpServerCommand extends Command
                         continue;
                     }
 
-                    $jsonDecoded = json_decode($jsonRaw, true);
+                    $jsonDecoded = json_decode($jsonRaw, true, 512, JSON_THROW_ON_ERROR);
 
                     if ((!\is_array($jsonDecoded) && !\is_object($jsonDecoded)) || json_last_error()) {
                         $this->logger->info('Spindle data not ok', [$jsonDecoded, json_last_error()]);
@@ -110,7 +110,7 @@ class IspindelTcpServerCommand extends Command
                     $this->tcp->saveData($jsonDecoded, $authData['hydrometer_id'], $authData['fermentation_id']);
 
                     // write new or current interval
-                    fwrite($client, json_encode((object) ['interval' => $authData['interval'] ?? $jsonDecoded['interval']]));
+                    fwrite($client, json_encode((object) ['interval' => $authData['interval'] ?? $jsonDecoded['interval']], JSON_THROW_ON_ERROR));
 
                     // close connection to client
                     stream_socket_shutdown($client, STREAM_SHUT_RDWR);

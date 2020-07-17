@@ -10,7 +10,7 @@ namespace App\Modules\Formula;
 
 use App\Entity\Hydrometer;
 
-class Formatter
+final class Formatter
 {
     /**
      * [$hydrometer description].

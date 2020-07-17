@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class GoogleConnectAuthenticator extends SocialAuthenticator
+final class GoogleConnectAuthenticator extends SocialAuthenticator
 {
     private $clientRegistry;
     private $router;

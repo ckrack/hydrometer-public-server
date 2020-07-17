@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * This voter decides whether a user is the owner of a subject and grants access if so.
  * The supported attributes are view and edit.
  */
-class OwnerVoter extends Voter
+final class OwnerVoter extends Voter
 {
     // these strings are just invented: you can use anything
     const VIEW = 'view';
@@ -38,12 +38,7 @@ class OwnerVoter extends Voter
             Calibration::class,
             Hydrometer::class,
         ];
-
-        if (!\in_array(\get_class($subject), $subjects, true)) {
-            return false;
-        }
-
-        return true;
+        return \in_array(\get_class($subject), $subjects, true);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

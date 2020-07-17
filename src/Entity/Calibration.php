@@ -164,4 +164,9 @@ class Calibration extends Entity implements TimestampableInterface, SoftDeletabl
     {
         return $this->fermentations;
     }
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fermentations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }

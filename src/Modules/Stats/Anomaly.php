@@ -10,7 +10,7 @@ namespace App\Modules\Stats;
 
 use Psr\Log\LoggerInterface;
 
-class Anomaly
+final class Anomaly
 {
     /**
      * our sample size.

@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 /**
  * This voter grants access to public fermentations.
  */
-class PublicFermentationVoter extends Voter
+final class PublicFermentationVoter extends Voter
 {
     // these strings are just invented: you can use anything
     const VIEW = 'view';
@@ -27,13 +27,8 @@ class PublicFermentationVoter extends Voter
         if (self::VIEW !== $attribute) {
             return false;
         }
-
         // only vote on fermentations
-        if (!$subject instanceof Fermentation) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Fermentation;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

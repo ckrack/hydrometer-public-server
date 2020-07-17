@@ -11,7 +11,7 @@ namespace App\Modules\Formula\Tilt;
 /**
  * Formula to convert the slightly weird timepoint format by TILT into a Unix timestamp.
  */
-class Timepoint
+final class Timepoint
 {
     /**
      * the value in tilt timepoint format (float).

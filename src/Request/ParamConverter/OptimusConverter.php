@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class OptimusConverter implements ParamConverterInterface
+final class OptimusConverter implements ParamConverterInterface
 {
     protected EntityManagerInterface $em;
     protected Optimus $optimus;
@@ -60,11 +60,6 @@ class OptimusConverter implements ParamConverterInterface
         if (null === $this->em) {
             return false;
         }
-
-        if (null === $configuration->getClass()) {
-            return false;
-        }
-
-        return true;
+        return null !== $configuration->getClass();
     }
 }

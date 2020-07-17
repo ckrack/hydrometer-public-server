@@ -16,7 +16,7 @@ use Exception;
 /**
  * Class Repository.
  */
-class FermentationRepository extends EntityRepository
+final class FermentationRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.

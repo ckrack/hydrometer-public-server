@@ -258,4 +258,9 @@ class Hydrometer extends Entity implements TimestampableInterface
 
         return $this;
     }
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fermentations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ThrowawayFermentationType extends AbstractType
+final class ThrowawayFermentationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

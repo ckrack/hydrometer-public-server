@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ShowPublicController extends AbstractController
+final class ShowPublicController extends AbstractController
 {
     protected $em;
     protected $statsModule;

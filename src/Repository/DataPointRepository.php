@@ -18,7 +18,7 @@ use Exception;
 /**
  * Class Repository.
  */
-class DataPointRepository extends EntityRepository
+final class DataPointRepository extends EntityRepository
 {
     /**
      * Get the latest values from a hydrometer.
@@ -47,7 +47,7 @@ class DataPointRepository extends EntityRepository
                 ->orderBy('d.createdAt', 'ASC')
                 ->groupBy('groupTime');
 
-            if ($hydrometer) {
+            if ($hydrometer !== null) {
                 $qb->andWhere('d.hydrometer = :hydrometer');
                 $qb->setParameter('hydrometer', $hydrometer->getId());
             }
@@ -123,7 +123,7 @@ class DataPointRepository extends EntityRepository
                 ->setFirstResult($offset)
                 ->setMaxResults($limit);
 
-            if ($hydrometer) {
+            if ($hydrometer !== null) {
                 $qb->andWhere('d.hydrometer = :hydrometer');
                 $qb->setParameter('hydrometer', $hydrometer->getId());
             }

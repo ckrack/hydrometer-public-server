@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ThrowAwayFermentationController extends AbstractController
+final class ThrowAwayFermentationController extends AbstractController
 {
     protected $em;
     protected $statsModule;

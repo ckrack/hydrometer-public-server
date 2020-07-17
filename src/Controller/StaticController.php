@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StaticController extends AbstractController
+final class StaticController extends AbstractController
 {
     protected $logger;
 

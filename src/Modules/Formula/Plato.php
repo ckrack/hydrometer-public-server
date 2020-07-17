@@ -11,7 +11,7 @@ namespace App\Modules\Formula;
 /**
  * Formulas for specific gravity.
  */
-class Plato
+final class Plato
 {
     /**
      * the value in plato.

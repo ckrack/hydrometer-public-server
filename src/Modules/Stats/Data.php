@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class Data
+final class Data
 {
     protected $view;
     protected $logger;
@@ -102,7 +102,7 @@ class Data
             }
 
             // use the flag to overwrite old data
-            if (false === $useGravity && isset($data['dens'])) {
+            if (!$useGravity && isset($data['dens'])) {
                 $data['gravity'] = $data['dens'];
             }
             unset($data['dens']);

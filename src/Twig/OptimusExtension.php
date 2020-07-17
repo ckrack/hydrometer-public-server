@@ -12,7 +12,7 @@ use Jenssegers\Optimus\Optimus;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class OptimusExtension extends AbstractExtension
+final class OptimusExtension extends AbstractExtension
 {
     protected $optimus;
 

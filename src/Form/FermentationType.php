@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FermentationType extends AbstractType
+final class FermentationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

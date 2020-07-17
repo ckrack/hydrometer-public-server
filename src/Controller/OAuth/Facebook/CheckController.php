@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CheckController extends AbstractController
+final class CheckController extends AbstractController
 {
     protected EntityManagerInterface $em;
     protected ClientRegistry $oauthRegistry;

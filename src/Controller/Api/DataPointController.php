@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DataPointController extends AbstractController
+final class DataPointController extends AbstractController
 {
     protected EntityManagerInterface$em;
     protected Token $tokenAuth;
@@ -48,7 +48,7 @@ class DataPointController extends AbstractController
         try {
             $data = $request->getContent();
             if ($data) {
-                $data = json_decode($data, true);
+                $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
             }
             $this->logger->debug('Spindle: Receive data', [$data, $token]);
 
@@ -112,12 +112,10 @@ class DataPointController extends AbstractController
         switch (true) {
             // TILT
             case isset($data['Timepoint']):
-                $transformedData = [
+                return [
                     'temperature' => $data['Temp'],
                     'gravity' => $data['SG'],
                 ];
-
-                return $transformedData;
             default:
                 return $data;
         }

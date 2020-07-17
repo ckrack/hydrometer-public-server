@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ListController extends AbstractController
+final class ListController extends AbstractController
 {
     protected $em;
     protected $logger;

@@ -14,7 +14,7 @@ use App\Entity\Hydrometer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class TCP
+final class TCP
 {
     protected $logger;
     protected $em;
