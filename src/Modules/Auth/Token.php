@@ -18,24 +18,9 @@ use Psr\Log\LoggerInterface;
  */
 final class Token
 {
-    /**
-     * PSR-3 logger.
-     *
-     * @var [type]
-     */
-    protected $logger;
+    private $logger;
+    private $em;
 
-    /**
-     * Doctrine Entitymanager.
-     *
-     * @var [type]
-     */
-    protected $em;
-
-    /**
-     * @param EntityManager   $em     [description]
-     * @param LoggerInterface $logger [description]
-     */
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger

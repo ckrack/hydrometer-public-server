@@ -8,10 +8,9 @@
 
 namespace App\Controller\UI\Fermentations;
 
-use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Modules\Stats;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -20,17 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowController extends AbstractController
 {
-    protected $em;
-    protected $logger;
-    protected $statsModule;
+    private $dataPointRepository;
+    private $logger;
+    private $statsModule;
 
     public function __construct(
-        EntityManagerInterface $em,
+        DataPointRepository $dataPointRepository,
         LoggerInterface $logger,
         Stats\Data $statsModule
     ) {
         // add your dependencies
-        $this->em = $em;
+        $this->dataPointRepository = $dataPointRepository;
         $this->logger = $logger;
         $this->statsModule = $statsModule;
     }
@@ -51,7 +50,7 @@ final class ShowController extends AbstractController
                 throw new Exception('No access');
             }
 
-            $latestData = $this->em->getRepository(DataPoint::class)->findByFermentation($fermentation);
+            $latestData = $this->dataPointRepository->findByFermentation($fermentation);
 
             $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 

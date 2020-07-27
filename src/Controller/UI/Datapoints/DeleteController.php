@@ -9,7 +9,7 @@
 namespace App\Controller\UI\Datapoints;
 
 use App\Entity\DataPoint;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,14 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DeleteController extends AbstractController
 {
-    protected $em;
+    protected $dataPointRepository;
     protected $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
+        DataPointRepository $dataPointRepository,
         LoggerInterface $logger
     ) {
-        $this->em = $em;
+        $this->dataPointRepository = $dataPointRepository;
         $this->logger = $logger;
     }
 
@@ -45,8 +45,7 @@ final class DeleteController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->em->remove($datapoint);
-                $this->em->flush();
+                $this->dataPointRepository->delete($datapoint);
 
                 $this->addFlash(
                     'success',

@@ -8,8 +8,7 @@
 
 namespace App\Controller\UI\Fermentations;
 
-use App\Entity\Fermentation;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\FermentationRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,13 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ListController extends AbstractController
 {
-    protected $em;
+    protected $fermentationRepository;
     protected $logger;
 
-    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
+    public function __construct(FermentationRepository $fermentationRepository, LoggerInterface $logger)
     {
         // add your dependencies
-        $this->em = $em;
+        $this->fermentationRepository = $fermentationRepository;
         $this->logger = $logger;
     }
 
@@ -37,7 +36,7 @@ final class ListController extends AbstractController
         try {
             $user = $this->getUser();
 
-            $data = $this->em->getRepository(Fermentation::class)->findAllByUser($user);
+            $data = $this->fermentationRepository->findAllByUser($user);
 
             // render template
             return $this->render(

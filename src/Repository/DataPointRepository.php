@@ -8,10 +8,12 @@
 
 namespace App\Repository;
 
+use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
 use App\Entity\User;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 
@@ -20,14 +22,27 @@ use Exception;
  */
 final class DataPointRepository extends EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, $em->getClassMetadata(DataPoint::class));
+    }
+
+    public function save(DataPoint $dataPoint)
+    {
+        $this->getEntityManager()->persist($dataPoint);
+        $this->getEntityManager()->flush();
+    }
+
+    public function delete(DataPoint $dataPoint)
+    {
+        $this->getEntityManager()->remove($dataPoint);
+        $this->getEntityManager()->flush();
+    }
+
     /**
      * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
      */
-    public function findInColumns(Hydrometer $hydrometer = null)
+    public function findInColumns(Hydrometer $hydrometer = null):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -65,11 +80,8 @@ final class DataPointRepository extends EntityRepository
     /**
      * Get the latest values from a fermentation.
      *
-     * @param Fermentation $fermentation [description]
-     *
-     * @return [type] [description]
      */
-    public function findByFermentation(Fermentation $fermentation)
+    public function findByFermentation(Fermentation $fermentation):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -99,12 +111,8 @@ final class DataPointRepository extends EntityRepository
 
     /**
      * Get the latest values from a hydrometer.
-     *
-     * @param User $user [description]
-     *
-     * @return [type] [description]
      */
-    public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0)
+    public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -139,9 +147,6 @@ final class DataPointRepository extends EntityRepository
     /**
      * Add all un-assigned datapoints that match a fermentations timerange and
      * the defined hydrometer to a (new) fermentation.
-     *
-     * @param Fermentation $fermentation [description]
-     * @param Hydrometer   $hydrometer   [description]
      */
     public function addToFermentation(Fermentation $fermentation, Hydrometer $hydrometer)
     {
@@ -176,11 +181,6 @@ final class DataPointRepository extends EntityRepository
      * Remove datapoints from fermentation.
      * If the before and after parameters are supplied, only datapoints.
      *
-     * @param Fermentation  $fermentation [description]
-     * @param DateTime|null $before       [description]
-     * @param DateTime|null $after        [description]
-     *
-     * @return [type] [description]
      */
     public function removeFromFermentation(Fermentation $fermentation, DateTime $before = null, DateTime $after = null)
     {

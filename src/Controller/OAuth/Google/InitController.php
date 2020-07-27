@@ -8,29 +8,10 @@
 
 namespace App\Controller\OAuth\Google;
 
-use Doctrine\ORM\EntityManagerInterface;
-use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class InitController extends AbstractController
+final class InitController
 {
-    protected $em;
-    protected $oauthRegistry;
-    protected $logger;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        ClientRegistry $oauthRegistry,
-        LoggerInterface $logger
-    ) {
-        // add your dependencies
-        $this->em = $em;
-        $this->oauthRegistry = $oauthRegistry;
-        $this->logger = $logger;
-    }
-
     /**
      * Send the visitor to googles oauth endpoint to enquire authentication.
      *
@@ -40,9 +21,10 @@ final class InitController extends AbstractController
     {
         // will redirect to Google!
         return $this->oauthRegistry
-            ->getClient('google') // key used in config.yml
+            ->getClient('google')
             ->redirect(
-                ['profile', 'email']
+                ['profile', 'email'],
+                []
             )
         ;
     }

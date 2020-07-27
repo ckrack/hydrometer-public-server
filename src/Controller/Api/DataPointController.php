@@ -9,9 +9,9 @@
 namespace App\Controller\Api;
 
 use App\Entity\DataPoint;
-use App\Entity\Hydrometer;
 use App\Modules\Auth\Token;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
+use App\Repository\HydrometerRepository;
 use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -23,16 +23,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DataPointController extends AbstractController
 {
-    protected EntityManagerInterface$em;
-    protected Token $tokenAuth;
-    protected LoggerInterface $logger;
+    private HydrometerRepository $hydrometerRepository;
+    private DataPointRepository $dataPointRepository;
+    private Token $tokenAuth;
+    private LoggerInterface $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
+        HydrometerRepository $hydrometerRepository,
+        DataPointRepository $dataPointRepository,
         Token $tokenAuth,
         LoggerInterface $logger
     ) {
-        $this->em = $em;
+        $this->hydrometerRepository = $hydrometerRepository;
+        $this->dataPointRepository = $dataPointRepository;
         $this->tokenAuth = $tokenAuth;
         $this->logger = $logger;
     }
@@ -65,7 +68,7 @@ final class DataPointController extends AbstractController
             // confirm existance of the token @throws
             $authData = $this->tokenAuth->authenticate(empty($token) ? $data['token'] : $token);
 
-            $hydrometer = $this->em->getRepository(Hydrometer::class)->find($authData['hydrometer_id']);
+            $hydrometer = $this->hydrometerRepository->find($authData['hydrometer_id']);
 
             $this->logger->debug('Spindle: Receive data for Hydrometer', [$hydrometer, $data]);
 
@@ -82,10 +85,8 @@ final class DataPointController extends AbstractController
                 $hydrometer->setInterval($dataPoint->getInterval());
             }
 
-            $this->em->persist($hydrometer);
-            $this->em->persist($dataPoint);
-
-            $this->em->flush();
+            $this->hydrometerRepository->save($hydrometer);
+            $this->dataPointRepository->save($dataPoint);
 
             return new JsonResponse((object) ['interval' => $authData['interval'] ?? $data['interval'] ?? 900], 200);
         } catch (Exception $e) {
@@ -97,10 +98,6 @@ final class DataPointController extends AbstractController
 
     /**
      * Prepare data for the import into Entity.
-     *
-     * @param array $data [description]
-     *
-     * @return array [description]
      */
     protected function prepareData(array $data): array
     {

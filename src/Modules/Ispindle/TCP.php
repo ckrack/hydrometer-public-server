@@ -19,11 +19,6 @@ final class TCP
     protected $logger;
     protected $em;
 
-    /**
-     * Use League\Container for auto-wiring dependencies into the controller.
-     *
-     * @param LoggerInterface $logger [description]
-     */
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger

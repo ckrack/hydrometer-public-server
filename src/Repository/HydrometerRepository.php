@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Hydrometer;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 
@@ -18,14 +19,27 @@ use Exception;
  */
 final class HydrometerRepository extends EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, $em->getClassMetadata(Hydrometer::class));
+    }
+
+    public function save(Hydrometer $hydrometer)
+    {
+        $this->getEntityManager()->persist($hydrometer);
+        $this->getEntityManager()->flush();
+    }
+
+    public function delete(Hydrometer $hydrometer)
+    {
+        $this->getEntityManager()->remove($hydrometer);
+        $this->getEntityManager()->flush();
+    }
+
     /**
      * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
      */
-    public function getData(Hydrometer $hydrometer, $hours = null, $since = null)
+    public function getData(Hydrometer $hydrometer, $hours = null, $since = null):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -64,12 +78,8 @@ final class HydrometerRepository extends EntityRepository
 
     /**
      * Get the latest values from a hydrometer.
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
      */
-    public function getLatestData(Hydrometer $hydrometer)
+    public function getLatestData(Hydrometer $hydrometer):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -98,10 +108,8 @@ final class HydrometerRepository extends EntityRepository
 
     /**
      * Get list of hydrometers including their last activity.
-     *
-     * @return [type] [description]
      */
-    public function findAllWithLastActivity(User $user)
+    public function findAllWithLastActivity(User $user):? array
     {
         try {
             $em = $this->getEntityManager();
@@ -131,10 +139,8 @@ final class HydrometerRepository extends EntityRepository
 
     /**
      * Get list of hydrometers including their last activity.
-     *
-     * @return [type] [description]
      */
-    public function findAllByUser(User $user)
+    public function findAllByUser(User $user):? array
     {
         try {
             return $this->findBy(['user' => $user]);
@@ -143,7 +149,10 @@ final class HydrometerRepository extends EntityRepository
         }
     }
 
-    public function formByUser(User $user)
+    /**
+     * Get hydrometers for form
+     */
+    public function formByUser(User $user): array
     {
         $hydrometers = $this->findAllByUser($user);
         $options = [];
@@ -156,12 +165,8 @@ final class HydrometerRepository extends EntityRepository
 
     /**
      * Get the latest active hydrometer, optionally by given user.
-     *
-     * @param User $user [description]
-     *
-     * @return [type] [description]
      */
-    public function getLastActive(User $user = null)
+    public function getLastActive(User $user = null):? Hydrometer
     {
         try {
             $em = $this->getEntityManager();
@@ -186,7 +191,7 @@ final class HydrometerRepository extends EntityRepository
         }
     }
 
-    public function findOneByUser($hydrometer, $user)
+    public function findOneByUser($hydrometer, $user):? Hydrometer
     {
         try {
             return $this->findOneBy([
@@ -201,7 +206,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * @return array
      */
-    public function getOrCreate($id)
+    public function getOrCreate($id): Hydrometer
     {
         try {
             // try to find an existing spindel

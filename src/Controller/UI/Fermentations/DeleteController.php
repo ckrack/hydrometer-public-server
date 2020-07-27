@@ -9,7 +9,7 @@
 namespace App\Controller\UI\Fermentations;
 
 use App\Entity\Fermentation;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\FermentationRepository;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DeleteController extends AbstractController
 {
-    protected $em;
+    protected $fermentationRepository;
     protected $logger;
 
-    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
+    public function __construct(FermentationRepository $fermentationRepository, LoggerInterface $logger)
     {
         // add your dependencies
-        $this->em = $em;
+        $this->fermentationRepository = $fermentationRepository;
         $this->logger = $logger;
     }
 
@@ -43,8 +43,7 @@ final class DeleteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->remove($fermentation);
-            $this->em->flush();
+            $this->fermentationRepository->delete($fermentation);
 
             $this->addFlash(
                 'success',

@@ -10,7 +10,7 @@ namespace App\Controller\UI\Fermentations;
 
 use App\Entity\Fermentation;
 use App\Form\FermentationType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\FermentationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class EditController extends AbstractController
 {
-    protected $em;
+    protected $fermentationRepository;
 
     public function __construct(
-        EntityManagerInterface $em
+        FermentationRepository $fermentationRepository
     ) {
         // add your dependencies
-        $this->em = $em;
+        $this->fermentationRepository = $fermentationRepository;
     }
 
     /**
@@ -42,8 +42,7 @@ final class EditController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($fermentation);
-            $this->em->flush();
+            $this->fermentationRepository->save($fermentation);
 
             $this->addFlash(
                 'success',

@@ -8,13 +8,15 @@
 
 namespace App\Controller;
 
-use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Entity\Hydrometer;
 use App\Entity\Token;
 use App\Form\ThrowawayFermentationType;
 use App\Modules\Stats;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
+use App\Repository\FermentationRepository;
+use App\Repository\HydrometerRepository;
+use App\Repository\TokenRepository;
 use Exception;
 use Jenssegers\Optimus\Optimus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,17 +26,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ThrowAwayFermentationController extends AbstractController
 {
-    protected $em;
-    protected $statsModule;
-    protected $optimus;
+    private $dataPointRepository;
+    private $fermentationRepository;
+    private $hydrometerRepository;
+    private $tokenRepository;
+    private $statsModule;
+    private $optimus;
 
     public function __construct(
-        EntityManagerInterface $em,
+        DataPointRepository $dataPointRepository,
+        FermentationRepository $fermentationRepository,
+        HydrometerRepository $hydrometerRepository,
+        TokenRepository $tokenRepository,
         Optimus $optimus,
         Stats\Data $statsModule
     ) {
         // add your dependencies
-        $this->em = $em;
+        $this->dataPointRepository = $dataPointRepository;
+        $this->fermentationRepository = $fermentationRepository;
+        $this->hydrometerRepository = $hydrometerRepository;
+        $this->tokenRepository = $tokenRepository;
         $this->optimus = $optimus;
         $this->statsModule = $statsModule;
     }
@@ -61,8 +72,7 @@ final class ThrowAwayFermentationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $fermentation->setHydrometer($this->getHydrometer());
-            $this->em->persist($fermentation);
-            $this->em->flush();
+            $this->fermentationRepository->save($fermentation);
 
             $this->addFlash(
                 'success',
@@ -82,13 +92,13 @@ final class ThrowAwayFermentationController extends AbstractController
      *
      * @param [type] $fermentation
      */
-    protected function renderExisting($fermentation)
+    private function renderExisting($fermentation)
     {
         // check for "view" access: calls all voters
         $this->denyAccessUnlessGranted('view', $fermentation);
 
         try {
-            $latestData = $this->em->getRepository(DataPoint::class)->findByFermentation($fermentation);
+            $latestData = $this->dataPointRepository->findByFermentation($fermentation);
             $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 
             $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);
@@ -112,7 +122,7 @@ final class ThrowAwayFermentationController extends AbstractController
         }
     }
 
-    protected function getHydrometer(): Hydrometer
+    private function getHydrometer(): Hydrometer
     {
         $hydrometer = new Hydrometer();
         $token = new Token();
@@ -122,8 +132,8 @@ final class ThrowAwayFermentationController extends AbstractController
         ;
         $hydrometer->setToken($token);
 
-        $this->em->persist($hydrometer);
-        $this->em->persist($token);
+        $this->hydrometerRepository->save($hydrometer);
+        $this->tokenRepository->save($token);
 
         return $hydrometer;
     }

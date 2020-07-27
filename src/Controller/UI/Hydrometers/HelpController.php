@@ -9,21 +9,12 @@
 namespace App\Controller\UI\Hydrometers;
 
 use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class HelpController extends AbstractController
 {
-    protected $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        // add your dependencies
-        $this->em = $em;
-    }
-
     /**
      * @Route("/ui/hydrometers/help/{hydrometer}", name="ui_hydrometers_help")
      * @ParamConverter("hydrometer")

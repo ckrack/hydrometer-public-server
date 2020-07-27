@@ -9,7 +9,7 @@
 namespace App\Security\Provider;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,12 +17,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class FacebookConnectProvider implements UserProviderInterface
 {
-    protected $em;
+    private $userRepository;
 
     public function __construct(
-        EntityManagerInterface $em
+        UserRepository $userRepository
     ) {
-        $this->em = $em;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -34,9 +34,7 @@ final class FacebookConnectProvider implements UserProviderInterface
      */
     public function loadUserById($id)
     {
-        $user = $this->em
-            ->getRepository(User::class)
-            ->findOneBy(['facebookId' => $id]);
+        $user = $this->userRepository->findOneBy(['facebookId' => $id]);
         if ($user instanceof User) {
             return $user;
         }
@@ -74,9 +72,7 @@ final class FacebookConnectProvider implements UserProviderInterface
             return;
         }
 
-        $user = $this->em
-            ->getRepository(User::class)
-            ->findOneBy(['email' => $email]);
+        $user = $this->userRepository->findOneBy(['email' => $email]);
         if ($user instanceof User) {
             return $user;
         }
@@ -99,8 +95,7 @@ final class FacebookConnectProvider implements UserProviderInterface
             // update the facebook_id
             $existing->setFacebookId($response->getId());
 
-            $this->em->persist($existing);
-            $this->em->flush();
+            $this->userRepository->save($existing);
 
             return $existing;
         }
@@ -110,8 +105,7 @@ final class FacebookConnectProvider implements UserProviderInterface
 
         $user->setEmail($response->getEmail());
         $user->setFacebookId($response->getId());
-        $this->em->persist($user);
-        $this->em->flush();
+        $this->userRepository->save($user);
 
         return $user;
     }
@@ -129,7 +123,7 @@ final class FacebookConnectProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        return $this->em->find(User::class, $user->getId());
+        return $this->userRepository->find($user->getId());
     }
 
     /**

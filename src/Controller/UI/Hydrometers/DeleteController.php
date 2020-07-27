@@ -9,7 +9,7 @@
 namespace App\Controller\UI\Hydrometers;
 
 use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\HydrometerRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DeleteController extends AbstractController
 {
-    protected $em;
+    protected $hydrometerRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(HydrometerRepository $hydrometerRepository)
     {
         // add your dependencies
-        $this->em = $em;
+        $this->hydrometerRepository = $hydrometerRepository;
     }
 
     /**
@@ -40,8 +40,7 @@ final class DeleteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->remove($hydrometer);
-            $this->em->flush();
+            $this->hydrometerRepository->delete($hydrometer);
 
             $this->addFlash(
                 'success',

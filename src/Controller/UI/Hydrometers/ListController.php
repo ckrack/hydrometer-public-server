@@ -9,21 +9,22 @@
 namespace App\Controller\UI\Hydrometers;
 
 use App\Entity\DataPoint;
-use App\Entity\Hydrometer;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
+use App\Repository\HydrometerRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ListController extends AbstractController
 {
-    protected $em;
-    protected $logger;
+    private $hydrometerRepository;
+    private $dataPointRepository;
+    private $logger;
 
-    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
+    public function __construct(HydrometerRepository $hydrometerRepository, DataPointRepository $dataPointRepository, LoggerInterface $logger)
     {
-        // add your dependencies
-        $this->em = $em;
+        $this->hydrometerRepository = $hydrometerRepository;
+        $this->dataPointRepository = $dataPointRepository;
         $this->logger = $logger;
     }
 
@@ -36,7 +37,7 @@ final class ListController extends AbstractController
     {
         try {
             $user = $this->getUser();
-            $hydrometers = $this->em->getRepository(Hydrometer::class)->findAllWithLastActivity($user);
+            $hydrometers = $this->hydrometerRepository->findAllWithLastActivity($user);
 
             $hydrometers = $this->findLastActivity($hydrometers);
 
@@ -61,15 +62,12 @@ final class ListController extends AbstractController
     /**
      * Find the last activity for every hydrometer.
      *
-     * @param [type] $hydrometers [description]
-     *
-     * @return [type] [description]
      */
     protected function findLastActivity(array $hydrometers): array
     {
         foreach ($hydrometers as $key => $hydrometer) {
             if (!empty($hydrometer['last_datapoint_id'])) {
-                $activity = $this->em->getRepository(DataPoint::class)->findActivity($hydrometer['last_datapoint_id']);
+                $activity = $this->dataPointRepository->findActivity($hydrometer['last_datapoint_id']);
                 $hydrometers[$key] = array_merge($hydrometer, (array) $activity);
             }
         }

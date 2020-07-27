@@ -8,10 +8,9 @@
 
 namespace App\Controller\UI\Fermentations;
 
-use App\Entity\DataPoint;
 use App\Entity\Fermentation;
 use App\Modules\Stats;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DataPointRepository;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,15 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowPublicController extends AbstractController
 {
-    protected $em;
+    protected $dataPointRepository;
     protected $statsModule;
 
     public function __construct(
-        EntityManagerInterface $em,
+        DataPointRepository $dataPointRepository,
         Stats\Data $statsModule
     ) {
         // add your dependencies
-        $this->em = $em;
+        $this->dataPointRepository = $dataPointRepository;
         $this->statsModule = $statsModule;
     }
 
@@ -41,7 +40,7 @@ final class ShowPublicController extends AbstractController
         $this->denyAccessUnlessGranted('view', $fermentation);
 
         try {
-            $latestData = $this->em->getRepository(DataPoint::class)->findByFermentation($fermentation);
+            $latestData = $this->dataPointRepository->findByFermentation($fermentation);
             $platoData = $this->statsModule->platoCombined($latestData, $fermentation->getHydrometer());
 
             $stableSince = $this->statsModule->stableSince($latestData, 'gravity', 0.09);

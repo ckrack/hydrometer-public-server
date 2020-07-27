@@ -8,7 +8,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Hydrometer;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -16,12 +17,21 @@ use Doctrine\ORM\EntityRepository;
  */
 final class UserRepository extends EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, $em->getClassMetadata(User::class));
+    }
+
+    public function save(User $user)
+    {
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
     /**
      * Get the latest values from a hydrometer.
-     *
-     * @return [type] [description]
      */
-    public function findByEmail($email)
+    public function findByEmail(string $email):? User
     {
         try {
             return $this->findOneBy(['email' => $email]);

@@ -11,19 +11,22 @@ namespace App\Controller\UI\Hydrometers;
 use App\Entity\Hydrometer;
 use App\Entity\Token;
 use App\Form\HydrometerType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\HydrometerRepository;
+use App\Repository\TokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class AddController extends AbstractController
 {
-    protected $em;
+    protected $hydrometerRepository;
+    protected $tokenRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(HydrometerRepository $hydrometerRepository, TokenRepository $tokenRepository)
     {
         // add your dependencies
-        $this->em = $em;
+        $this->hydrometerRepository = $hydrometerRepository;
+        $this->tokenRepository = $tokenRepository;
     }
 
     /**
@@ -46,10 +49,9 @@ final class AddController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($hydrometer);
-            $this->em->persist($token);
+            $this->hydrometerRepository->save($hydrometer);
+            $this->tokenRepository->save($token);
 
-            $this->em->flush();
 
             $this->addFlash(
                 'success',
