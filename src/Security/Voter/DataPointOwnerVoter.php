@@ -29,6 +29,7 @@ final class DataPointOwnerVoter extends Voter
         if (!\in_array($attribute, [self::VIEW, self::EDIT], true)) {
             return false;
         }
+
         return $subject instanceof DataPoint;
     }
 

@@ -52,7 +52,6 @@ final class AddController extends AbstractController
             $this->hydrometerRepository->save($hydrometer);
             $this->tokenRepository->save($token);
 
-
             $this->addFlash(
                 'success',
                 'Hydrometer was added.'

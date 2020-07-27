@@ -39,7 +39,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      */
-    public function getData(Hydrometer $hydrometer, $hours = null, $since = null):? array
+    public function getData(Hydrometer $hydrometer, $hours = null, $since = null): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -79,7 +79,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      */
-    public function getLatestData(Hydrometer $hydrometer):? array
+    public function getLatestData(Hydrometer $hydrometer): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -109,7 +109,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * Get list of hydrometers including their last activity.
      */
-    public function findAllWithLastActivity(User $user):? array
+    public function findAllWithLastActivity(User $user): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -140,7 +140,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * Get list of hydrometers including their last activity.
      */
-    public function findAllByUser(User $user):? array
+    public function findAllByUser(User $user): ? array
     {
         try {
             return $this->findBy(['user' => $user]);
@@ -150,7 +150,7 @@ final class HydrometerRepository extends EntityRepository
     }
 
     /**
-     * Get hydrometers for form
+     * Get hydrometers for form.
      */
     public function formByUser(User $user): array
     {
@@ -166,7 +166,7 @@ final class HydrometerRepository extends EntityRepository
     /**
      * Get the latest active hydrometer, optionally by given user.
      */
-    public function getLastActive(User $user = null):? Hydrometer
+    public function getLastActive(User $user = null): ? Hydrometer
     {
         try {
             $em = $this->getEntityManager();
@@ -191,7 +191,7 @@ final class HydrometerRepository extends EntityRepository
         }
     }
 
-    public function findOneByUser($hydrometer, $user):? Hydrometer
+    public function findOneByUser($hydrometer, $user): ? Hydrometer
     {
         try {
             return $this->findOneBy([

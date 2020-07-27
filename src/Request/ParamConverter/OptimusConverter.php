@@ -60,6 +60,7 @@ final class OptimusConverter implements ParamConverterInterface
         if (null === $this->em) {
             return false;
         }
+
         return null !== $configuration->getClass();
     }
 }

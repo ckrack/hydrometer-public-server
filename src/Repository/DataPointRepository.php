@@ -42,7 +42,7 @@ final class DataPointRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      */
-    public function findInColumns(Hydrometer $hydrometer = null):? array
+    public function findInColumns(Hydrometer $hydrometer = null): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -79,9 +79,8 @@ final class DataPointRepository extends EntityRepository
 
     /**
      * Get the latest values from a fermentation.
-     *
      */
-    public function findByFermentation(Fermentation $fermentation):? array
+    public function findByFermentation(Fermentation $fermentation): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -112,7 +111,7 @@ final class DataPointRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      */
-    public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0):? array
+    public function findAllByUser(User $user, Hydrometer $hydrometer = null, $limit = 500, $offset = 0): ? array
     {
         try {
             $em = $this->getEntityManager();
@@ -180,7 +179,6 @@ final class DataPointRepository extends EntityRepository
     /**
      * Remove datapoints from fermentation.
      * If the before and after parameters are supplied, only datapoints.
-     *
      */
     public function removeFromFermentation(Fermentation $fermentation, DateTime $before = null, DateTime $after = null)
     {

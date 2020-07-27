@@ -258,6 +258,7 @@ class Hydrometer extends Entity implements TimestampableInterface
 
         return $this;
     }
+
     public function __construct()
     {
         parent::__construct();

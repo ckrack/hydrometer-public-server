@@ -21,6 +21,5 @@ final class CheckController extends AbstractController
     {
         // we use guard for the auth. if we reach this, we are logged in.
         return $this->redirect($this->generateUrl('ui_hydrometers_list'));
-
     }
 }

@@ -8,7 +8,6 @@
 
 namespace App\Controller\UI\Hydrometers;
 
-use App\Entity\DataPoint;
 use App\Repository\DataPointRepository;
 use App\Repository\HydrometerRepository;
 use Psr\Log\LoggerInterface;
@@ -61,7 +60,6 @@ final class ListController extends AbstractController
 
     /**
      * Find the last activity for every hydrometer.
-     *
      */
     protected function findLastActivity(array $hydrometers): array
     {

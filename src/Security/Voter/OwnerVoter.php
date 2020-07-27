@@ -38,6 +38,7 @@ final class OwnerVoter extends Voter
             Calibration::class,
             Hydrometer::class,
         ];
+
         return \in_array(\get_class($subject), $subjects, true);
     }
 

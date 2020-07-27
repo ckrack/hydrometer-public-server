@@ -31,7 +31,7 @@ final class UserRepository extends EntityRepository
     /**
      * Get the latest values from a hydrometer.
      */
-    public function findByEmail(string $email):? User
+    public function findByEmail(string $email): ? User
     {
         try {
             return $this->findOneBy(['email' => $email]);

@@ -123,7 +123,7 @@ final class GoogleConnectProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        /** @var User $user  */
+        /* @var User $user  */
         return $this->userRepository->find($user->getId());
     }
 
