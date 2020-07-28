@@ -111,8 +111,7 @@ final class DataPointController extends AbstractController
                 'temperature' => $data['Temp'],
                 'gravity' => $data['SG'],
             ];
-        } else {
-            return $data;
         }
+        return $data;
     }
 }
