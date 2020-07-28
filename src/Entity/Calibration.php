@@ -15,7 +15,7 @@ use Knp\DoctrineBehaviors\Model\SoftDeletable\SoftDeletableTrait;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CalibrationRepository")
  * @ORM\Table(name="calibrations", options={"collate": "utf8mb4_unicode_ci", "charset": "utf8mb4"})
  */
 class Calibration extends Entity implements TimestampableInterface, SoftDeletableInterface

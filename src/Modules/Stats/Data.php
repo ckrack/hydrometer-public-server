@@ -9,39 +9,34 @@
 namespace App\Modules\Stats;
 
 use App\Entity\Calibration;
-use App\Entity\DataPoint;
 use App\Entity\Hydrometer;
+use App\Repository\CalibrationRepository;
+use App\Repository\DataPointRepository;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 final class Data
 {
-    protected $view;
-    protected $logger;
-    protected $em;
+    private $dataPointRepository;
+    private $calibrationRepository;
+    private $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
-        \Twig\Environment $view,
+        DataPointRepository $dataPointRepository,
+        CalibrationRepository $calibrationRepository,
         LoggerInterface $logger
     ) {
-        $this->em = $em;
-        $this->view = $view;
+        $this->dataPointRepository = $dataPointRepository;
+        $this->calibrationRepository = $calibrationRepository;
         $this->logger = $logger;
     }
 
     /**
      * Returns a string representing a timespan since when the value of $fieldname is stable.
      * The stability can be refined using $deviance.
-     *
-     * @param array  $latestData [description]
-     * @param string $fieldName  [description]
-     * @param float  $deviance   [description]
-     *
-     * @return string [description]
      */
-    public function stableSince($latestData, $fieldName, $deviance)
+    public function stableSince(array $latestData, string $fieldName, float $deviance): string
     {
         // turn array around (oldest data first)
         rsort($latestData);
@@ -71,14 +66,9 @@ final class Data
     }
 
     /**
-     * [platoCombined description].
      *
-     * @param array      $latestData [description]
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return array [description]
      */
-    public function platoCombined(array $latestData, Hydrometer $hydrometer)
+    public function platoCombined(array $latestData, Hydrometer $hydrometer): array
     {
         try {
             [$const1, $const2, $const3, $isCalibrated] = $this->getCalibrationValues($hydrometer);
@@ -122,14 +112,10 @@ final class Data
     /**
      * Get an array of calibration values
      * Use the returned array with list($const1, $const2, $const3).
-     *
-     * @param Hydrometer $hydrometer [description]
-     *
-     * @return [type] [description]
      */
-    protected function getCalibrationValues(Hydrometer $hydrometer)
+    protected function getCalibrationValues(Hydrometer $hydrometer): array
     {
-        $calibration = $this->em->getRepository(Calibration::class)->findOneBy(['hydrometer' => $hydrometer]);
+        $calibration = $this->calibrationRepository->findOneBy(['hydrometer' => $hydrometer]);
 
         $values = [0, 0, 0, false];
 
@@ -154,7 +140,7 @@ final class Data
      */
     public function angle(Hydrometer $hydrometer)
     {
-        $latestData = $this->em->getRepository(DataPoint::class)->findInColumns($hydrometer);
+        $latestData = $this->dataPointRepository->findInColumns($hydrometer);
 
         $data = [];
         foreach ($latestData as $value) {
