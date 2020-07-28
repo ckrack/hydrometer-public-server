@@ -8,11 +8,20 @@
 
 namespace App\Controller\OAuth\Facebook;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class InitController extends AbstractController
 {
+    private $oauthRegistry;
+
+    public function __construct(
+        ClientRegistry $oauthRegistry
+    ) {
+        $this->oauthRegistry = $oauthRegistry;
+    }
+
     /**
      * Send the visitor to facebooks oauth endpoint to enquire authentication.
      *
