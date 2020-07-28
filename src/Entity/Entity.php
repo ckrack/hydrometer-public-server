@@ -65,7 +65,7 @@ abstract class Entity implements JsonSerializable, TimestampableInterface
         $entity = [];
         $methods = get_class_methods(static::class);
         foreach ($methods as $method) {
-            if (preg_match('/get([A-Z][a-z]+)/', $method, $match)) {
+            if (preg_match('#get([A-Z][a-z]+)#', $method, $match)) {
                 $prop = mb_strtolower($match[1]);
                 if (isset($this->{$prop})) {
                     $entity[$prop] = $this->{$method}();
