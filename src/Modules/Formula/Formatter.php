@@ -12,9 +12,6 @@ use App\Entity\Hydrometer;
 
 final class Formatter
 {
-    public function __construct()
-    {
-    }
     public static function format($value, $metric = null)
     {
         $value = (float) $value;

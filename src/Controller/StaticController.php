@@ -14,9 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class StaticController extends AbstractController
 {
-    public function __construct()
-    {
-    }
     /**
      * @Route("/{static}", defaults={"static": "about"}, name="static-page")
      * @Route("/logout", defaults={"static": "logout"}, name="logout")
