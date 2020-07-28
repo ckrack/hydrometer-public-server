@@ -33,7 +33,7 @@ final class TCP
     public function wakeupDb()
     {
         $connection = $this->em->getConnection();
-        if (false === $connection->ping()) {
+        if (!$connection->ping()) {
             $connection->close();
             $connection->connect();
         }

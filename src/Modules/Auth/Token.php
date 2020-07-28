@@ -35,10 +35,10 @@ final class Token
             $qb = $this->em->createQueryBuilder();
 
             $q = $qb->select('h.id hydrometer_id, f.id fermentation_id, u.id user_id, h.interval')
-                ->from('App\Entity\Token', 't')
-                ->join('App\Entity\Hydrometer', 'h', 'WITH', 'h.token = t.id')
-                ->leftJoin('App\Entity\Fermentation', 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
-                ->leftJoin('App\Entity\User', 'u', 'WITH', 'h.user = u.id')
+                ->from(\App\Entity\Token::class, 't')
+                ->join(\App\Entity\Hydrometer::class, 'h', 'WITH', 'h.token = t.id')
+                ->leftJoin(\App\Entity\Fermentation::class, 'f', 'WITH', 'f.hydrometer = h.id AND (f.end IS NULL OR f.end > :now)')
+                ->leftJoin(\App\Entity\User::class, 'u', 'WITH', 'h.user = u.id')
                 ->setMaxResults(1)
                 ->andWhere('t.value = :token')
                 ->setParameter('token', $token)
@@ -46,9 +46,9 @@ final class Token
                 ->getQuery();
 
             return $q->getSingleResult();
-        } catch (\Exception $e) {
-            $this->logger->error($e, [$q->getSql()]);
-            throw new \InvalidArgumentException('Authentication failed', $e->getCode(), $e);
+        } catch (\Exception $exception) {
+            $this->logger->error($exception, [$q->getSql()]);
+            throw new \InvalidArgumentException('Authentication failed', $exception->getCode(), $exception);
         }
     }
 

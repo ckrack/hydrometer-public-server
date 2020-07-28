@@ -57,8 +57,8 @@ final class DataPointRepository extends EntityRepository
                          h.name hydrometer,
                          h.metricTemperature,
                          h.metricGravity")
-                ->from('App\Entity\DataPoint', 'd')
-                ->leftJoin('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
+                ->from(\App\Entity\DataPoint::class, 'd')
+                ->leftJoin(\App\Entity\Hydrometer::class, 'h', 'WITH', 'd.hydrometer = h')
                 ->orderBy('d.createdAt', 'ASC')
                 ->groupBy('groupTime');
 
@@ -72,7 +72,7 @@ final class DataPointRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getArrayResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -92,7 +92,7 @@ final class DataPointRepository extends EntityRepository
                          AVG(d.gravity) gravity,
                          AVG(d.battery) battery,
                          ROUND(UNIX_TIMESTAMP(d.createdAt) / 1800) groupTime")
-                ->from('App\Entity\DataPoint', 'd')
+                ->from(\App\Entity\DataPoint::class, 'd')
                 ->orderBy('d.createdAt', 'ASC')
                 ->groupBy('groupTime')
                 ->andWhere('d.fermentation = :fermentation')
@@ -103,7 +103,7 @@ final class DataPointRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getArrayResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -121,8 +121,8 @@ final class DataPointRepository extends EntityRepository
                 h.name hydrometer,
                 h.metricTemperature,
                 h.metricGravity")
-                ->from('App\Entity\DataPoint', 'd')
-                ->join('App\Entity\Hydrometer', 'h', 'WITH', 'd.hydrometer = h')
+                ->from(\App\Entity\DataPoint::class, 'd')
+                ->join(\App\Entity\Hydrometer::class, 'h', 'WITH', 'd.hydrometer = h')
                 ->orderBy('d.createdAt', 'DESC')
                 ->groupBy('time')
                 ->andWhere('h.user = :user')
@@ -138,7 +138,7 @@ final class DataPointRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getArrayResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -153,7 +153,7 @@ final class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->update('App\Entity\DataPoint', 'd')
+            $qb->update(\App\Entity\DataPoint::class, 'd')
                 ->andWhere('d.fermentation IS NULL')
                 ->andWhere('d.hydrometer = :hydrometer')
                 ->setParameter('hydrometer', $hydrometer)
@@ -171,7 +171,7 @@ final class DataPointRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->execute();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -186,7 +186,7 @@ final class DataPointRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $qb->update('App\Entity\DataPoint', 'd')
+            $qb->update(\App\Entity\DataPoint::class, 'd')
                 ->andWhere('d.fermentation = :fermentation')
                 ->set('d.fermentation', 'NULL')
                 ->setParameter('fermentation', $fermentation);
@@ -208,7 +208,7 @@ final class DataPointRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->execute();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -224,13 +224,13 @@ final class DataPointRepository extends EntityRepository
                     d.angle,
                     d.gravity,
                     d.battery')
-                ->from('App\Entity\DataPoint', 'd')
+                ->from(\App\Entity\DataPoint::class, 'd')
                 ->andWhere('d = :activity')
                 ->setParameter('activity', $activity_id)
                 ->getQuery();
 
             return $q->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }

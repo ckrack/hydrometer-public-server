@@ -89,8 +89,8 @@ final class DataPointController extends AbstractController
             $this->dataPointRepository->save($dataPoint);
 
             return new JsonResponse((object) ['interval' => $authData['interval'] ?? $data['interval'] ?? 900], 200);
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
 
             return new Response('', 500);
         }
@@ -106,15 +106,13 @@ final class DataPointController extends AbstractController
             unset($data['id']);
         }
 
-        switch (true) {
-            // TILT
-            case isset($data['Timepoint']):
-                return [
-                    'temperature' => $data['Temp'],
-                    'gravity' => $data['SG'],
-                ];
-            default:
-                return $data;
+        if (true == isset($data['Timepoint'])) {
+            return [
+                'temperature' => $data['Temp'],
+                'gravity' => $data['SG'],
+            ];
+        } else {
+            return $data;
         }
     }
 }

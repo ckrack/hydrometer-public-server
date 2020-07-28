@@ -52,9 +52,9 @@ final class IspindelTcpServerCommand extends Command
         // open TCP server
         $server = stream_socket_server('tcp://0.0.0.0:'.$input->getOption('port'), $errno, $errorMessage);
 
-        if (false === $server) {
+        if (!$server) {
             $this->logger->error('Could not bind to socket: '.$errorMessage);
-            throw new \UnexpectedValueException("Could not bind to socket: $errorMessage");
+            throw new \UnexpectedValueException(sprintf('Could not bind to socket: %s', $errorMessage));
         }
 
         $io = new SymfonyStyle($input, $output);
@@ -119,8 +119,8 @@ final class IspindelTcpServerCommand extends Command
 
                     // sleep the database connection
                     $this->tcp->sleepDb();
-                } catch (\Exception $e) {
-                    $this->logger->error('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
+                } catch (\Exception $exception) {
+                    $this->logger->error('Exception: '.$exception->getMessage().$exception->getFile().$exception->getLine());
                 }
                 $this->logger->info('server done', [$input->getOption('port')]);
             }

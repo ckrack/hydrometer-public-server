@@ -56,7 +56,7 @@ final class ShowPublicController extends AbstractController
                     ]
                 )
             );
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return $this->render(
                 'ui/exception.html.twig',
                 []

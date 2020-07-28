@@ -39,7 +39,7 @@ final class OptimusConverter implements ParamConverterInterface
 
                 $request->attributes->set($name, $object);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return;
         }
     }

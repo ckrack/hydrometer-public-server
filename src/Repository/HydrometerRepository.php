@@ -50,7 +50,7 @@ final class HydrometerRepository extends EntityRepository
                 d.temperature,
                 d.angle,
                 d.gravity')
-                ->from('App\Entity\DataPoint', 'd')
+                ->from(\App\Entity\DataPoint::class, 'd')
                 ->join('d.hydrometer', 'h')
                 ->orderBy('d.createdAt', 'ASC')
                 ->andWhere('h = :hydrometer')
@@ -71,7 +71,7 @@ final class HydrometerRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -92,7 +92,7 @@ final class HydrometerRepository extends EntityRepository
                 d.battery,
                 d.gravity,
                 h.name')
-                ->from('App\Entity\DataPoint', 'd')
+                ->from(\App\Entity\DataPoint::class, 'd')
                 ->join('d.hydrometer', 'h')
                 ->orderBy('d.createdAt', 'DESC')
                 ->setMaxResults(1)
@@ -101,7 +101,7 @@ final class HydrometerRepository extends EntityRepository
                 ->getQuery();
 
             return $q->getSingleResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -123,8 +123,8 @@ final class HydrometerRepository extends EntityRepository
                     h.id,
                     h.metricTemperature,
                     h.metricGravity')
-                ->from('App\Entity\Hydrometer', 'h')
-                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = h AND d.deletedAt IS NULL')
+                ->from(\App\Entity\Hydrometer::class, 'h')
+                ->leftJoin(\App\Entity\DataPoint::class, 'd', 'WITH', 'd.hydrometer = h AND d.deletedAt IS NULL')
                 ->orderBy('activity', 'DESC')
                 ->andWhere('h.user = :user')
                 ->setParameter('user', $user->getId())
@@ -132,7 +132,7 @@ final class HydrometerRepository extends EntityRepository
                 ->getQuery();
 
             return $q->getArrayResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -144,7 +144,7 @@ final class HydrometerRepository extends EntityRepository
     {
         try {
             return $this->findBy(['user' => $user]);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -172,21 +172,22 @@ final class HydrometerRepository extends EntityRepository
             $em = $this->getEntityManager();
             $qb = $em->createQueryBuilder();
 
-            $q = $qb->select('s')
-                ->from('App\Entity\Hydrometer', 's')
-                ->join('App\Entity\DataPoint', 'd', 'WITH', 'd.hydrometer = s')
+            $qb->select('s')
+                ->from(\App\Entity\Hydrometer::class, 's')
+                ->join(\App\Entity\DataPoint::class, 'd', 'WITH', 'd.hydrometer = s')
                 ->orderBy('d.createdAt', 'DESC')
-                ->setMaxResults(1)
-                ->getQuery();
+                ->setMaxResults(1);
 
             // limit to user
             if ($user instanceof User) {
-                $q->andWhere('s.user = :user')
+                $qb->andWhere('s.user = :user')
                     ->setParameter('user', $user->getId());
             }
 
+            $q = $qb->getQuery();
+
             return $q->getSingleResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -198,7 +199,7 @@ final class HydrometerRepository extends EntityRepository
                 'user' => $user,
                 'id' => $hydrometer,
             ]);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -221,8 +222,8 @@ final class HydrometerRepository extends EntityRepository
             $hydrometer->setId($id);
 
             return $hydrometer;
-        } catch (Exception $e) {
-            throw new Exception('Can not create hydrometer', $e->getCode(), $e);
+        } catch (Exception $exception) {
+            throw new Exception('Can not create hydrometer', $exception->getCode(), $exception);
         }
     }
 }

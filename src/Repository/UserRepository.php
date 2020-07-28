@@ -35,7 +35,7 @@ final class UserRepository extends EntityRepository
     {
         try {
             return $this->findOneBy(['email' => $email]);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return null;
         }
     }

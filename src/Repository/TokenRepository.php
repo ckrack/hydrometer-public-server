@@ -38,7 +38,7 @@ final class TokenRepository extends EntityRepository
     {
         try {
             return $this->findOneBy(['value' => $token]);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }

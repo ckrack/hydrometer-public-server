@@ -55,8 +55,8 @@ final class ListController extends AbstractController
                     'hydrometer' => $hydrometer,
                 ]
             );
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
 
             return $this->render(
                 'ui/exception.html.twig',

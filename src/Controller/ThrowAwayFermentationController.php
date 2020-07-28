@@ -113,7 +113,7 @@ final class ThrowAwayFermentationController extends AbstractController
                     ]
                 )
             );
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return $this->render(
                 'ui/exception.html.twig',
                 []

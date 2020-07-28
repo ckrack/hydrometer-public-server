@@ -49,8 +49,8 @@ final class ListController extends AbstractController
                     'form' => $this->createDeleteForm()->createView(),
                 ]
             );
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
 
             return $this->render(
                 'ui/exception.html.twig'

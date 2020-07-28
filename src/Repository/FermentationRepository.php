@@ -65,9 +65,9 @@ final class FermentationRepository extends EntityRepository
                 h.metricTemperature,
                 h.metricGravity
             ")
-                ->from('App\Entity\Fermentation', 'f')
-                ->leftJoin('App\Entity\DataPoint', 'd', 'WITH', 'd.fermentation = f')
-                ->join('App\Entity\Hydrometer', 'h', 'WITH', 'f.hydrometer = h')
+                ->from(\App\Entity\Fermentation::class, 'f')
+                ->leftJoin(\App\Entity\DataPoint::class, 'd', 'WITH', 'd.fermentation = f')
+                ->join(\App\Entity\Hydrometer::class, 'h', 'WITH', 'f.hydrometer = h')
                 ->orderBy('begin', 'DESC')
                 ->groupBy('f')
                 ->andWhere('f.user = :user')
@@ -78,7 +78,7 @@ final class FermentationRepository extends EntityRepository
             $q = $qb->getQuery();
 
             return $q->getArrayResult();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
@@ -90,7 +90,7 @@ final class FermentationRepository extends EntityRepository
                 'user' => $user,
                 'id' => $fermentation,
             ]);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
