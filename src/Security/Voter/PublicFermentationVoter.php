@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class PublicFermentationVoter extends Voter
 {
     // these strings are just invented: you can use anything
-    const VIEW = 'view';
+    public const VIEW = 'view';
 
     protected function supports($attribute, $subject)
     {

@@ -9,6 +9,7 @@
 namespace App\Controller\UI\Hydrometers;
 
 use App\Entity\Hydrometer;
+use App\Security\Voter\OwnerVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,8 +22,7 @@ final class HelpController extends AbstractController
      */
     public function __invoke(Hydrometer $hydrometer)
     {
-        // check for "view" access: calls all voters
-        $this->denyAccessUnlessGranted('view', $hydrometer);
+        $this->denyAccessUnlessGranted(OwnerVoter::VIEW, $hydrometer);
 
         return $this->render('ui/hydrometers/help.html.twig', [
             'hydrometer' => $hydrometer,

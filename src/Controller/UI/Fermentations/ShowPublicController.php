@@ -11,6 +11,7 @@ namespace App\Controller\UI\Fermentations;
 use App\Entity\Fermentation;
 use App\Modules\Stats;
 use App\Repository\DataPointRepository;
+use App\Security\Voter\PublicFermentationVoter;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,8 +37,7 @@ final class ShowPublicController extends AbstractController
      */
     public function __invoke(Fermentation $fermentation)
     {
-        // check for "view" access: calls all voters
-        $this->denyAccessUnlessGranted('view', $fermentation);
+        $this->denyAccessUnlessGranted(PublicFermentationVoter::VIEW, $fermentation);
 
         try {
             $latestData = $this->dataPointRepository->findByFermentation($fermentation);

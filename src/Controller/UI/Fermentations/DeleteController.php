@@ -10,6 +10,7 @@ namespace App\Controller\UI\Fermentations;
 
 use App\Entity\Fermentation;
 use App\Repository\FermentationRepository;
+use App\Security\Voter\OwnerVoter;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,8 +37,7 @@ final class DeleteController extends AbstractController
         Fermentation $fermentation,
         Request $request
     ) {
-        // check for "edit" access: calls all voters
-        $this->denyAccessUnlessGranted('edit', $fermentation);
+        $this->denyAccessUnlessGranted(OwnerVoter::EDIT, $fermentation);
 
         $form = $this->createDeleteForm();
         $form->handleRequest($request);

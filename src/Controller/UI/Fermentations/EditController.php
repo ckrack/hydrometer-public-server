@@ -11,6 +11,7 @@ namespace App\Controller\UI\Fermentations;
 use App\Entity\Fermentation;
 use App\Form\FermentationType;
 use App\Repository\FermentationRepository;
+use App\Security\Voter\OwnerVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ final class EditController extends AbstractController
         Request $request
     ) {
         // check for "edit" access: calls all voters
-        $this->denyAccessUnlessGranted('edit', $fermentation);
+        $this->denyAccessUnlessGranted(OwnerVoter::EDIT, $fermentation);
 
         $form = $this->createForm(FermentationType::class, $fermentation);
         $form->handleRequest($request);

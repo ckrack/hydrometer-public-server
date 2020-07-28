@@ -22,8 +22,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class OwnerVoter extends Voter
 {
     // these strings are just invented: you can use anything
-    const VIEW = 'view';
-    const EDIT = 'edit';
+    public const VIEW = 'view';
+    public const EDIT = 'edit';
 
     protected function supports($attribute, $subject)
     {

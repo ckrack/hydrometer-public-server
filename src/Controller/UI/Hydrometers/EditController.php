@@ -11,6 +11,7 @@ namespace App\Controller\UI\Hydrometers;
 use App\Entity\Hydrometer;
 use App\Form\HydrometerType;
 use App\Repository\HydrometerRepository;
+use App\Security\Voter\OwnerVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,8 +35,7 @@ final class EditController extends AbstractController
         Hydrometer $hydrometer,
         Request $request
     ) {
-        // check for "edit" access: calls all voters
-        $this->denyAccessUnlessGranted('edit', $hydrometer);
+        $this->denyAccessUnlessGranted(OwnerVoter::EDIT, $hydrometer);
 
         $form = $this->createForm(HydrometerType::class, $hydrometer);
         $form->handleRequest($request);

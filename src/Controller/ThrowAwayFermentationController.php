@@ -17,6 +17,7 @@ use App\Repository\DataPointRepository;
 use App\Repository\FermentationRepository;
 use App\Repository\HydrometerRepository;
 use App\Repository\TokenRepository;
+use App\Security\Voter\PublicFermentationVoter;
 use Exception;
 use Jenssegers\Optimus\Optimus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -90,12 +91,10 @@ final class ThrowAwayFermentationController extends AbstractController
     /**
      * Render an existing throw-away fermentation.
      *
-     * @param [type] $fermentation
      */
-    private function renderExisting($fermentation)
+    private function renderExisting(Fermentation $fermentation)
     {
-        // check for "view" access: calls all voters
-        $this->denyAccessUnlessGranted('view', $fermentation);
+        $this->denyAccessUnlessGranted(PublicFermentationVoter::VIEW, $fermentation);
 
         try {
             $latestData = $this->dataPointRepository->findByFermentation($fermentation);

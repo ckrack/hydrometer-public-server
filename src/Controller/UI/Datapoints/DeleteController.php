@@ -10,6 +10,7 @@ namespace App\Controller\UI\Datapoints;
 
 use App\Entity\DataPoint;
 use App\Repository\DataPointRepository;
+use App\Security\Voter\DataPointOwnerVoter;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,8 +38,7 @@ final class DeleteController extends AbstractController
         DataPoint $datapoint,
         Request $request
     ) {
-        // check for "edit" access: calls all voters
-        $this->denyAccessUnlessGranted('edit', $datapoint);
+        $this->denyAccessUnlessGranted(DataPointOwnerVoter::EDIT, $datapoint);
 
         try {
             $form = $this->createDeleteForm();

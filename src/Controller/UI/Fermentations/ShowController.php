@@ -11,6 +11,7 @@ namespace App\Controller\UI\Fermentations;
 use App\Entity\Fermentation;
 use App\Modules\Stats;
 use App\Repository\DataPointRepository;
+use App\Security\Voter\OwnerVoter;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -40,8 +41,7 @@ final class ShowController extends AbstractController
      */
     public function __invoke(Fermentation $fermentation)
     {
-        // check for "view" access: calls all voters
-        $this->denyAccessUnlessGranted('view', $fermentation);
+        $this->denyAccessUnlessGranted(OwnerVoter::VIEW, $fermentation);
 
         try {
             $user = $this->getUser();
