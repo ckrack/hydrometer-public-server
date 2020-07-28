@@ -13,7 +13,6 @@ use App\Modules\Stats;
 use App\Repository\DataPointRepository;
 use App\Security\Voter\OwnerVoter;
 use Exception;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;

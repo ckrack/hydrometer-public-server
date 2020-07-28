@@ -90,7 +90,6 @@ final class ThrowAwayFermentationController extends AbstractController
 
     /**
      * Render an existing throw-away fermentation.
-     *
      */
     private function renderExisting(Fermentation $fermentation)
     {

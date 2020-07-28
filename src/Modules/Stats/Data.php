@@ -13,8 +13,6 @@ use App\Entity\Hydrometer;
 use App\Repository\CalibrationRepository;
 use App\Repository\DataPointRepository;
 use Carbon\Carbon;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 
 final class Data
 {

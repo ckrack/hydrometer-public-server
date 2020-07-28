@@ -8,8 +8,6 @@
 
 namespace App\Modules\Formula;
 
-use App\Entity\Hydrometer;
-
 final class Formatter
 {
     public static function format($value, $metric = null)
@@ -38,6 +36,7 @@ final class Formatter
                 return number_format($value, 2).' '.$metric;
         }
     }
+
     public static function roundTo($metric = null)
     {
         switch ($metric) {
@@ -59,6 +58,7 @@ final class Formatter
                 return 2;
         }
     }
+
     public static function treshold($metric = null)
     {
         switch ($metric) {

@@ -112,6 +112,7 @@ final class DataPointController extends AbstractController
                 'gravity' => $data['SG'],
             ];
         }
+
         return $data;
     }
 }

@@ -11,7 +11,6 @@ namespace App\Controller\UI\Fermentations;
 use App\Entity\Fermentation;
 use App\Repository\FermentationRepository;
 use App\Security\Voter\OwnerVoter;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
