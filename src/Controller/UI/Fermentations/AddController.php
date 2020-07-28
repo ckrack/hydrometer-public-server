@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class AddController extends AbstractController
 {
-    protected $em;
+    private $fermentationRepository;
 
     public function __construct(
         FermentationRepository $fermentationRepository
