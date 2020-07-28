@@ -99,7 +99,7 @@ final class DataPointController extends AbstractController
     /**
      * Prepare data for the import into Entity.
      */
-    protected function prepareData(array $data): array
+    private function prepareData(array $data): array
     {
         // prevent overwriting the ID by unsetting the espId
         if (isset($data['id'])) {

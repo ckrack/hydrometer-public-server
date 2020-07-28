@@ -96,7 +96,7 @@ final class Data
      * Get an array of calibration values
      * Use the returned array with list($const1, $const2, $const3).
      */
-    protected function getCalibrationValues(Hydrometer $hydrometer): array
+    private function getCalibrationValues(Hydrometer $hydrometer): array
     {
         $calibration = $this->calibrationRepository->findOneBy(['hydrometer' => $hydrometer]);
 

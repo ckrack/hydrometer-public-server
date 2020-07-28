@@ -16,7 +16,7 @@ class SpecificGravity
     /**
      * the value in specific gravity.
      */
-    protected $value;
+    private $value;
 
     /**
      * You can start calculations by creating an object with the sg value.

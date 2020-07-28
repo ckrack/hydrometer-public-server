@@ -61,7 +61,7 @@ final class ListController extends AbstractController
     /**
      * Find the last activity for every hydrometer.
      */
-    protected function findLastActivity(array $hydrometers): array
+    private function findLastActivity(array $hydrometers): array
     {
         foreach ($hydrometers as $key => $hydrometer) {
             if (!empty($hydrometer['last_datapoint_id'])) {
