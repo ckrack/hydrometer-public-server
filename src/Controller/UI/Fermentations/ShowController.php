@@ -21,17 +21,14 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ShowController extends AbstractController
 {
     private $dataPointRepository;
-    private $logger;
     private $statsModule;
 
     public function __construct(
         DataPointRepository $dataPointRepository,
-        LoggerInterface $logger,
         Stats\Data $statsModule
     ) {
         // add your dependencies
         $this->dataPointRepository = $dataPointRepository;
-        $this->logger = $logger;
         $this->statsModule = $statsModule;
     }
 

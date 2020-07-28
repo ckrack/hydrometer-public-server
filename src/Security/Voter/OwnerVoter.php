@@ -53,7 +53,5 @@ final class OwnerVoter extends Voter
 
         // user and subject-user (owner) are equal
         return $user === $subject->getUser();
-
-        throw new \LogicException('This code should not be reached!');
     }
 }

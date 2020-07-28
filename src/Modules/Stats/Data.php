@@ -20,16 +20,13 @@ final class Data
 {
     private $dataPointRepository;
     private $calibrationRepository;
-    private $logger;
 
     public function __construct(
         DataPointRepository $dataPointRepository,
-        CalibrationRepository $calibrationRepository,
-        LoggerInterface $logger
+        CalibrationRepository $calibrationRepository
     ) {
         $this->dataPointRepository = $dataPointRepository;
         $this->calibrationRepository = $calibrationRepository;
-        $this->logger = $logger;
     }
 
     /**
@@ -67,43 +64,34 @@ final class Data
 
     public function platoCombined(array $latestData, Hydrometer $hydrometer): array
     {
-        try {
-            [$const1, $const2, $const3, $isCalibrated] = $this->getCalibrationValues($hydrometer);
+        [$const1, $const2, $const3, $isCalibrated] = $this->getCalibrationValues($hydrometer);
+        // flag to indicate whether there are gravity values.
+        // this indicates that the new firmware is used (>= 4.0)
+        $useGravity = false;
+        $data = [];
+        foreach ($latestData as $value) {
+            $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
+            $data['dens'][] = $dens;
+            foreach ($value as $unit => $v) {
+                $data[$unit][] = $v;
 
-            // flag to indicate whether there are gravity values.
-            // this indicates that the new firmware is used (>= 4.0)
-            $useGravity = false;
-
-            $data = [];
-
-            foreach ($latestData as $value) {
-                $dens = $const1 * $value['angle'] ** 2 - $const2 * $value['angle'] + $const3;
-                $data['dens'][] = $dens;
-                foreach ($value as $unit => $v) {
-                    $data[$unit][] = $v;
-
-                    if ('gravity' === $unit && $v) {
-                        $useGravity = true;
-                    }
+                if ('gravity' === $unit && $v) {
+                    $useGravity = true;
                 }
             }
-
-            // use the flag to overwrite old data
-            if (!$useGravity && isset($data['dens'])) {
-                $data['gravity'] = $data['dens'];
-            }
-            unset($data['dens']);
-            unset($data['groupTime']);
-
-            // render template
-            return [
-                'name' => $hydrometer->getName(),
-                'data' => $data,
-                'isCalib' => $isCalibrated,
-            ];
-        } catch (\Exception $e) {
-            throw $e;
         }
+        // use the flag to overwrite old data
+        if (!$useGravity && isset($data['dens'])) {
+            $data['gravity'] = $data['dens'];
+        }
+        unset($data['dens']);
+        unset($data['groupTime']);
+        // render template
+        return [
+            'name' => $hydrometer->getName(),
+            'data' => $data,
+            'isCalib' => $isCalibrated,
+        ];
     }
 
     /**

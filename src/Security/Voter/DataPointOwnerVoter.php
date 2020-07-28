@@ -44,7 +44,5 @@ final class DataPointOwnerVoter extends Voter
 
         // user and the user of the hydrometer, the datapoint is added from are equal?
         return $user === $subject->getHydrometer()->getUser();
-
-        throw new \LogicException('This code should not be reached!');
     }
 }

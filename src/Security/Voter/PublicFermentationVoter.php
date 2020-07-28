@@ -42,7 +42,5 @@ final class PublicFermentationVoter extends Voter
 
         // fermentations is public?
         return $subject->isPublic();
-
-        throw new \LogicException('This code should not be reached!');
     }
 }

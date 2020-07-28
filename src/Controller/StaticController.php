@@ -14,14 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class StaticController extends AbstractController
 {
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        // add your dependencies
-        $this->logger = $logger;
     }
-
     /**
      * @Route("/{static}", defaults={"static": "about"}, name="static-page")
      * @Route("/logout", defaults={"static": "logout"}, name="logout")

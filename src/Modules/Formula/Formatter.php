@@ -12,13 +12,9 @@ use App\Entity\Hydrometer;
 
 final class Formatter
 {
-    private $hydrometer;
-
-    public function __construct(Hydrometer $hydrometer)
+    public function __construct()
     {
-        $this->hydrometer = $hydrometer;
     }
-
     public static function format($value, $metric = null)
     {
         $value = (float) $value;
@@ -43,10 +39,8 @@ final class Formatter
 
             default:
                 return number_format($value, 2).' '.$metric;
-                break;
         }
     }
-
     public static function roundTo($metric = null)
     {
         switch ($metric) {
@@ -57,7 +51,6 @@ final class Formatter
                 return 3;
 
             case '°':
-                return 2;
 
             case '°C':
                 return 2;
@@ -67,10 +60,8 @@ final class Formatter
 
             default:
                 return 2;
-                break;
         }
     }
-
     public static function treshold($metric = null)
     {
         switch ($metric) {
