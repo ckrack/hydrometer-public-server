@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DeleteController extends AbstractController
 {
-    protected $hydrometerRepository;
+    private $hydrometerRepository;
 
     public function __construct(HydrometerRepository $hydrometerRepository)
     {

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class EditController extends AbstractController
 {
-    protected $fermentationRepository;
+    private $fermentationRepository;
 
     public function __construct(
         FermentationRepository $fermentationRepository

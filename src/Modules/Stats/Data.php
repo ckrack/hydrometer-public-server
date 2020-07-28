@@ -65,9 +65,6 @@ final class Data
         return Carbon::parse($latestData[0]['time'])->diffForHumans($latestData[$stableSince]['time'], Carbon::DIFF_ABSOLUTE);
     }
 
-    /**
-     *
-     */
     public function platoCombined(array $latestData, Hydrometer $hydrometer): array
     {
         try {

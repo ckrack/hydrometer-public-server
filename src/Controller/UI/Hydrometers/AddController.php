@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class AddController extends AbstractController
 {
-    protected $hydrometerRepository;
-    protected $tokenRepository;
+    private $hydrometerRepository;
+    private $tokenRepository;
 
     public function __construct(HydrometerRepository $hydrometerRepository, TokenRepository $tokenRepository)
     {

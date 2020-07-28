@@ -14,7 +14,7 @@ use Twig\TwigFilter;
 
 final class OptimusExtension extends AbstractExtension
 {
-    protected $optimus;
+    private $optimus;
 
     /**
      * Autowire optimus.

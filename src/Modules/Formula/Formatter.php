@@ -12,12 +12,7 @@ use App\Entity\Hydrometer;
 
 final class Formatter
 {
-    /**
-     * [$hydrometer description].
-     *
-     * @var [type]
-     */
-    protected $hydrometer;
+    private $hydrometer;
 
     public function __construct(Hydrometer $hydrometer)
     {

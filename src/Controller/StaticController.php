@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class StaticController extends AbstractController
 {
-    protected $logger;
+    private $logger;
 
     public function __construct(LoggerInterface $logger)
     {

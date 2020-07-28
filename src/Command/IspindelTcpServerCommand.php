@@ -20,9 +20,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class IspindelTcpServerCommand extends Command
 {
     protected static $defaultName = 'app:ispindel-tcp-server';
-    protected TCP $tcp;
-    protected Token $tokenAuth;
-    protected LoggerInterface $logger;
+    private TCP $tcp;
+    private Token $tokenAuth;
+    private LoggerInterface $logger;
 
     public function __construct(
         TCP $tcp,

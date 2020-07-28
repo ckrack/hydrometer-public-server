@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class EditController extends AbstractController
 {
-    protected $hydrometerRepository;
+    private $hydrometerRepository;
 
     public function __construct(HydrometerRepository $hydrometerRepository)
     {

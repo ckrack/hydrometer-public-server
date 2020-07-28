@@ -10,31 +10,21 @@ namespace App\Request\ParamConverter;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Jenssegers\Optimus\Optimus;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class OptimusConverter implements ParamConverterInterface
 {
-    protected EntityManagerInterface $em;
-    protected Optimus $optimus;
-    protected LoggerInterface $logger;
+    private EntityManagerInterface $em;
+    private Optimus $optimus;
 
-    /**
-     * Use auto-wiring.
-     *
-     * @param EntityManagerInterface $em      [description]
-     * @param Optimus                $optimus [description]
-     */
     public function __construct(
         EntityManagerInterface $em,
-        Optimus $optimus,
-        LoggerInterface $logger
+        Optimus $optimus
     ) {
         $this->em = $em;
         $this->optimus = $optimus;
-        $this->logger = $logger;
     }
 
     public function apply(Request $request, ParamConverter $configuration)

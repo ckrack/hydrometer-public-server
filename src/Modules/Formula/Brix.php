@@ -16,7 +16,7 @@ final class Brix
     /**
      * the value in brix.
      */
-    protected $value;
+    private $value;
 
     /**
      * You can start calculations by creating an object with the brix value.

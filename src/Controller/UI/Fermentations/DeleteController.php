@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DeleteController extends AbstractController
 {
-    protected $fermentationRepository;
-    protected $logger;
+    private $fermentationRepository;
+    private $logger;
 
     public function __construct(FermentationRepository $fermentationRepository, LoggerInterface $logger)
     {

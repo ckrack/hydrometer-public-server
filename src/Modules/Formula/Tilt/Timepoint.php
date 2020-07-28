@@ -16,7 +16,7 @@ final class Timepoint
     /**
      * the value in tilt timepoint format (float).
      */
-    protected $value = 0.0;
+    private $value = 0.0;
 
     /**
      * You can start calculations by creating an object with the timepoint value.

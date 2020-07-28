@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowPublicController extends AbstractController
 {
-    protected $dataPointRepository;
-    protected $statsModule;
+    private $dataPointRepository;
+    private $statsModule;
 
     public function __construct(
         DataPointRepository $dataPointRepository,

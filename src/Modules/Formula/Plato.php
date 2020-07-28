@@ -16,7 +16,7 @@ final class Plato
     /**
      * the value in plato.
      */
-    protected $value;
+    private $value;
 
     /**
      * You can start calculations by creating an object with the plato value.

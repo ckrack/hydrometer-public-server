@@ -16,8 +16,8 @@ use Psr\Log\LoggerInterface;
 
 final class TCP
 {
-    protected $logger;
-    protected $em;
+    private $logger;
+    private $em;
 
     public function __construct(
         EntityManagerInterface $em,
