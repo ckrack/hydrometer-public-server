@@ -10857,7 +10857,7 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.1.2",
+            "version": "v5.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
@@ -11587,6 +11587,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-05-11T14:13:48+00:00"
         },
         {
