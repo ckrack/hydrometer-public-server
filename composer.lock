@@ -6559,16 +6559,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.17.1",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "2edd75b8b35d62fd3eeabba73b26b8f1f60ce13d"
+                "reference": "1c302646f6efc070cd46856e600e5e0684d6b454"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/2edd75b8b35d62fd3eeabba73b26b8f1f60ce13d",
-                "reference": "2edd75b8b35d62fd3eeabba73b26b8f1f60ce13d",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/1c302646f6efc070cd46856e600e5e0684d6b454",
+                "reference": "1c302646f6efc070cd46856e600e5e0684d6b454",
                 "shasum": ""
             },
             "require": {
@@ -6580,7 +6580,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17-dev"
+                    "dev-master": "1.18-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -6631,7 +6631,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-06T08:46:27+00:00"
+            "time": "2020-07-14T12:35:20+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
@@ -8301,16 +8301,16 @@
         },
         {
             "name": "symfony/templating",
-            "version": "v5.1.2",
+            "version": "v5.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/templating.git",
-                "reference": "d3f0347e70029067ab690bfa9ff121c1c929ee4e"
+                "reference": "da663fb642e2c0aea7c8fa27056fe978dd618170"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/templating/zipball/d3f0347e70029067ab690bfa9ff121c1c929ee4e",
-                "reference": "d3f0347e70029067ab690bfa9ff121c1c929ee4e",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/da663fb642e2c0aea7c8fa27056fe978dd618170",
+                "reference": "da663fb642e2c0aea7c8fa27056fe978dd618170",
                 "shasum": ""
             },
             "require": {
@@ -8367,7 +8367,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-28T08:20:44+00:00"
+            "time": "2020-09-02T16:23:27+00:00"
         },
         {
             "name": "symfony/translation",
@@ -11304,6 +11304,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-05-15T21:39:16+00:00"
         },
         {
@@ -11587,6 +11588,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-05-11T14:13:48+00:00"
         },
         {
