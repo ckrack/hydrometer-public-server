@@ -13,12 +13,13 @@ $finder = PhpCsFixer\Finder::create()
 
 $rules = [
     '@Symfony' => true,
+    '@Symfony:risky' => true,
     '@DoctrineAnnotation' => true,
     'phpdoc_no_empty_return' => false,
     'array_syntax' => ['syntax' => 'short'],
     'ordered_imports' => true,
     'yoda_style' => false,
-    'declare_strict_types' => true,
+#    'declare_strict_types' => true,
 ];
 
 $rules['increment_style'] = ['style' => 'post'];

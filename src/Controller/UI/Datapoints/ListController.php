@@ -60,7 +60,7 @@ final class ListController extends AbstractController
 
             return $this->render(
                 'ui/exception.html.twig',
-                ['user' => $user]
+                ['user' => isset($user) ? $user : null]
             );
         }
     }

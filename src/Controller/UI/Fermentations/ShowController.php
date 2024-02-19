@@ -67,7 +67,7 @@ final class ShowController extends AbstractController
         } catch (Exception $exception) {
             return $this->render(
                 'ui/exception.html.twig',
-                ['user' => $user]
+                ['user' => isset($user) ? $user : null]
             );
         }
     }

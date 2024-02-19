@@ -46,7 +46,7 @@ final class DataPointController extends AbstractController
      * @Route("/api/ispindel/{token}", name="api-post-spindle")
      * @Route("/api/tilt/{token}", name="api-post-tilt")
      */
-    public function __invoke($token, Request $request)
+    public function __invoke(?string $token, Request $request)
     {
         try {
             $data = $request->getContent();
@@ -55,7 +55,7 @@ final class DataPointController extends AbstractController
             }
             $this->logger->debug('Spindle: Receive data', [$data, $token]);
 
-            if (empty($data)) {
+            if (! is_array($data)) {
                 $this->logger->debug('api::post: no data passed', [$token, $data]);
                 throw new InvalidArgumentException('Api::post: No data passed');
             }
@@ -66,7 +66,7 @@ final class DataPointController extends AbstractController
             }
 
             // confirm existance of the token @throws
-            $authData = $this->tokenAuth->authenticate(empty($token) ? $data['token'] : $token);
+            $authData = $this->tokenAuth->authenticate(($token) ?? $data['token']);
 
             $hydrometer = $this->hydrometerRepository->find($authData['hydrometer_id']);
 

@@ -41,4 +41,6 @@ For reading, a user either has to be logged in (for ui-updates) or use their api
 
 
 ## Example JSON from iSpindle
-{"name":"eSpindel","ID":"123456","angle":71.11,"temperature":18.25,"battery":5.54,"gravity":24.89, "token": "abcdef1234567"}
+
+{"name":"eSpindel","ID":"123456","angle":71.11,"temperature":18.25,"battery":5.54,"gravity":24.89, "token": "abcdef1234567"
+}

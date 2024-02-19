@@ -42,14 +42,8 @@ final class GoogleConnectProvider implements UserProviderInterface
 
     /**
      * Loads the user for the given email, which is stored in username, too.
-     *
-     * @param string $username
-     *
-     * @throws UsernameNotFoundException if the user is not found
-     *
-     * @return UserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): ? User
     {
         $user = $this->loadUserByEmail($username);
         if ($user instanceof User) {
@@ -60,16 +54,12 @@ final class GoogleConnectProvider implements UserProviderInterface
 
     /**
      * Loads the user for the given email.
-     *
-     * @param string $email
-     *
-     * @return UserInterface
      */
-    public function loadUserByEmail($email)
+    public function loadUserByEmail(string $email): ? User
     {
         // email can be empty, prevent searching for users with email IS NULL.
-        if (empty($email)) {
-            return;
+        if (null === $email || '' === $email) {
+            return null;
         }
 
         $user = $this->userRepository->findOneBy(['email' => $email]);
@@ -117,13 +107,13 @@ final class GoogleConnectProvider implements UserProviderInterface
      * totally reloaded (e.g. from the database), or if the UserInterface
      * object can just be merged into some internal array of users / identity
      * map.
+     * @param \App\Entity\User $user
      *
      * @throws UnsupportedUserException  if the user is not supported
      * @throws UsernameNotFoundException if the user is not found
      */
     public function refreshUser(UserInterface $user)
     {
-        /* @var User $user  */
         return $this->userRepository->find($user->getId());
     }
 

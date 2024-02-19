@@ -65,10 +65,10 @@ final class FacebookConnectProvider implements UserProviderInterface
      *
      * @return UserInterface
      */
-    public function loadUserByEmail($email)
+    public function loadUserByEmail(?string $email)
     {
         // email can be empty, prevent searching for users with email IS NULL.
-        if (empty($email)) {
+        if (null === $email || '' === $email) {
             return;
         }
 

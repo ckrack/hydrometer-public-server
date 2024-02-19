@@ -64,7 +64,7 @@ final class ListController extends AbstractController
     private function findLastActivity(array $hydrometers): array
     {
         foreach ($hydrometers as $key => $hydrometer) {
-            if (!empty($hydrometer['last_datapoint_id'])) {
+            if (!array_key_exists('last_datapoint_id', $hydrometer) || null === $hydrometer['last_datapoint_id']) {
                 $activity = $this->dataPointRepository->findActivity($hydrometer['last_datapoint_id']);
                 $hydrometers[$key] = array_merge($hydrometer, (array) $activity);
             }

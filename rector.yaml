@@ -2,6 +2,9 @@
 parameters:
     paths:
         - src
+        - tests
+    exclude_paths:
+        - 'src/Kernel.php'
     sets:
         - 'action-injection-to-constructor-injection'
         - 'array-str-functions-to-static-call'
@@ -9,10 +12,15 @@ parameters:
         - 'doctrine'
         - 'phpstan'
         - 'phpunit-code-quality'
-        - 'solid'
+        #- 'solid'
         - 'early-return'
         - 'doctrine-code-quality'
-        - 'code-quality'
         - 'php71'
         - 'php72'
         - 'php73'
+        - 'php74'
+        #- 'code-quality'
+        #- 'coding-style'
+        #- 'dead-classes'
+        #- 'dead-code'
+        #- 'privatization'

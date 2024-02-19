@@ -56,11 +56,9 @@ abstract class Entity implements JsonSerializable, TimestampableInterface
     }
 
     /**
-     * [jsonSerialize description].
-     *
-     * @return [type] [description]
+     * prepare serialization for json
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $entity = [];
         $methods = get_class_methods(static::class);
