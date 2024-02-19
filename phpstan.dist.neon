@@ -1,0 +1,16 @@
+parameters:
+    level: 8
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
+
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+    doctrine:
+    	objectManagerLoader: tests/object-manager.php
+
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
