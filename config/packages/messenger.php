@@ -1,5 +1,8 @@
 <?php
 
+use App\Event\HydrometerAddedEvent;
+use App\Event\HydrometerDataReceivedEvent;
+use App\Messenger\Middleware\PersistEventMiddleware;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework): void {
@@ -9,13 +12,13 @@ return static function (FrameworkConfig $framework): void {
 
     $framework->messenger()
         ->bus('messenger.bus.default')
-        ->middleware()->id(App\Messenger\Middleware\PersistEventMiddleware::class);
+        ->middleware()->id(PersistEventMiddleware::class);
 
     $framework->messenger() // @phpstan-ignore-line
-        ->routing(App\Event\HydrometerAddedEvent::class)
+        ->routing(HydrometerAddedEvent::class)
         ->senders(['sync']);
 
     $framework->messenger() // @phpstan-ignore-line
-        ->routing(App\Event\HydrometerDataReceivedEvent::class)
+        ->routing(HydrometerDataReceivedEvent::class)
         ->senders(['sync']);
 };

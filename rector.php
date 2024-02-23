@@ -8,10 +8,10 @@ use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRect
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/config',
-        __DIR__ . '/public',
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+        __DIR__.'/config',
+        __DIR__.'/public',
+        __DIR__.'/src',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(
         php83: false,
@@ -22,7 +22,7 @@ return RectorConfig::configure()
         SetList::CODE_QUALITY,
         SetList::EARLY_RETURN,
     ])
-    ->withSymfonyContainerPhp(__DIR__. '/var/cache/dev/App_KernelDevDebugContainer.php')
+    ->withSymfonyContainerPhp(__DIR__.'/var/cache/dev/App_KernelDevDebugContainer.php')
     ->withImportNames()
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
