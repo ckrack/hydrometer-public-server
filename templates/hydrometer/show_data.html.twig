@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hydrometer data{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>Data for {{ hydrometer.name ?? hydrometer_id }}</h1>
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+                url: '{{ asset("data/#{hydrometer_id}.json") }}',
+                mimeType: 'json',
+                x: 'time',
+                xFormat: '%Y-%m-%d %H:%M:%S',
+                keys: {
+                    x: "time",
+                    value: ["temperature", "gravity", "battery", "angle"]
+                },
+                axes: {
+                    temperature: 'y',
+                    gravity: 'y2'
+                }
+            },
+            colors: {
+                temperature: '#d9534f',
+                gravity: '#0275d8',
+                battery: '#5bc0de',
+                angle: '#5cb85c'
+            },
+            types: {
+                gravity: 'area-spline',
+                temperature: 'spline',
+                battery: 'spline',
+            },
+            axis: {
+                x: {
+                    label: {
+                        text: 'Date',
+                        position: 'inner-center'
+                    },
+                    type: 'timeseries',
+                    tick: {
+                        culling: {
+                            max: 5 // the number of tick texts will be adjusted to less than this value
+                        },
+                        fit: true,
+                        format: '%Y-%m-%d@%H:%M'
+                    }
+                },
+                y2: {
+                    show: true
+                },
+            },
+            grid: {
+                x: {
+                    show: true
+                },
+                y: {
+                    show: true
+                }
+            },
+            zoom: {
+                enabled: true
+            }
+        });
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+        #chart {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('c3.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript" src="{{ asset('d3.v5.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('c3.min.js') }}"></script>
+{% endblock %}

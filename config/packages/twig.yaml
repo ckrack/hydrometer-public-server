@@ -1,8 +1,6 @@
 twig:
-    paths: ['%kernel.project_dir%/templates']
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-    globals:
-        SITE_TITLE: '%env(SITE_TITLE)%'
-        TCP_API_PORT: '%env(TCP_API_PORT)%'
-    exception_controller: null
+    file_name_pattern: '*.twig'
+
+when@test:
+    twig:
+        strict_variables: true

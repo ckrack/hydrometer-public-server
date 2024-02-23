@@ -1,105 +1,121 @@
 {
-    "name": "ckrack/hydrometer-public-server",
-    "version": "2.0.0",
-    "description": "Public server for electronic hydrometers for homebrewing",
-    "type": "project",
-    "license": "MIT",
-    "keywords": [
-        "slim3",
-        "boilerplate",
-        "quickstart",
-        "framework",
-        "ispindle",
-        "ispindel",
-        "craftbeer",
-        "hydrometer",
-        "tilt hydrometer",
-        "tilthydrometer"
-    ],
-    "authors": [
-        {
-            "name": "Clemens Krack",
-            "email": "info@clemenskrack.com",
-            "homepage": "https://www.clemenskrack.com",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "beberlei/doctrineextensions": "^1.0",
-        "jenssegers/optimus": "^0.2.3",
-        "knplabs/doctrine-behaviors": "^2.0",
-        "knpuniversity/oauth2-client-bundle": "^1.20",
-        "league/oauth2-facebook": "^2.0",
-        "league/oauth2-google": "^2.0",
-        "php-http/guzzle6-adapter": "^1.1",
-        "php-http/httplug-bundle": "^1.9",
-        "php": "^7.4",
-        "phpseclib/phpseclib": "^2.0",
-        "sensio/framework-extra-bundle": "^5.1",
-        "sensiolabs/security-checker": "^6.0",
-        "symfony/flex": "^1.6",
-        "symfony/form": "^5.0",
-        "symfony/monolog-bundle": "^3.5",
-        "symfony/orm-pack": "^1.0",
-        "symfony/security-bundle": "^5.0",
-        "symfony/swiftmailer-bundle": "^3.4",
-        "symfony/templating": "^5.0",
-        "symfony/translation": "^5.0",
-        "symfony/twig-bundle": "^5.0",
-        "symfony/validator": "^5.0",
-        "symfony/webpack-encore-bundle": "^1.7",
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "nesbot/carbon": "^2.28"
-    },
-    "require-dev": {
-        "symfony/dotenv": "^5.0",
-        "symfony/debug-pack": "^1.0",
-        "rector/rector": "^0.6.6",
-        "symplify/easy-coding-standard": "^7.2",
-        "phpstan/phpstan": "^0.12.4",
-        "symfony/maker-bundle": "^1.14",
-        "symfony/test-pack": "^1.0",
-        "symfony/phpunit-bridge": "^5.0",
-        "liip/test-fixtures-bundle": "^1.6",
-        "symfony/browser-kit": "^5.0",
-        "symfony/css-selector": "^5.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "src/Tests"
-        }
-    },
-    "scripts": {
-        "test": "phpunit",
-        "post-create-project-cmd": [
-            "php -r \"copy('src/example.env', 'src/.env');\""
-        ],
-        "spark": "php vendor/bin/optimus spark && php -r \" echo('Please update these numbers in ./src/.env under # OPTIMUS');\"",
-        "setup-db": "php bin/console doctrine:migrations:migrate",
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "5.0.*"
-        }
+  "name": "ckrack/hydrometer-public-server",
+  "description": "Public server for electronic hydrometers for homebrewing",
+  "type": "project",
+  "license": "MIT",
+  "keywords": [
+
+    "ispindle",
+    "ispindel",
+    "craftbeer",
+    "hydrometer",
+    "tilt hydrometer",
+    "tilthydrometer"
+  ],
+  "authors": [
+    {
+      "name": "Clemens Krack",
+      "email": "info@clemenskrack.com",
+      "homepage": "https://www.clemenskrack.com",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "doctrine/dbal": "^3",
+    "doctrine/doctrine-bundle": "^2.11",
+    "doctrine/doctrine-migrations-bundle": "^3.3",
+    "doctrine/orm": "^3.0",
+    "symfony/asset": "7.0.*",
+    "symfony/console": "~7.0.0",
+    "symfony/doctrine-messenger": "~7.0.0",
+    "symfony/dotenv": "~7.0.0",
+    "symfony/flex": "^2",
+    "symfony/framework-bundle": "~7.0.0",
+    "symfony/http-foundation": "~7.0.0",
+    "symfony/messenger": "~7.0.0",
+    "symfony/monolog-bundle": "^3.10",
+    "symfony/requirements-checker": "^2.0",
+    "symfony/runtime": "~7.0.0",
+    "symfony/twig-bundle": "~7.0.0",
+    "symfony/uid": "~7.0.0",
+    "symfony/yaml": "~7.0.0",
+    "twig/extra-bundle": "^2.12 || ^3.0",
+    "twig/twig": "^2.12 || ^3.0"
+  },
+  "require-dev": {
+    "ergebnis/composer-normalize": "^2.42",
+    "friendsofphp/php-cs-fixer": "^3.49",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan-doctrine": "^1.3",
+    "phpstan/phpstan-symfony": "^1.3",
+    "phpunit/phpunit": "^9.5",
+    "rector/rector": "^1.0",
+    "symfony/browser-kit": "~7.0.0",
+    "symfony/css-selector": "~7.0.0",
+    "symfony/maker-bundle": "^1.54",
+    "symfony/phpunit-bridge": "^7.0"
+  },
+  "replace": {
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php72": "*",
+    "symfony/polyfill-php73": "*",
+    "symfony/polyfill-php74": "*",
+    "symfony/polyfill-php80": "*",
+    "symfony/polyfill-php81": "*",
+    "symfony/polyfill-php82": "*"
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true,
+      "php-http/discovery": true,
+      "symfony/flex": true,
+      "symfony/runtime": true,
+      "phpstan/extension-installer": true
+    },
+    "sort-packages": true
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "endpoint": [
+        "https://raw.githubusercontent.com/schranz-php-recipes/symfony-recipes-php/flex/main/index.json",
+        "https://raw.githubusercontent.com/schranz-php-recipes/symfony-recipes-php-contrib/flex/main/index.json",
+        "flex://defaults"
+      ],
+      "require": "7.0.*"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ],
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd",
+      "requirements-checker": "script"
+    }
+  }
 }

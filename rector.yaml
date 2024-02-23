@@ -1,5 +1,0 @@
-# rector.yaml
-parameters:
-    exclude_paths:
-        - '*/src/*/Tests/*'
-        - '*/src/Migrations/*'

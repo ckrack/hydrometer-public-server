@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.css"],"names":[],"mappings":"AAIA,yBACE,WACE,cAAgB,CAAE,CAAE","file":"main.css","sourcesContent":["/**\n * main.scss file\n * as we use bootstrap, for now we just add additional stuff here\n */\n@media (max-width: 320px) {\n  .display-3 {\n    font-size: 3rem; } }\n"]}

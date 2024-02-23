@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+        - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Push to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASS }}
+          script_stop: true
+          script: |
+            cd ${{ secrets.PROJECT_PATH}}
+            git reset --hard
+            git clean -df
+            git pull
+            source .env
+            source .env.local
+            export APP_ENV=prod
+            composer dump-env prod
+            composer install --no-dev -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist -o
+            export APP_DEBUG=0
+            php bin/console cache:clear
+            export PWD=$(pwd)
+            envsubst < config/supervisor/hydro-tcp-server.ini > ~/etc/services.d/hydro-tcp-server.ini
+            supervisorctl reread
+            supervisorctl restart
+            php bin/console doctrine:migrations:migrate --no-interaction
