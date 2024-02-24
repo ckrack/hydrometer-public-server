@@ -31,5 +31,6 @@ phpstan.neon
 ###< phpstan/phpstan ###
 
 ###> ckrack/hydrometer-public-server ###
-public/data/*.json
+!/public/data/.gitignore
+/public/data/*.*
 ###< ckrack/hydrometer-public-server ###
