@@ -24,7 +24,7 @@
     "php": ">=8.1",
     "ext-ctype": "*",
     "ext-iconv": "*",
-    "doctrine/dbal": "^4",
+    "doctrine/dbal": "^3",
     "doctrine/doctrine-bundle": "^2.11",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "^3.0",
