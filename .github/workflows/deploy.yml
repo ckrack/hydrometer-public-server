@@ -23,7 +23,7 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH}}
             git reset --hard
-            git clean
+            git clean -df
             git pull
             source .env
             source .env.local
