@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Command\AddDataCommand;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -59,25 +60,12 @@ class TcpServerStartConsoleCommand extends Command
                 $jsonData = $this->handleClients($server);
                 if (is_array($jsonData)) {
                     $this->dispatchAddDataCommand($jsonData);
+                    $this->resetLogger();
                 }
             } catch (\Throwable $exception) {
                 $this->logger->error('Exception while handling clients: '.$exception->getMessage().$exception->getFile().$exception->getLine());
             }
         }
-    }
-
-    /**
-     * @param array<array-key, mixed> $jsonData
-     *
-     * @throws \JsonException
-     */
-    private function dispatchAddDataCommand(array $jsonData): void
-    {
-        if (!array_key_exists('token', $jsonData)) {
-            throw new \InvalidArgumentException('No token in data');
-        }
-
-        $this->messageBus->dispatch(new AddDataCommand(new Ulid($jsonData['token']), json_encode($jsonData, JSON_THROW_ON_ERROR)));
     }
 
     /**
@@ -138,5 +126,27 @@ class TcpServerStartConsoleCommand extends Command
         }
 
         return $jsonRaw;
+    }
+
+    /**
+     * @param array<array-key, mixed> $jsonData
+     *
+     * @throws \JsonException
+     */
+    private function dispatchAddDataCommand(array $jsonData): void
+    {
+        if (!array_key_exists('token', $jsonData)) {
+            throw new \InvalidArgumentException('No token in data');
+        }
+
+        $this->messageBus->dispatch(new AddDataCommand(new Ulid($jsonData['token']), json_encode($jsonData, JSON_THROW_ON_ERROR)));
+    }
+
+    public function resetLogger(): void
+    {
+        if (!$this->logger instanceof Logger) {
+            return;
+        }
+        $this->logger->reset();
     }
 }
