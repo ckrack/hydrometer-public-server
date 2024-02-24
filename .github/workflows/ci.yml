@@ -44,4 +44,4 @@ jobs:
         run: vendor/bin/phpstan --no-ansi --no-interaction --no-progress
 
       - name: Test
-        run: php bin/phpunit --no-interaction
+        run: php bin/phpunit --no-progress --testdox
