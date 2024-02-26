@@ -1,10 +1,9 @@
 {
   "name": "ckrack/hydrometer-public-server",
   "description": "Public server for electronic hydrometers for homebrewing",
-  "type": "project",
   "license": "MIT",
+  "type": "project",
   "keywords": [
-
     "ispindle",
     "ispindel",
     "craftbeer",
@@ -21,15 +20,16 @@
     }
   ],
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "ext-sockets": "*",
     "doctrine/dbal": "^3",
     "doctrine/doctrine-bundle": "^2.11",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "^3.0",
     "symfony/apache-pack": "^1.0",
-    "symfony/asset": "7.0.*",
+    "symfony/asset": "~7.0.0",
     "symfony/console": "~7.0.0",
     "symfony/doctrine-messenger": "~7.0.0",
     "symfony/dotenv": "~7.0.0",
@@ -89,9 +89,9 @@
     "allow-plugins": {
       "ergebnis/composer-normalize": true,
       "php-http/discovery": true,
+      "phpstan/extension-installer": true,
       "symfony/flex": true,
-      "symfony/runtime": true,
-      "phpstan/extension-installer": true
+      "symfony/runtime": true
     },
     "sort-packages": true
   },
