@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\HydrometerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: HydrometerRepository::class)]
@@ -45,5 +46,10 @@ class Hydrometer
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public static function getFilenameForIdFromParameterBag(ParameterBagInterface $parameterBag, Ulid $id): string
+    {
+        return $parameterBag->get('kernel.project_dir').'/public/data/'.$id->__toString().'.json';
     }
 }

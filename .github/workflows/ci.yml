@@ -11,7 +11,7 @@ jobs:
       - name: Setup PHP, extensions and composer with shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.2
           extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json
         env:
           update: true
@@ -35,13 +35,17 @@ jobs:
         run: vendor/bin/requirements-checker
 
       - name: Check Style
-        run: vendor/bin/php-cs-fixer check --no-ansi --no-interaction
+        run: vendor/bin/php-cs-fixer check --no-ansi --no-interaction --show-progress=none
 
       - name: Warm cache
         run: php bin/console cache:warmup
 
       - name: Static analysis
         run: vendor/bin/phpstan --no-ansi --no-interaction --no-progress
+
+      - name: Setup test db
+        run: |
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
       - name: Test
         run: php bin/phpunit --no-interaction

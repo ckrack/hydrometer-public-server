@@ -55,7 +55,7 @@ final readonly class HydrometerDataReceivedEventHandler
 
     private function getFileName(HydrometerDataReceivedEvent $hydrometerDataReceivedEvent): string
     {
-        return $this->parameterBag->get('kernel.project_dir').'/public/data/'.$hydrometerDataReceivedEvent->getAggregateId().'.json';
+        return Hydrometer::getFilenameForIdFromParameterBag($this->parameterBag, $hydrometerDataReceivedEvent->getAggregateId());
     }
 
     /**
