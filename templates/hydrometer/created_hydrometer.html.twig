@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Hydrometer{% endblock %}
+
+{% block body %}
+<div class="mx-[auto] my-[1em] max-w-[800px] w-[95%]">
+    <div class="px-4 sm:px-0">
+        <h1 class="text-xl font-semibold leading-7 text-gray-900">New hydrometer added ✅</h1>
+        <p class="intro mt-4 max-w-2xl text-sm leading-6 text-gray-500">
+            Your new hydrometer token is: <code class="ulid bg-[#F5F5F5] px-[6px] py-[2px]">{{ hydrometer_id }}</code><br>
+        </p>
+        <div class="pt-6 pb-8 mt-6 mb-8 border-b border-t border-gray-100">
+            <a class="px-4 py-3 text-sm text-white font-light tracking-wider bg-slate-800 hover:bg-slate-600 rounded" href="{{ path('app_show_data', {hydrometerId: hydrometer_id}) }}">Show data</a>
+        </div>
+    </div>
+    <h2 class="text-base font-semibold leading-5 text-gray-900">Setup instructions</h2>
+    <div class="mt-6 border-t border-gray-100">
+        <div class="divide-y divide-gray-100">
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">{% trans %}Token{% endtrans %}</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ hydrometer_id }}</dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">{% trans %}Service type{% endtrans %}</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{% trans %}TCP{% endtrans %}</dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">{% trans %}Server address{% endtrans %}</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ app.request.getHttpHost() }}</dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">{% trans %}Server port{% endtrans %}</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ app.request.server.get('TCP_API_PORT') }}</dd>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}

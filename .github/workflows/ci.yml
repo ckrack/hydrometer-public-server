@@ -47,5 +47,10 @@ jobs:
         run: |
           php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
+      - name: Build assets
+        run: |
+          yarn install
+          yarn encore production
+
       - name: Test
         run: php bin/phpunit --no-interaction

@@ -11,18 +11,20 @@ Supported:
 
 - ~~Add console command to run tcp server~~
 - ~~Implement dispatch of `AddDataCommand` in console~~
-- Implement projections for `HydrometerAddedEvent` (Save HTML File)
 - ~~Implement projections for `HydrometerDataReceivedEvent` (just save to a json file named by hydrometer-id)~~
 - ~~Implement displaying data with `c3.js`~~
 - Document event flows
-- Give better instructions on `new hydrometer` page.
+- ~~Give better instructions on `new hydrometer` page.~~
 - Add and implement `DataArchivedEvent` (just copy the data to a newly generated id)
 
 ## Example data
 
+Push to tcp:
+
 `telnet 127.0.0.1 10860`
 
-```json
+```bash
+telnet 127.0.0.1 10860 <<JSON
 {
     "name": "eSpindel",
     "ID": "123456",
@@ -32,9 +34,11 @@ Supported:
     "gravity": 12.89,
     "token": "01HQ1E4H91MNFPPH905TMN8BDJ"
 }
+JSON
 ```
 
-```json
+```bash
+telnet 127.0.0.1 10860 <<JSON
 {
     "name": "eSpindel",
     "ID": "123456",
@@ -44,9 +48,11 @@ Supported:
     "gravity": 10.98,
     "token": "01HQ1E4H91MNFPPH905TMN8BDJ"
 }
+JSON
 ```
 
-```json
+```bash
+telnet 127.0.0.1 10860 <<JSON
 {
     "name": "eSpindel",
     "ID": "123456",
@@ -56,9 +62,11 @@ Supported:
     "gravity": 7.65,
     "token": "01HQ1E4H91MNFPPH905TMN8BDJ"
 }
+JSON
 ```
 
-```json
+```bash
+telnet 127.0.0.1 10860 <<JSON
 {
     "name": "eSpindel",
     "ID": "123456",
@@ -68,4 +76,5 @@ Supported:
     "gravity": 4.32,
     "token": "01HQ1E4H91MNFPPH905TMN8BDJ"
 }
+JSON
 ```

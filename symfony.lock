@@ -211,6 +211,22 @@
             "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
         }
     },
+    "symfony/webpack-encore-bundle": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/schranz-php-recipes/symfony-recipes-php",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "6aa7853cad4af280b9352b4fb12c459d874d0fec"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/styles/app.css",
+            "config/packages/webpack_encore.php",
+            "package.json",
+            "webpack.config.js"
+        ]
+    },
     "twig/extra-bundle": {
         "version": "v3.8.0"
     }
