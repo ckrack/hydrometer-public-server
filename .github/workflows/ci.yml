@@ -35,7 +35,7 @@ jobs:
         run: vendor/bin/requirements-checker
 
       - name: Check Style
-        run: vendor/bin/php-cs-fixer check --no-ansi --no-interaction
+        run: vendor/bin/php-cs-fixer check --no-ansi --no-interaction --show-progress=none
 
       - name: Warm cache
         run: php bin/console cache:warmup
