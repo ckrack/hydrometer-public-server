@@ -43,5 +43,9 @@ jobs:
       - name: Static analysis
         run: vendor/bin/phpstan --no-ansi --no-interaction --no-progress
 
+      - name: Setup test db
+        run: |
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
       - name: Test
         run: php bin/phpunit --no-interaction
