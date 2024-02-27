@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Command\AddHydrometerCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,8 +24,6 @@ class AddHydrometerController extends AbstractController
         $addHydrometerCommand = new AddHydrometerCommand($hydrometerId);
         $this->messageBus->dispatch($addHydrometerCommand);
 
-        return $this->render('hydrometer/new_hydrometer.html.twig', [
-            'hydrometer_id' => $hydrometerId,
-        ]);
+        return new RedirectResponse($this->generateUrl('app_created_hydrometer', ['token' => $hydrometerId->__toString()]));
     }
 }

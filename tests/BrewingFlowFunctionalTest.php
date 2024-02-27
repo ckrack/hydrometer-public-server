@@ -36,8 +36,9 @@ class BrewingFlowFunctionalTest extends WebTestCase
 
     public function testCanAddHydrometer(): Hydrometer
     {
-        $crawler = self::$client->request('POST', '/new');
-
+        self::$client->request('POST', '/new');
+        $this->assertResponseRedirects();
+        $crawler = self::$client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'New hydrometer added ✅');
         $this->assertSelectorTextContains('.example-wrapper', 'Your hydrometer token is: ');
