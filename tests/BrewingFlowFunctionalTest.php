@@ -41,9 +41,9 @@ class BrewingFlowFunctionalTest extends WebTestCase
         $crawler = self::$client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'New hydrometer added ✅');
-        $this->assertSelectorTextContains('.example-wrapper', 'Your hydrometer token is: ');
+        $this->assertSelectorTextContains('p.intro', 'Your new hydrometer token is: ');
 
-        $hydrometerId = Ulid::fromString($crawler->filter('.example-wrapper code')->text());
+        $hydrometerId = Ulid::fromString($crawler->filter('code.ulid')->text());
 
         $hydrometerRepository = $this->getService(HydrometerRepository::class);
         $hydrometer = $hydrometerRepository->find($hydrometerId);

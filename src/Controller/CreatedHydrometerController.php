@@ -12,7 +12,7 @@ class CreatedHydrometerController extends AbstractController
     #[Route('/created/{token}', name: 'app_created_hydrometer')]
     public function __invoke(Ulid $token): Response
     {
-        return $this->render('hydrometer/new_hydrometer.html.twig', [
+        return $this->render('hydrometer/created_hydrometer.html.twig', [
             'hydrometer_id' => $token,
         ]);
     }

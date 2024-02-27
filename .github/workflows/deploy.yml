@@ -30,6 +30,8 @@ jobs:
             export APP_ENV=prod
             composer install --no-dev -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist -o
             composer dump-env prod
+            yarn install
+            yarn encore production
             export APP_DEBUG=0
             export PWD=$(pwd)
             envsubst < config/supervisor/hydro-tcp-server.ini > ~/etc/services.d/hydro-tcp-server.ini

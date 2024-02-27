@@ -3,25 +3,15 @@
 {% block title %}Hello Homebrewer!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-
-    <div class="example-wrapper">
-        <h1>Hello Homebrewer!</h1>
-
-        <form action="{{ path('app_new_hydrometer') }}">
-            <button>Add new hydrometer</button>
-        </form>
+    <div class="mx-[auto] my-[1em] max-w-[800px] w-[95%]">
+        <div class="px-4 sm:px-0">
+            <h1 class="text-xl font-semibold leading-10 text-gray-900">Hello Homebrewer!</h1>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Simple logging for brewing data with hydrometers.</p>
+        </div>
+        <div class="pt-6 pb-6 mt-6 mb-6 border-t border-gray-100">
+            <form action="{{ path('app_new_hydrometer') }}">
+                <button class="px-4 py-3 text-sm text-white font-light tracking-wider bg-slate-800 hover:bg-slate-600 rounded">Add new hydrometer</button>
+            </form>
+        </div>
     </div>
 {% endblock %}
