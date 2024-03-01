@@ -8,27 +8,27 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
-readonly class Event
+class Event
 {
     private function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'ulid', unique: true, nullable: false)]
-        private Ulid $id,
+        private readonly Ulid $id,
 
         #[ORM\Column(type: 'ulid', nullable: true)]
-        private ?Ulid $aggregateId,
+        private readonly ?Ulid $aggregateId,
 
         #[ORM\Column]
-        private \DateTimeImmutable $added,
+        private readonly \DateTimeImmutable $added,
 
         #[ORM\Column(length: 255)]
-        private string $type,
+        private readonly string $type,
 
         /**
          * @var array<array-key, mixed>
          */
         #[ORM\Column]
-        private array $data,
+        private readonly array $data,
     ) {
     }
 
