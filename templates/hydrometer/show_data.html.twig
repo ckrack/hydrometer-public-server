@@ -3,73 +3,80 @@
 {% block title %}Hydrometer data{% endblock %}
 
 {% block body %}
-<div class="mx-4 my-[1em] max-w-[800px] w-[95%] border-b border-gray-100">
-    <div class="px-4 sm:px-0 py-3">
-        <h1 class="text-xl font-semibold leading-7 text-gray-900">Data for {{ hydrometer.name ?? hydrometer_id }} 📉</h1>
+    <div class="mx-4 my-[1em] max-w-[800px] w-[95%] border-b border-gray-100">
+        <div class="px-4 sm:px-0 py-3">
+            <h1 class="text-xl font-semibold leading-7 text-gray-900">Data for {{ hydrometer.name ?? hydrometer_id }}
+                📉</h1>
+        </div>
     </div>
-</div>
-<div class="mt-6 shadow-lg rounded px-2 pb-2 mx-4">
-    <div id="chart" class="w-full h-full"></div>
-</div>
+    <div class="mt-6 shadow-lg rounded px-2 pb-2 mx-4">
+        <div id="chart" class="w-full h-full"></div>
+    </div>
     <script>
-        var chart = c3.generate({
-            bindto: '#chart',
-            data: {
-                url: '{{ asset("data/#{hydrometer_id}.json") }}',
-                mimeType: 'json',
-                x: 'time',
-                xFormat: '%Y-%m-%d %H:%M:%S',
-                keys: {
-                    x: "time",
-                    value: ["temperature", "gravity", "battery", "angle"]
-                },
-                axes: {
-                    temperature: 'y',
-                    gravity: 'y2'
-                }
-            },
-            colors: {
-                temperature: '#d9534f',
-                gravity: '#0275d8',
-                battery: '#5bc0de',
-                angle: '#5cb85c'
-            },
-            types: {
-                gravity: 'area-spline',
-                temperature: 'spline',
-                battery: 'spline',
-            },
-            axis: {
-                x: {
-                    label: {
-                        text: 'Date',
-                        position: 'inner-center'
+        function createChart() {
+            c3.generate({
+                bindto: '#chart',
+                data: {
+                    url: '{{ asset("data/#{hydrometer_id}.json") }}',
+                    mimeType: 'json',
+                    x: 'time',
+                    xFormat: '%Y-%m-%d %H:%M:%S',
+                    keys: {
+                        x: "time",
+                        value: ["temperature", "gravity", "battery", "angle"]
                     },
-                    type: 'timeseries',
-                    tick: {
-                        culling: {
-                            max: 5 // the number of tick texts will be adjusted to less than this value
+                    axes: {
+                        temperature: 'y',
+                        gravity: 'y2'
+                    },
+                    hide: ["angle", "battery"]
+                },
+                colors: {
+                    temperature: '#d9534f',
+                    gravity: '#0275d8',
+                    battery: '#5bc0de',
+                    angle: '#5cb85c'
+                },
+                types: {
+                    gravity: 'area-spline',
+                    temperature: 'spline',
+                    battery: 'spline',
+                },
+                axis: {
+                    x: {
+                        label: {
+                            text: 'Date',
+                            position: 'inner-center'
                         },
-                        fit: true,
-                        format: '%Y-%m-%d@%H:%M'
+                        type: 'timeseries',
+                        tick: {
+                            culling: {
+                                max: 5 // the number of tick texts will be adjusted to less than this value
+                            },
+                            fit: true,
+                            format: '%Y-%m-%d@%H:%M'
+                        }
+                    },
+                    y2: {
+                        show: true
+                    },
+                },
+                grid: {
+                    x: {
+                        show: true
+                    },
+                    y: {
+                        show: true
                     }
                 },
-                y2: {
-                    show: true
-                },
-            },
-            grid: {
-                x: {
-                    show: true
-                },
-                y: {
-                    show: true
+                zoom: {
+                    enabled: true
                 }
-            },
-            zoom: {
-                enabled: true
-            }
-        });
+            })
+        }
+
+        createChart();
+        setInterval(createChart, 300000);
     </script>
 
 {% endblock %}
