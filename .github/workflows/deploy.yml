@@ -39,4 +39,4 @@ jobs:
             supervisorctl update
             supervisorctl restart all
             php bin/console doctrine:migrations:migrate --no-interaction
-            php bin/console cache:clear --no-warmup
+            php bin/console cache:clear
