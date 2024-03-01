@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hydrometer data{% endblock %}
+{% block title %}Data for {{ hydrometer.name ?? hydrometer_id }} 📉{% endblock %}
 
 {% block body %}
     <div class="mx-4 my-[1em] max-w-[800px] w-[95%] border-b border-gray-100">
